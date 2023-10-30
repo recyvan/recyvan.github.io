@@ -19,6 +19,12 @@
 ]]></content>
   </entry>
   <entry>
+    <title>test</title>
+    <url>/2023/09/19/test/</url>
+    <content><![CDATA[<p>FAWfegsgergh</p>
+]]></content>
+  </entry>
+  <entry>
     <title>关于webmin-CVE-2019-15107的注入点代码分析</title>
     <url>/2023/09/20/%E5%85%B3%E4%BA%8Ewebmin-CVE-2019-15107%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p>浏览了多篇webmin的CVE-2019-15107后发现，有许多错误的playload或者存在不同版本对应的playload不通用。因此想要了解一下指定版本下的注入点的成因。</p>
@@ -373,7 +379,16 @@ push @res<span class="token punctuation">,</span> <span class="token function">P
 	  <span class="token variable">$wuser</span><span class="token operator">-></span><span class="token punctuation">&#123;</span><span class="token string single-quoted-string">'temppass'</span><span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token operator">&amp;</span><span class="token class-name static-context">acl</span><span class="token operator">::</span><span class="token function">modify_user</span><span class="token punctuation">(</span><span class="token variable">$wuser</span><span class="token operator">-></span><span class="token punctuation">&#123;</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token variable">$wuser</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
 	  <span class="token operator">&amp;</span><span class="token function">reload_miniserv</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>webmin用户的认证方式：</p>
+
+
+<p>整体利用情况</p>
+<p>整理思路可知，漏洞利用条件可为如下几种</p>
+<pre class="line-numbers language-none"><code class="language-none">1、开启密码重置功能【针对有些版本不需要开启密码重置功能，比如：webmin 1.890】
+2、user不存在、old&#x3D;任意字符|系统命令、new1&#x3D;&#x3D;new2  
+或者
+user不存在、old&#x3D;系统命令、new1&#x3D;&#x3D;new2  
+或者
+user存在但不为特定系统用户【指webmin添加的系统用户】、old为假（任意字符|系统命令 或 系统命令）、new1&#x3D;&#x3D;new2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 ]]></content>
       <categories>
         <category>php代码</category>
@@ -381,11 +396,5 @@ push @res<span class="token punctuation">,</span> <span class="token function">P
       <tags>
         <tag>php代码分析，webmin</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2023/09/19/test/</url>
-    <content><![CDATA[<p>FAWfegsgergh</p>
-]]></content>
   </entry>
 </search>
