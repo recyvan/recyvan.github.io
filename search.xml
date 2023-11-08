@@ -30,7 +30,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#97;&#x64;&#x6d;&#105;&#110;&#64;&#x31;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#x38;&#48;&#x2e;&#x31;&#50;&#x39;">&#109;&#115;&#102;&#97;&#x64;&#x6d;&#105;&#110;&#64;&#x31;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#x38;&#48;&#x2e;&#x31;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#115;&#x66;&#97;&#100;&#x6d;&#105;&#110;&#x40;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#56;&#x30;&#46;&#49;&#50;&#x39;">&#109;&#115;&#x66;&#97;&#100;&#x6d;&#105;&#110;&#x40;&#49;&#57;&#50;&#46;&#x31;&#54;&#x38;&#x2e;&#56;&#x30;&#46;&#49;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -305,6 +305,66 @@ DNS历史查询：（https://securitytrails.com/）
       </categories>
       <tags>
         <tag>C语言,数据结构,线性表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全测试课程_作业_1</title>
+    <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
+    <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
+<hr>
+<p>在VM下以kali为例子,在网络适配器下，存在三种模式：桥接模式，NAT模式，仅主机模式。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B7C973C18-9891-47e5-AD86-A57960A6A5E9%7D.png" alt="1"></p>
+<p>存在两个网卡(在未安装docker，ks8等特殊情况下)VMnet0：用于桥接模式下的虚拟交换机，VMnet1：用于虚拟桥接网络下的虚拟交换机,VMnet8：用于虚拟 NAT 网络下的虚拟交换机。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BBFFE2E6D-4087-4366-AC6B-F67AD26957D5%7D.png" alt="2"></p>
+<h4 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h4><p>桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<h4 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h4><p>NAT 模式，就是让虚拟系统借助 NAT（网络地址转换）功能，通过宿主机器所在的网络来访问公网。也就是说，使用 NAT 模式可以实现在虚拟系统里访问互联网，但前提是主机可以访问互联网。</p>
+<p>NAT 模式下的虚拟系统的 TCP&#x2F;IP 配置信息是由 VMnet8（NAT）虚拟网络的 DHCP 服务器提供的，因此虚拟系统也就无法和本局域网中的其他真实主机进行通讯。</p>
+<p>访问路径为虚拟机ip-&gt;主机-&gt;互联网</p>
+<h4 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h4><p>仅主机模式的虚拟网络是一个封闭的网络环境，使得虚拟机成为一个独立的系统，所以多个虚拟机之间也可以互相访问，但一般情况下虚拟网络不能连接到 Internet。主机和虚拟机之间的通信是通过 VMnet1 虚拟网卡来实现的。此时如果想要虚拟机上外网则需要主机联网并且网络共享。</p>
+<h3 id="相关配置命令"><a href="#相关配置命令" class="headerlink" title="相关配置命令"></a>相关配置命令</h3><p>win下可liunx下查看ip的一种方式：</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B1F97DB93-7F1E-4c6b-9E9F-FFFE21BAD996%7D.png" alt="3"></p>
+<p>win下查看路由表</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA1ACE78D-927B-46a1-B2B6-7A11F3BC2A59%7D.png" alt="4"></p>
+<p>加入想要通过vpn访问另一台主机上的虚拟机可以使用route add ip mask 255.255.255.0 metric 接口列表  ，来访问。</p>
+<h4 id="kali下ip的配置文件为-etc-network-interfaces"><a href="#kali下ip的配置文件为-etc-network-interfaces" class="headerlink" title="kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces"></a>kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces</h4><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B595364AB-7EBE-4afd-852A-7FE61C8118A2%7D.png" alt="5"></p>
+<p>该文件文件不同于centos的conf配置信息</p>
+<p>若为静态，应做如下设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">This file describes the network interfaces available on your system</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">and how to activate them. For more information， see interfaces（5）。</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">The loopback network interface</span><br>auto lo<br> <br>iface lo inet loopback<br> <br>auto eth0<br> <br>iface eth0 inet static //配置eth0使用默认的静态地址<br> <br>address 192.168.1.1 //设置eth0的IP地址<br> <br>netmask 255.255.255.0 //配置eth0的子网掩码<br> <br>gateway 192.168.1.0 //配置当前主机的默认网关```<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实践作业"><a href="#实践作业" class="headerlink" title="实践作业"></a>实践作业</h3><h4 id="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？</h4><p>操作完成后。查看IP，发现，并不存在</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B9A0EE61E-CCC7-43a9-AF51-ADC5DB687072%7D.png" alt="6"></p>
+<p>所以无法获得IP地址</p>
+<ul>
+<li><p>但在手机热点或其他wifi下，kali在桥接模式下时可以获得ip，并在物理机上可以访问到的，且局域网内其他主机也可访问到。</p>
+<h4 id="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？</h4></li>
+</ul>
+<p>操作完成后。查看IP，发现可以获得</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B2632BCDC-B3E2-4d3e-A0A4-44851C24A492%7D.png" alt="7"></p>
+<ul>
+<li>注意事项，在win11 上连接热点时，最好将网络配置文件类型设置为”公用网络（推荐）“，同时重启网络。</li>
+</ul>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B4FE79C7D-C6B9-47b0-9317-FBBB03F6BDD1%7D.png" alt="8"></p>
+<h4 id="对于1、2的结果，进行总结分析。"><a href="#对于1、2的结果，进行总结分析。" class="headerlink" title="对于1、2的结果，进行总结分析。"></a>对于1、2的结果，进行总结分析。</h4><p>在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<p>在校园网环境下，易出现不一致情况，当然也可能是校园网的网络设置就是这样。</p>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BB982FBEC-1487-4e76-8A02-2B56D1BEE6E3%7D.png" alt="9"></p>
+<p>将红框内的改为列表中主机使用的网络</p>
+<p>WLAN勾选红框内容</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA984A41E-58C4-490c-B40F-B073A811619C%7D.png" alt="10"></p>
+<p>设置ip在同一网段下，网关不变。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B5E8F22AA-2BF7-4f6f-A129-9FFF5C3CFF19%7D.png" alt="11"></p>
+<p>此时发现已经连接成功！！！</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B8075D6BE-EEB6-4f5c-B05D-9256BE44CD5D%7D.png" alt="12"></p>
+<hr>
+<hr>
+<p>作业完成!!!!</p>
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
       </tags>
   </entry>
 </search>
