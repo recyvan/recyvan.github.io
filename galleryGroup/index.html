@@ -68,7 +68,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"recyvan.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":false,"baidu":"https://tongji.baidu.com/main/setting/10000579696/home/site/getjs?siteId=19790136","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"recyvan.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"https://tongji.baidu.com/main/setting/10000579696/home/site/getjs?siteId=19790136","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -78,46 +78,6 @@
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
   
-
-  
-    <!-- Baidu Analytics -->
-    <script async>
-      if (!Fluid.ctx.dnt) {
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?https://tongji.baidu.com/main/setting/10000579696/home/site/getjs?siteId=19790136";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
-        })();
-      }
-    </script>
-  
-
-  
-    <!-- Google tag (gtag.js) -->
-    <script async>
-      if (!Fluid.ctx.dnt) {
-        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-          gtag('config', '');
-        });
-      }
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
 
 
   
@@ -268,7 +228,7 @@
                 
 
 <div class="text-center tagcloud">
-  <a href="/tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/" style="font-size: 15px; color: #bbe">CVE,靶机,Metasploitable2</a> <a href="/tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/" style="font-size: 15px; color: #bbe">C语言,数据结构,线性表</a> <a href="/tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 15px; color: #bbe">JAVA安全,序列化</a> <a href="/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/" style="font-size: 15px; color: #bbe">php代码分析，webmin</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/" style="font-size: 15px; color: #bbe">信息搜集，渗透测试，网络安全，红蓝对抗</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/" style="font-size: 15px; color: #bbe">网络渗透测试基础知识,kali,网卡与路由</a>
+  <a href="/tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/" style="font-size: 15px; color: #bbe">CVE,靶机,Metasploitable2</a> <a href="/tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/" style="font-size: 15px; color: #bbe">C语言,数据结构,线性表</a> <a href="/tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/" style="font-size: 15px; color: #bbe">JAVA安全,序列化</a> <a href="/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/" style="font-size: 15px; color: #bbe">php代码分析，webmin</a> <a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/" style="font-size: 15px; color: #bbe">信息搜集，渗透测试，网络安全，红蓝对抗</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/" style="font-size: 30px; color: #337ab7">网络渗透测试基础知识,kali,网卡与路由</a>
 </div>
 
               </div>
