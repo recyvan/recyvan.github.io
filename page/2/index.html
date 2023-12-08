@@ -20,8 +20,8 @@
   
     <meta name="description" content="web安全，运维管理，渗透测试">
 <meta property="og:type" content="website">
-<meta property="og:title" content="标签 - php代码分析，webmin">
-<meta property="og:url" content="https://recyvan.github.io/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/index.html">
+<meta property="og:title" content="Recyvan">
+<meta property="og:url" content="https://recyvan.github.io/page/2/index.html">
 <meta property="og:site_name" content="Recyvan">
 <meta property="og:description" content="web安全，运维管理，渗透测试">
 <meta property="og:locale" content="zh_CN">
@@ -32,7 +32,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>标签 - php代码分析，webmin !-! Recyvan</title>
+  <title>Recyvan</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -90,7 +90,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 80vh;">
+<div class="header-inner" style="height: 100vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -208,7 +208,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="标签 - php代码分析，webmin"></span>
+            <span id="subtitle" data-typed-text="斯人若彩虹，遇上方知有!!"></span>
           
         </div>
 
@@ -232,30 +232,82 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          >
+          style="margin-top: 0">
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 1 篇文章</p>
-  <hr>
-  
-  
+
+  <div class="row mx-auto index-card">
     
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/09/20/%E5%85%B3%E4%BA%8Ewebmin-CVE-2019-15107%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+          关于webmin-CVE-2019-15107的注入点代码分析
+        </a>
+      </h2>
+
       
-      <p class="h5">2023</p>
-    
-    <a href="/2023/09/20/%E5%85%B3%E4%BA%8Ewebmin-CVE-2019-15107%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" class="list-group-item list-group-item-action">
-      <time>09-20</time>
-      <div class="list-group-item-title">关于webmin-CVE-2019-15107的注入点代码分析</div>
-    </a>
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/09/20/%E5%85%B3%E4%BA%8Ewebmin-CVE-2019-15107%E7%9A%84%E6%B3%A8%E5%85%A5%E7%82%B9%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/" target="_self">
+        <div>
+          浏览了多篇webmin的CVE-2019-15107后发现，有许多错误的playload或者存在不同版本对应的playload不通用。因此想要了解一下指定版本下的注入点的成因。 漏洞信息Webmin是目前功能最强大的基于Web的Unix系统管理工具。管理员通过浏览器访问Webmin的各种管理功能并完成相应的管理动作。目前Webmin支持绝大多数的Unix系统，这些系统除了各种版本的linux以外还
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-09-20 20:57" pubdate>
+              2023-09-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
   
-</div>
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/php%E4%BB%A3%E7%A0%81/" class="category-chain-item">php代码</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/">#php代码分析，webmin</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
 
 
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    </span>
+  </nav>
 
 
 
@@ -378,7 +430,37 @@
       }
       var text = subtitle.getAttribute('data-typed-text');
       
-        typing(text);
+        jQuery.ajax({
+          type: 'GET',
+          url: 'https://v1.hitokoto.cn/?c=c&c=d&c=i',
+          headers: {},
+          dataType: 'json',
+          success: function(result) {
+            var apiText;
+            if (result) {
+              var keys = 'hitokoto'.split(',');
+              if (result instanceof Array) {
+                result = result[0];
+              }
+              for (const k of keys) {
+                var value = result[k];
+                if (typeof value === 'string') {
+                  apiText = value;
+                  break;
+                } else if (value instanceof Object) {
+                  result = value;
+                }
+              }
+            }
+            apiText ? typing(apiText) : typing(text);
+          },
+          error: function(xhr, status, error) {
+            if (error) {
+              console.error('Failed to request https://v1.hitokoto.cn/?c=c&amp;c=d&amp;c=i:', error);
+            }
+            typing(text);
+          }
+        })
       
     })(window, document);
   </script>
