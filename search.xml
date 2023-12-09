@@ -106,7 +106,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#49;&#x39;&#50;&#46;&#49;&#54;&#56;&#46;&#x38;&#48;&#46;&#x31;&#x32;&#57;">&#x6d;&#115;&#102;&#x61;&#x64;&#109;&#105;&#x6e;&#64;&#49;&#x39;&#50;&#46;&#49;&#54;&#56;&#46;&#x38;&#48;&#46;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#97;&#100;&#109;&#x69;&#110;&#64;&#49;&#x39;&#50;&#x2e;&#x31;&#54;&#56;&#x2e;&#56;&#48;&#46;&#x31;&#50;&#57;">&#x6d;&#115;&#102;&#97;&#100;&#109;&#x69;&#110;&#64;&#49;&#x39;&#50;&#x2e;&#x31;&#54;&#56;&#x2e;&#56;&#48;&#46;&#x31;&#50;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -319,66 +319,6 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程_作业_1</title>
-    <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
-    <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
-<hr>
-<p>在VM下以kali为例子,在网络适配器下，存在三种模式：桥接模式，NAT模式，仅主机模式。</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B7C973C18-9891-47e5-AD86-A57960A6A5E9%7D.png" alt="1"></p>
-<p>存在两个网卡(在未安装docker，ks8等特殊情况下)VMnet0：用于桥接模式下的虚拟交换机，VMnet1：用于虚拟桥接网络下的虚拟交换机,VMnet8：用于虚拟 NAT 网络下的虚拟交换机。</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BBFFE2E6D-4087-4366-AC6B-F67AD26957D5%7D.png" alt="2"></p>
-<h4 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h4><p>桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
-<h4 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h4><p>NAT 模式，就是让虚拟系统借助 NAT（网络地址转换）功能，通过宿主机器所在的网络来访问公网。也就是说，使用 NAT 模式可以实现在虚拟系统里访问互联网，但前提是主机可以访问互联网。</p>
-<p>NAT 模式下的虚拟系统的 TCP&#x2F;IP 配置信息是由 VMnet8（NAT）虚拟网络的 DHCP 服务器提供的，因此虚拟系统也就无法和本局域网中的其他真实主机进行通讯。</p>
-<p>访问路径为虚拟机ip-&gt;主机-&gt;互联网</p>
-<h4 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h4><p>仅主机模式的虚拟网络是一个封闭的网络环境，使得虚拟机成为一个独立的系统，所以多个虚拟机之间也可以互相访问，但一般情况下虚拟网络不能连接到 Internet。主机和虚拟机之间的通信是通过 VMnet1 虚拟网卡来实现的。此时如果想要虚拟机上外网则需要主机联网并且网络共享。</p>
-<h3 id="相关配置命令"><a href="#相关配置命令" class="headerlink" title="相关配置命令"></a>相关配置命令</h3><p>win下可liunx下查看ip的一种方式：</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B1F97DB93-7F1E-4c6b-9E9F-FFFE21BAD996%7D.png" alt="3"></p>
-<p>win下查看路由表</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA1ACE78D-927B-46a1-B2B6-7A11F3BC2A59%7D.png" alt="4"></p>
-<p>加入想要通过vpn访问另一台主机上的虚拟机可以使用route add ip mask 255.255.255.0 metric 接口列表  ，来访问。</p>
-<h4 id="kali下ip的配置文件为-etc-network-interfaces"><a href="#kali下ip的配置文件为-etc-network-interfaces" class="headerlink" title="kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces"></a>kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces</h4><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B595364AB-7EBE-4afd-852A-7FE61C8118A2%7D.png" alt="5"></p>
-<p>该文件文件不同于centos的conf配置信息</p>
-<p>若为静态，应做如下设置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">This file describes the network interfaces available on your system</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">and how to activate them. For more information， see interfaces（5）。</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">The loopback network interface</span><br>auto lo<br> <br>iface lo inet loopback<br> <br>auto eth0<br> <br>iface eth0 inet static //配置eth0使用默认的静态地址<br> <br>address 192.168.1.1 //设置eth0的IP地址<br> <br>netmask 255.255.255.0 //配置eth0的子网掩码<br> <br>gateway 192.168.1.0 //配置当前主机的默认网关```<br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="实践作业"><a href="#实践作业" class="headerlink" title="实践作业"></a>实践作业</h3><h4 id="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？</h4><p>操作完成后。查看IP，发现，并不存在</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B9A0EE61E-CCC7-43a9-AF51-ADC5DB687072%7D.png" alt="6"></p>
-<p>所以无法获得IP地址</p>
-<ul>
-<li><p>但在手机热点或其他wifi下，kali在桥接模式下时可以获得ip，并在物理机上可以访问到的，且局域网内其他主机也可访问到。</p>
-<h4 id="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？</h4></li>
-</ul>
-<p>操作完成后。查看IP，发现可以获得</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B2632BCDC-B3E2-4d3e-A0A4-44851C24A492%7D.png" alt="7"></p>
-<ul>
-<li>注意事项，在win11 上连接热点时，最好将网络配置文件类型设置为”公用网络（推荐）“，同时重启网络。</li>
-</ul>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B4FE79C7D-C6B9-47b0-9317-FBBB03F6BDD1%7D.png" alt="8"></p>
-<h4 id="对于1、2的结果，进行总结分析。"><a href="#对于1、2的结果，进行总结分析。" class="headerlink" title="对于1、2的结果，进行总结分析。"></a>对于1、2的结果，进行总结分析。</h4><p>在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
-<p>在校园网环境下，易出现不一致情况，当然也可能是校园网的网络设置就是这样。</p>
-<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BB982FBEC-1487-4e76-8A02-2B56D1BEE6E3%7D.png" alt="9"></p>
-<p>将红框内的改为列表中主机使用的网络</p>
-<p>WLAN勾选红框内容</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA984A41E-58C4-490c-B40F-B073A811619C%7D.png" alt="10"></p>
-<p>设置ip在同一网段下，网关不变。</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B5E8F22AA-2BF7-4f6f-A129-9FFF5C3CFF19%7D.png" alt="11"></p>
-<p>此时发现已经连接成功！！！</p>
-<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B8075D6BE-EEB6-4f5c-B05D-9256BE44CD5D%7D.png" alt="12"></p>
-<hr>
-<hr>
-<p>作业完成!!!!</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>线性结构总结</title>
     <url>/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="线性结构总结"><a href="#线性结构总结" class="headerlink" title="线性结构总结"></a>线性结构总结</h1><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是由n&gt;&#x3D;0个性质相同的数据元素组成的有限序列，n为线性长度。</p>
@@ -455,100 +395,63 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程-作业-3</title>
-    <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
-    <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
-<p>无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。在TCP&#x2F;IP协议中，TCP协议提供可靠的连接服务，连接是通过<strong>三次握手</strong>进行初始化的。同时由于TCP协议是一种面向连接的、可靠的、基于字节流的运输层通信协议，TCP是<strong>全双工模式</strong>，所以需要<strong>四次挥手</strong>关闭连接。</p>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/v2-8ce8c897b4d5e7397b25eb4d4b31d7fc_720w.png" alt="0"></p>
-<blockquote>
-<ol>
-<li><strong>SYN</strong>：简写为<code>S</code>，同步标志位，用于建立会话连接，同步序列号；</li>
-<li><strong>ACK</strong>： 简写为<code>.</code>，确认标志位，对已接收的数据包进行确认；</li>
-<li><strong>FIN</strong>： 简写为<code>F</code>，完成标志位，表示我已经没有数据要发送了，即将关闭连接；</li>
-<li>PSH：简写为<code>P</code>，推送标志位，表示该数据包被对方接收后应立即交给上层应用，而不在缓冲区排队；</li>
-<li>RST：简写为<code>R</code>，重置标志位，用于连接复位、拒绝错误和非法的数据包；</li>
-<li>URG：简写为<code>U</code>，紧急标志位，表示数据包的紧急指针域有效，用来保证连接不被阻断，并督促中间设备尽快处理。</li>
-</ol>
-</blockquote>
+    <title>网络安全测试课程_作业_1</title>
+    <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
+    <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
+<hr>
+<p>在VM下以kali为例子,在网络适配器下，存在三种模式：桥接模式，NAT模式，仅主机模式。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B7C973C18-9891-47e5-AD86-A57960A6A5E9%7D.png" alt="1"></p>
+<p>存在两个网卡(在未安装docker，ks8等特殊情况下)VMnet0：用于桥接模式下的虚拟交换机，VMnet1：用于虚拟桥接网络下的虚拟交换机,VMnet8：用于虚拟 NAT 网络下的虚拟交换机。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BBFFE2E6D-4087-4366-AC6B-F67AD26957D5%7D.png" alt="2"></p>
+<h4 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h4><p>桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<h4 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h4><p>NAT 模式，就是让虚拟系统借助 NAT（网络地址转换）功能，通过宿主机器所在的网络来访问公网。也就是说，使用 NAT 模式可以实现在虚拟系统里访问互联网，但前提是主机可以访问互联网。</p>
+<p>NAT 模式下的虚拟系统的 TCP&#x2F;IP 配置信息是由 VMnet8（NAT）虚拟网络的 DHCP 服务器提供的，因此虚拟系统也就无法和本局域网中的其他真实主机进行通讯。</p>
+<p>访问路径为虚拟机ip-&gt;主机-&gt;互联网</p>
+<h4 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h4><p>仅主机模式的虚拟网络是一个封闭的网络环境，使得虚拟机成为一个独立的系统，所以多个虚拟机之间也可以互相访问，但一般情况下虚拟网络不能连接到 Internet。主机和虚拟机之间的通信是通过 VMnet1 虚拟网卡来实现的。此时如果想要虚拟机上外网则需要主机联网并且网络共享。</p>
+<h3 id="相关配置命令"><a href="#相关配置命令" class="headerlink" title="相关配置命令"></a>相关配置命令</h3><p>win下可liunx下查看ip的一种方式：</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B1F97DB93-7F1E-4c6b-9E9F-FFFE21BAD996%7D.png" alt="3"></p>
+<p>win下查看路由表</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA1ACE78D-927B-46a1-B2B6-7A11F3BC2A59%7D.png" alt="4"></p>
+<p>加入想要通过vpn访问另一台主机上的虚拟机可以使用route add ip mask 255.255.255.0 metric 接口列表  ，来访问。</p>
+<h4 id="kali下ip的配置文件为-etc-network-interfaces"><a href="#kali下ip的配置文件为-etc-network-interfaces" class="headerlink" title="kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces"></a>kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces</h4><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B595364AB-7EBE-4afd-852A-7FE61C8118A2%7D.png" alt="5"></p>
+<p>该文件文件不同于centos的conf配置信息</p>
+<p>若为静态，应做如下设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">This file describes the network interfaces available on your system</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">and how to activate them. For more information， see interfaces（5）。</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">The loopback network interface</span><br>auto lo<br> <br>iface lo inet loopback<br> <br>auto eth0<br> <br>iface eth0 inet static //配置eth0使用默认的静态地址<br> <br>address 192.168.1.1 //设置eth0的IP地址<br> <br>netmask 255.255.255.0 //配置eth0的子网掩码<br> <br>gateway 192.168.1.0 //配置当前主机的默认网关```<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="实践作业"><a href="#实践作业" class="headerlink" title="实践作业"></a>实践作业</h3><h4 id="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？</h4><p>操作完成后。查看IP，发现，并不存在</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B9A0EE61E-CCC7-43a9-AF51-ADC5DB687072%7D.png" alt="6"></p>
+<p>所以无法获得IP地址</p>
 <ul>
-<li><p>TCP(Transfer Control Protocol，传输控制协议)和IP(Internet Protocol，网际协议)TCP&#x2F;IP演变为一种体系结构，即TCP&#x2F;IP参考模型。现在的TCP&#x2F;IP已成为一个工业标准的协议集，它最早应用于ARPAnet。</p>
-</li>
-<li><p>TCP&#x2F;IP是一个协议簇或协议栈，是由多个子协议组成的集合。</p>
-</li>
-<li><p>与OSI参考模型不同，TCP&#x2F;IP模型由应用层(Application Layer)、传输层(Transport Layer)、网际层(Internet Layer，也称为Internet层)和网络接口层(Network Interface Layer)四部分组成。</p>
-</li>
+<li><p>但在手机热点或其他wifi下，kali在桥接模式下时可以获得ip，并在物理机上可以访问到的，且局域网内其他主机也可访问到。</p>
+<h4 id="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？</h4></li>
 </ul>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/1.png" alt="1"></p>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/image-20231120084635374.png" alt="2"></p>
-<p>​														<strong>TCP&#x2F;IP</strong> <strong>体系中的主要协议及与各层的对应关系</strong> </p>
-<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><ul>
-<li><strong>网络接口层属于最低的一层，它负责通过网络发送和接收分组(帧Frame)。</strong></li>
-<li><strong>交换机</strong>、<strong>MAC</strong>  <strong>地址</strong>、<strong>通信媒体</strong> <strong>定义</strong> </li>
-<li><strong>MAC(</strong> <strong>Media Access Control Address</strong> <strong>)</strong> <strong>地址</strong> </li>
-<li><strong>物理地址</strong> <strong>-</strong> <strong>网卡地址</strong> <strong>-</strong> <strong>硬件地址</strong></li>
-<li><strong>48bit</strong>： <strong>6</strong>  <strong>8</strong> <strong>字节</strong>，<strong>十六进制描述</strong> （例如Mac地址）</li>
-<li><strong>唯一性</strong></li>
-<li><strong>确实存在，不能更改</strong></li>
-</ul>
-<h4 id="网际层"><a href="#网际层" class="headerlink" title="网际层"></a>网际层</h4><p>• 也称为“互联网络层”</p>
-<p>• 它相当于OSI参考模型网络层的无连接网络服务。网际层的任务是：允许位于同一网络或不同网络中的两台主机之间以分组(包Packet)的形式进行通信。</p>
+<p>操作完成后。查看IP，发现可以获得</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B2632BCDC-B3E2-4d3e-A0A4-44851C24A492%7D.png" alt="7"></p>
 <ul>
-<li><p><strong>路由器、路由选择、转发分组 、IP 地址</strong> </p>
-</li>
-<li><p><strong>ACL（访问控制列表）、防火墙、NAT</strong></p>
-</li>
-<li><p>**IP  地址： 32bit **</p>
-</li>
-<li><p><strong>点分十进制描述</strong></p>
-</li>
-<li><p><strong>随着网络规划</strong></p>
-</li>
-<li><p><strong>可更改</strong></p>
-</li>
+<li>注意事项，在win11 上连接热点时，最好将网络配置文件类型设置为”公用网络（推荐）“，同时重启网络。</li>
 </ul>
-<h4 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h4><ul>
-<li><p>允许在源和目的主机的对等体之间进行会话，负责会话对等体的应用进程之间的通信。功能类似于OSI参考模型传输层的功能。</p>
-</li>
-<li><p>进程 Port端口(也是个地址)、TCP、UDP</p>
-</li>
-</ul>
-<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><ul>
-<li><p>最高层。应用层主要包括根据应用需要开发的一些高层协议，如HTTP、DNS、DHCP、telnet、FTP、SMTP、SNMP、等。随着网络应用的不断发展，新的应用层协议还会不断出现。</p>
-</li>
-<li><p>应用有关、用户、域名</p>
-</li>
-</ul>
-<h3 id="TCP-IP网络中分组的传输示例"><a href="#TCP-IP网络中分组的传输示例" class="headerlink" title="TCP&#x2F;IP网络中分组的传输示例"></a>TCP&#x2F;IP网络中分组的传输示例</h3><ul>
-<li><p>子网-网络由多个子网(Subnetwork)组成，每一个子网属于某一种特定类型的网络，局域网中的以太网、令牌环网、FDDI，广域网的x.25、帧中继等。</p>
-</li>
-<li><p>网络接入协议-计算机接入网络，必须使用这一子网中规定的接入协议。通过网络接入协议，可以让一台主机将数据通过子网发送到其他的主机。</p>
-</li>
-<li><p>路由器-它是连接不同子网的设备，一台路由器相当于一个中继站，将一个IP分组从某一子网中的一台主机通过一个或多个子网发送到目的主机。</p>
-</li>
-</ul>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/image-20231120093010546.png" alt="4"></p>
-<ul>
-<li><p>全局地址:  对于Internet等互联网络来说，每一台主机必须拥有一个全网唯一的IP地址作为其身份的唯一标识，这个IP地址称为全局地址。当源主机发送数据到目的主机时，源主机首先要知道目的主机的IP地址。(NAT技术)</p>
-</li>
-<li><p>端口:  主机中的每一个进程必须具有一个在本主机中唯一的地址，这个地址称为端口（port）。通过端口，端到端的协议（如TCP）才能够将数据正确地交付给相应的进程。</p>
-</li>
-</ul>
-<h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>Wireshark</strong>是一个<a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">免费的开源</a> <a href="https://en.wikipedia.org/wiki/Packet_analyzer">数据包分析器</a>。它用于<a href="https://en.wikipedia.org/wiki/Computer_network">网络</a>故障排除、分析、软件和<a href="https://en.wikipedia.org/wiki/Communications_protocol">通信协议</a>开发以及教育。–wikipedia</p>
-<p>详细简介参考<a href="https://pdai.tech/md/develop/protocol/dev-protocol-tool-wireshark.html">《工具: Wireshark介绍及抓包分析》</a>  。与之相同的还有Charies软件（可以在开发中调试端口外，Charles也可以用于分析第三方应用的通讯协议，配合Charles的SSL功能，还可以分析HTTPS协议）可以用于在PC处使用模拟器抓取app软件。</p>
-<h4 id="抓取旧版QQ消息"><a href="#抓取旧版QQ消息" class="headerlink" title="抓取旧版QQ消息"></a>抓取旧版QQ消息</h4><p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/5.png" alt="5"></p>
-<p>选取已连接的网卡，这里选取WLAN，输入oicq抓取qq流量数据。</p>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/7.png" alt="7"></p>
-<p>此处可以看到相应的网络路由设备厂商，服务端口，网络协议，QQ号码等信息</p>
-<p>发送一张png图片进行获取</p>
-<p>选择tcp流查找png的16进制文件头：FFD8,右键追踪流并另存为xx.png,用winHex打开</p>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/8.png" alt="8"></p>
-<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/9.png" alt="9"></p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B4FE79C7D-C6B9-47b0-9317-FBBB03F6BDD1%7D.png" alt="8"></p>
+<h4 id="对于1、2的结果，进行总结分析。"><a href="#对于1、2的结果，进行总结分析。" class="headerlink" title="对于1、2的结果，进行总结分析。"></a>对于1、2的结果，进行总结分析。</h4><p>在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<p>在校园网环境下，易出现不一致情况，当然也可能是校园网的网络设置就是这样。</p>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BB982FBEC-1487-4e76-8A02-2B56D1BEE6E3%7D.png" alt="9"></p>
+<p>将红框内的改为列表中主机使用的网络</p>
+<p>WLAN勾选红框内容</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7BA984A41E-58C4-490c-B40F-B073A811619C%7D.png" alt="10"></p>
+<p>设置ip在同一网段下，网关不变。</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B5E8F22AA-2BF7-4f6f-A129-9FFF5C3CFF19%7D.png" alt="11"></p>
+<p>此时发现已经连接成功！！！</p>
+<p><img src="/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/%7B8075D6BE-EEB6-4f5c-B05D-9256BE44CD5D%7D.png" alt="12"></p>
+<hr>
+<hr>
+<p>作业完成!!!!</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
         <category>网络渗透测试基础知识</category>
       </categories>
       <tags>
-        <tag>网络渗透测试基础知识,wireshark</tag>
+        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
       </tags>
   </entry>
   <entry>
@@ -653,6 +556,103 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       </categories>
       <tags>
         <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全测试课程-作业-3</title>
+    <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
+    <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
+<p>无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。在TCP&#x2F;IP协议中，TCP协议提供可靠的连接服务，连接是通过<strong>三次握手</strong>进行初始化的。同时由于TCP协议是一种面向连接的、可靠的、基于字节流的运输层通信协议，TCP是<strong>全双工模式</strong>，所以需要<strong>四次挥手</strong>关闭连接。</p>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/v2-8ce8c897b4d5e7397b25eb4d4b31d7fc_720w.png" alt="0"></p>
+<blockquote>
+<ol>
+<li><strong>SYN</strong>：简写为<code>S</code>，同步标志位，用于建立会话连接，同步序列号；</li>
+<li><strong>ACK</strong>： 简写为<code>.</code>，确认标志位，对已接收的数据包进行确认；</li>
+<li><strong>FIN</strong>： 简写为<code>F</code>，完成标志位，表示我已经没有数据要发送了，即将关闭连接；</li>
+<li>PSH：简写为<code>P</code>，推送标志位，表示该数据包被对方接收后应立即交给上层应用，而不在缓冲区排队；</li>
+<li>RST：简写为<code>R</code>，重置标志位，用于连接复位、拒绝错误和非法的数据包；</li>
+<li>URG：简写为<code>U</code>，紧急标志位，表示数据包的紧急指针域有效，用来保证连接不被阻断，并督促中间设备尽快处理。</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>TCP(Transfer Control Protocol，传输控制协议)和IP(Internet Protocol，网际协议)TCP&#x2F;IP演变为一种体系结构，即TCP&#x2F;IP参考模型。现在的TCP&#x2F;IP已成为一个工业标准的协议集，它最早应用于ARPAnet。</p>
+</li>
+<li><p>TCP&#x2F;IP是一个协议簇或协议栈，是由多个子协议组成的集合。</p>
+</li>
+<li><p>与OSI参考模型不同，TCP&#x2F;IP模型由应用层(Application Layer)、传输层(Transport Layer)、网际层(Internet Layer，也称为Internet层)和网络接口层(Network Interface Layer)四部分组成。</p>
+</li>
+</ul>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/1.png" alt="1"></p>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/image-20231120084635374.png" alt="2"></p>
+<p>​														<strong>TCP&#x2F;IP</strong> <strong>体系中的主要协议及与各层的对应关系</strong> </p>
+<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><ul>
+<li><strong>网络接口层属于最低的一层，它负责通过网络发送和接收分组(帧Frame)。</strong></li>
+<li><strong>交换机</strong>、<strong>MAC</strong>  <strong>地址</strong>、<strong>通信媒体</strong> <strong>定义</strong> </li>
+<li><strong>MAC(</strong> <strong>Media Access Control Address</strong> <strong>)</strong> <strong>地址</strong> </li>
+<li><strong>物理地址</strong> <strong>-</strong> <strong>网卡地址</strong> <strong>-</strong> <strong>硬件地址</strong></li>
+<li><strong>48bit</strong>： <strong>6</strong>  <strong>8</strong> <strong>字节</strong>，<strong>十六进制描述</strong> （例如Mac地址）</li>
+<li><strong>唯一性</strong></li>
+<li><strong>确实存在，不能更改</strong></li>
+</ul>
+<h4 id="网际层"><a href="#网际层" class="headerlink" title="网际层"></a>网际层</h4><p>• 也称为“互联网络层”</p>
+<p>• 它相当于OSI参考模型网络层的无连接网络服务。网际层的任务是：允许位于同一网络或不同网络中的两台主机之间以分组(包Packet)的形式进行通信。</p>
+<ul>
+<li><p><strong>路由器、路由选择、转发分组 、IP 地址</strong> </p>
+</li>
+<li><p><strong>ACL（访问控制列表）、防火墙、NAT</strong></p>
+</li>
+<li><p>**IP  地址： 32bit **</p>
+</li>
+<li><p><strong>点分十进制描述</strong></p>
+</li>
+<li><p><strong>随着网络规划</strong></p>
+</li>
+<li><p><strong>可更改</strong></p>
+</li>
+</ul>
+<h4 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h4><ul>
+<li><p>允许在源和目的主机的对等体之间进行会话，负责会话对等体的应用进程之间的通信。功能类似于OSI参考模型传输层的功能。</p>
+</li>
+<li><p>进程 Port端口(也是个地址)、TCP、UDP</p>
+</li>
+</ul>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><ul>
+<li><p>最高层。应用层主要包括根据应用需要开发的一些高层协议，如HTTP、DNS、DHCP、telnet、FTP、SMTP、SNMP、等。随着网络应用的不断发展，新的应用层协议还会不断出现。</p>
+</li>
+<li><p>应用有关、用户、域名</p>
+</li>
+</ul>
+<h3 id="TCP-IP网络中分组的传输示例"><a href="#TCP-IP网络中分组的传输示例" class="headerlink" title="TCP&#x2F;IP网络中分组的传输示例"></a>TCP&#x2F;IP网络中分组的传输示例</h3><ul>
+<li><p>子网-网络由多个子网(Subnetwork)组成，每一个子网属于某一种特定类型的网络，局域网中的以太网、令牌环网、FDDI，广域网的x.25、帧中继等。</p>
+</li>
+<li><p>网络接入协议-计算机接入网络，必须使用这一子网中规定的接入协议。通过网络接入协议，可以让一台主机将数据通过子网发送到其他的主机。</p>
+</li>
+<li><p>路由器-它是连接不同子网的设备，一台路由器相当于一个中继站，将一个IP分组从某一子网中的一台主机通过一个或多个子网发送到目的主机。</p>
+</li>
+</ul>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/image-20231120093010546.png" alt="4"></p>
+<ul>
+<li><p>全局地址:  对于Internet等互联网络来说，每一台主机必须拥有一个全网唯一的IP地址作为其身份的唯一标识，这个IP地址称为全局地址。当源主机发送数据到目的主机时，源主机首先要知道目的主机的IP地址。(NAT技术)</p>
+</li>
+<li><p>端口:  主机中的每一个进程必须具有一个在本主机中唯一的地址，这个地址称为端口（port）。通过端口，端到端的协议（如TCP）才能够将数据正确地交付给相应的进程。</p>
+</li>
+</ul>
+<h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>Wireshark</strong>是一个<a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">免费的开源</a> <a href="https://en.wikipedia.org/wiki/Packet_analyzer">数据包分析器</a>。它用于<a href="https://en.wikipedia.org/wiki/Computer_network">网络</a>故障排除、分析、软件和<a href="https://en.wikipedia.org/wiki/Communications_protocol">通信协议</a>开发以及教育。–wikipedia</p>
+<p>详细简介参考<a href="https://pdai.tech/md/develop/protocol/dev-protocol-tool-wireshark.html">《工具: Wireshark介绍及抓包分析》</a>  。与之相同的还有Charies软件（可以在开发中调试端口外，Charles也可以用于分析第三方应用的通讯协议，配合Charles的SSL功能，还可以分析HTTPS协议）可以用于在PC处使用模拟器抓取app软件。</p>
+<h4 id="抓取旧版QQ消息"><a href="#抓取旧版QQ消息" class="headerlink" title="抓取旧版QQ消息"></a>抓取旧版QQ消息</h4><p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/5.png" alt="5"></p>
+<p>选取已连接的网卡，这里选取WLAN，输入oicq抓取qq流量数据。</p>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/7.png" alt="7"></p>
+<p>此处可以看到相应的网络路由设备厂商，服务端口，网络协议，QQ号码等信息</p>
+<p>发送一张png图片进行获取</p>
+<p>选择tcp流查找png的16进制文件头：FFD8,右键追踪流并另存为xx.png,用winHex打开</p>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/8.png" alt="8"></p>
+<p><img src="/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/9.png" alt="9"></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,wireshark</tag>
       </tags>
   </entry>
   <entry>
