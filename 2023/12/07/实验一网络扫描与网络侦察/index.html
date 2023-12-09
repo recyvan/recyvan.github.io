@@ -1,0 +1,832 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="recyvan">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="网络渗透测试实验报告   一 实验目的和要求理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。 二 实验步骤1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。使用Google搜索：  查找相关网页：   2.照片中的女生在哪里旅行？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验课一">
+<meta property="og:url" content="https://recyvan.github.io/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/index.html">
+<meta property="og:site_name" content="Recyvan">
+<meta property="og:description" content="网络渗透测试实验报告   一 实验目的和要求理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。 二 实验步骤1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。使用Google搜索：  查找相关网页：   2.照片中的女生在哪里旅行？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195152905.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195206871.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195211299.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195232804.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195249443.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195332722.png">
+<meta property="og:image" content="https://recyvan.github.io/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/11-17021235157051.png">
+<meta property="og:image" content="https://recyvan.github.io/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/qq_pic_merged_1702124303982.jpg">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195413526.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195442914.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195447579.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195450786.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195521692.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195601791.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195637125.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195657193.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195717671.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195750810.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195846138.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195859266.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195919729.png">
+<meta property="og:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209200045641.png">
+<meta property="article:published_time" content="2023-12-07T13:32:43.000Z">
+<meta property="article:modified_time" content="2023-12-09T12:30:40.810Z">
+<meta property="article:author" content="recyvan">
+<meta property="article:tag" content="网络渗透测试">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://recyvan.github.io/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195152905.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>实验课一 !-! Recyvan</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/shubiao.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"recyvan.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":100,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":"https://tongji.baidu.com/main/setting/10000579696/home/site/getjs?siteId=19790136","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>recyvan</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/ArticleRecommendation/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>l文章推荐</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="实验课一"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-07 21:32" pubdate>
+          2023年12月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">实验课一</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>网络渗透测试实验报告</strong> </p>
+<hr>
+<h2 id="一-实验目的和要求"><a href="#一-实验目的和要求" class="headerlink" title="一 实验目的和要求"></a>一 实验目的和要求</h2><p>理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。</p>
+<h2 id="二-实验步骤"><a href="#二-实验步骤" class="headerlink" title="二 实验步骤"></a>二 实验步骤</h2><h3 id="1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。"><a href="#1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。" class="headerlink" title="1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。"></a>1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。</h3><p>使用Google搜索：</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195152905.png" srcset="/img/loading.gif" lazyload alt="image-20231209195152905"></p>
+<p>查找相关网页：</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195206871.png" srcset="/img/loading.gif" lazyload alt="image-20231209195206871"></p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195211299.png" srcset="/img/loading.gif" lazyload alt="image-20231209195211299"></p>
+<h3 id="2-照片中的女生在哪里旅行？截图搜索到的地址信息。"><a href="#2-照片中的女生在哪里旅行？截图搜索到的地址信息。" class="headerlink" title="2.照片中的女生在哪里旅行？截图搜索到的地址信息。"></a>2.照片中的女生在哪里旅行？截图搜索到的地址信息。</h3><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195232804.png" srcset="/img/loading.gif" lazyload alt="image-20231209195232804"></p>
+<p>Google搜索：letrentehuit café brasserie发现：</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195249443.png" srcset="/img/loading.gif" lazyload alt="image-20231209195249443"></p>
+<p>地址是：38 avenue de Suffren.75015 Paris.France。</p>
+<h3 id="3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"><a href="#3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。" class="headerlink" title="3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"></a>3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</h3><p>华为手机应该拨号*#* #2846579# *#*进入工程模式</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195332722.png" srcset="/img/loading.gif" lazyload alt="image-20231209195332722"></p>
+<p>但是honor系列并不能在工程菜单找到相关信息。</p>
+<img src="实验一网络扫描与网络侦察/11-17021235157051.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" />
+
+<p>在基站查询工具得到如下信息：</p>
+<img src="实验一网络扫描与网络侦察/qq_pic_merged_1702124303982.jpg" srcset="/img/loading.gif" lazyload alt="qq_pic_merged_1702124303982" style="zoom:50%;" />
+
+
+
+<h3 id="4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。"><a href="#4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。" class="headerlink" title="4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。"></a>4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。</h3><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195413526.png" srcset="/img/loading.gif" lazyload alt="image-20231209195413526"></p>
+<h3 id="5-地址信息"><a href="#5-地址信息" class="headerlink" title="5.地址信息"></a>5.地址信息</h3><h4 id="5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"><a href="#5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。" class="headerlink" title="5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"></a>5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。</h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195442914.png" srcset="/img/loading.gif" lazyload alt="image-20231209195442914"></p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195447579.png" srcset="/img/loading.gif" lazyload alt="image-20231209195447579"></p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195450786.png" srcset="/img/loading.gif" lazyload alt="image-20231209195450786"></p>
+<p>该用户使用的apple品牌的的设备，访问的是广西桂林市教育网桂林电子科技大学网站。</p>
+<h4 id="5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"><a href="#5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。" class="headerlink" title="5.2访问https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"></a>5.2访问<a href="https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。">https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。</a></h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195521692.png" srcset="/img/loading.gif" lazyload alt="image-20231209195521692"></p>
+<p>可以发现两个值并不一样，cmd下查询的IP是局域网内的私有IP，网站查询的为为公网IP，是当前网络连接的出口IP。但此处公网IP为US归属，是因为接入了VPN使用。</p>
+<p>这里涉及到的知识点是：可以通过NAT实现从私网IP到公网IP之间的联系。在报文离开私网进入Internet时，将源IP替换为公网地址，通常是出口设备的接口地址；一个对外的访问请求在到达目标以后，表现为由本组织出口设备发起，因此被请求的服务端可将响应由Internet发回出口网关；</p>
+<p>出口网关再将目的地址替换为私网的源主机地址，发回内部。</p>
+<h3 id="6-NMAP使用"><a href="#6-NMAP使用" class="headerlink" title="6.NMAP使用"></a>6.NMAP使用</h3><h4 id="6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"><a href="#6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。" class="headerlink" title="6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"></a>6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。</h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195601791.png" srcset="/img/loading.gif" lazyload alt="image-20231209195601791"></p>
+<p>端口21的ftp（文件传输协议）服务，用于文件传输使用，是一种基于TCP的协议，采用客户&#x2F;服务器模式。通过FTP协议，用户可以在FTP服务器中进行文件的上传或下载等操作。（部分情况下可匿名登录</p>
+<p>端口22的ssh服务：用于远程登录管理计算机或服务器等，专为远程登陆会话和其他网络服务提供的安全性协议。利用SSH协议可以有效的防止远程管理过程中的信息泄漏问题。</p>
+<p>端口3306的mysql服务，mysql数据库用于管理网站等用户数据和信息。开放3306端口，可以远程登录并管理mysql服务。远程登录的话漏洞大多为弱口令，然后数据库写马。各个数据库端口开放不同。</p>
+<p>端口80的http服务，这里的端口开放表示靶机有基于apache&#x2F;nhinx等的网站开放。</p>
+<h4 id="6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"><a href="#6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。" class="headerlink" title="6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"></a>6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。</h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195637125.png" srcset="/img/loading.gif" lazyload alt="image-20231209195637125"></p>
+<p>OS类型为liunx系统，版本范围为；2.6.9-2.6.33</p>
+<h4 id="6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。"><a href="#6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。" class="headerlink" title="6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。"></a>6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。</h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195657193.png" srcset="/img/loading.gif" lazyload alt="image-20231209195657193"></p>
+<h4 id="6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"><a href="#6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。" class="headerlink" title="6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"></a>6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。</h4><p>WannaCry是一种“蠕虫式”勒索病毒软件，由不法分子利用NSA泄露方程式工具包的危险漏洞“EternalBlue”（永恒之蓝）进行传播。该蠕虫感染计算机后会向计算机中植入敲诈者病毒，导致电脑大量文件被加密。</p>
+<p>这是msf中对于ms17_010_eternalblue.rb的简介：</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195717671.png" srcset="/img/loading.gif" lazyload alt="image-20231209195717671"></p>
+<p>永恒之蓝”利用了某些版本的微软服务器消息块（SMB）协议中的数个漏洞，而当中最严重的漏洞是允许远程电脑执行代码。大多利用复现多使用msfconsole进行。其利用Windows系统的SMB漏洞获取系统的最高权限，该工具通过恶意代码扫描开放445端口的Windows系统。被扫描到的Windows系统，只要开机上线，不需要用户进行任何操作，即可通过SMB漏洞上传WannaCry勒索病毒等恶意程序。</p>
+<h3 id="7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"><a href="#7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。" class="headerlink" title="7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"></a>7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。</h3><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195750810.png" srcset="/img/loading.gif" lazyload alt="image-20231209195750810"></p>
+<p>服务为CNIX HTTP Server 1.0版本过低，存在历史漏洞。</p>
+<h3 id="8-Winhex简单数据恢复与取证"><a href="#8-Winhex简单数据恢复与取证" class="headerlink" title="8.Winhex简单数据恢复与取证"></a>8.Winhex简单数据恢复与取证</h3><h4 id="8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。"><a href="#8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。" class="headerlink" title="8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。"></a>8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。</h4><p> 使用winHex打开后发现，文件格式头出现错误，修改一下即可。（将前四个数字改为FFD8）</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195846138.png" srcset="/img/loading.gif" lazyload alt="image-20231209195846138"></p>
+<h4 id="8-2笑脸背后的阴霾：图片smile有什么隐藏信息。"><a href="#8-2笑脸背后的阴霾：图片smile有什么隐藏信息。" class="headerlink" title="8.2笑脸背后的阴霾：图片smile有什么隐藏信息。"></a>8.2笑脸背后的阴霾：图片smile有什么隐藏信息。</h4><p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195859266.png" srcset="/img/loading.gif" lazyload alt="image-20231209195859266"></p>
+<h4 id="8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"><a href="#8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。" class="headerlink" title="8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"></a>8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。</h4><p> 因为U盘中存在之前删除的文件，所以直接用DiskGenius软件进行恢复：</p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195919729.png" srcset="/img/loading.gif" lazyload alt="image-20231209195919729"></p>
+<h3 id="9-讨论学校热点GUET-WiFi的安全问题，以截图说明。"><a href="#9-讨论学校热点GUET-WiFi的安全问题，以截图说明。" class="headerlink" title="9.讨论学校热点GUET-WiFi的安全问题，以截图说明。"></a>9.讨论学校热点GUET-WiFi的安全问题，以截图说明。</h3><p>同一校园网下，设备之间可以进行IP访问通讯，因此存在校内钓鱼网站的危险。例如使用setoolkit进行模拟<a target="_blank" rel="noopener" href="http://www.baidu.com网站,获取查询信息./">www.baidu.com网站,获取查询信息。</a></p>
+<p><img src="/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209200045641.png" srcset="/img/loading.gif" lazyload alt="image-20231209200045641"></p>
+<p>2.可能存在Arp欺骗。可以使用arpspoof工具进行欺骗。</p>
+<ul>
+<li>详细见<a href="https://recyvan.github.io/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/">网络安全测试课程-作业-4</a></li>
+</ul>
+<h2 id="三-实验小结"><a href="#三-实验小结" class="headerlink" title="三 实验小结"></a>三 实验小结</h2><p>1.道德黑客的理解：</p>
+<p>道德黑客，在我的认知中狭义地等同于白帽子。专门从事渗透测试及其他测试方法，确保信息系统安全。通过渗透测试来保证系统和设备安全。白帽黑客在网络用语中指站在黑客的立场攻击自己或被别人允许攻击的系统以进行安全漏洞排查的程序员。他们用的是黑客惯用的破坏攻击的方法，行的却是维护安全之事。</p>
+<p>2.实验总结</p>
+<ul>
+<li><p>google hacker语法的简单实用</p>
+</li>
+<li><p>Kali exiftools工具使用</p>
+</li>
+<li><p>Kali msfconsole 简单使用</p>
+</li>
+<li><p>网络空间引擎的简单使用</p>
+</li>
+<li><p>公用IP和私有IP的区别</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/" class="category-chain-item">网络扫描与网络侦察</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" class="print-no-link">#网络渗透测试</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>实验课一</div>
+      <div>https://recyvan.github.io/2023/12/07/实验一网络扫描与网络侦察/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>recyvan</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年12月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nd/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nd/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="ND - 禁止演绎">
+                    <i class="iconfont icon-nd"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/" title="网络安全测试课程-作业-5">
+                        <span class="hidden-mobile">网络安全测试课程-作业-5</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div class="cusdis" style="width:100%">
+    <div id="cusdis_thread"
+      data-host="https://cusdis.com"
+      data-app-id="c2356bee-26d9-49b6-8738-2e2e950fdfeb"
+      data-page-id="1e8d88174eca9bca75843862f1064d7f"
+      data-page-url="2023/12/07/实验一网络扫描与网络侦察/"
+      data-page-title="实验课一"
+      data-theme="auto"
+    >
+    </div>
+  </div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#cusdis_thread', function() {
+      Fluid.utils.createScript('https://cusdis.com/js/widget/lang/zh-cn.js');
+      Fluid.utils.createScript('https://cusdis.com/js/cusdis.es.js');
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema) {
+        document.querySelector('#cusdis_thread').dataset.theme = schema
+      }
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="website-duration">载入网站运行时间...</span> <script src="/js/duration.js"></script> </div> <img src="https://ghchart.rshah.org/recyvan" srcset="/img/loading.gif" lazyload alt="emoryhuang(&quot;s Github chart" /> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      冀ICP证11415号
+    </a>
+  </span>
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/DynamicLine.js%20-%20/cdn.jsdelivr.net/gh/EmoryHuang/BlogBeautify@1.1/DynamicRibbon.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
