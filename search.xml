@@ -106,7 +106,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#x66;&#x61;&#100;&#x6d;&#x69;&#110;&#x40;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x38;&#x30;&#x2e;&#x31;&#x32;&#57;">&#x6d;&#115;&#x66;&#x61;&#100;&#x6d;&#x69;&#110;&#x40;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#x2e;&#x38;&#x30;&#x2e;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#97;&#x64;&#109;&#x69;&#110;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#56;&#48;&#x2e;&#49;&#x32;&#57;">&#109;&#115;&#102;&#97;&#x64;&#109;&#x69;&#110;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#56;&#48;&#x2e;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -159,6 +159,66 @@
       </categories>
       <tags>
         <tag>CVE,靶机,Metasploitable2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>frp内网穿透</title>
+    <url>/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
+    <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下："><a href="#网络拓扑图如下：" class="headerlink" title="网络拓扑图如下："></a>网络拓扑图如下：</h4><p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg"></p>
+<p>下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件）</p>
+<p>攻击实施第二次穿透</p>
+<p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务，windows7上传frps服务端</p>
+<p>1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213180613.jpg"></p>
+<p>先执行服务端：编写frps.ini文件，并启动</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213180945.jpg"></p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181222.jpg"></p>
+<p>windows7执行客户端，发现执行成功，服务端同时端口监听成功</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181537.jpg"></p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181548.jpg"></p>
+<p>对第一次代理设置全局代理</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181944.jpg"></p>
+<p>尝试远程连接第win7主机</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213182244.jpg"></p>
+<p><strong>现对win7添加vm3网卡，新添主机almaliunx主机于win7相连进行第二次穿透</strong></p>
+<ul>
+<li>win7：VM3下IP：192.168.126.128</li>
+<li>almaliunx：VM3下IP：192.168.126.129</li>
+</ul>
+<h4 id="攻击实施第二次穿透"><a href="#攻击实施第二次穿透" class="headerlink" title="攻击实施第二次穿透"></a>攻击实施第二次穿透</h4><p>访问socks代理下win7网站（实际上方便学习frp技术，已内置了一句话木马）</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213184742.jpg"></p>
+<p>使用哥斯拉进行木马控制:</p>
+<p>tips:使用命令为：proxychain4 java -jar godzilla.jar</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190057.jpg" alt="QQ截图20231213190057"></p>
+<p>上传frpc服务，编写frpc.ini</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190457.jpg"></p>
+<ul>
+<li><p>注意，这里的server_addr的IP为客户端可以ping到的服务端主机即Windows7。要上传到temp目录下。</p>
+<p>上传成功后，先开启服务端frps服务（再window7上开启，先配置好frps.ini文件），再开启frpc客户端。</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213191611.jpg"></p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213192015.jpg"></p>
+<p>设置proxychain4配置文件：</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213193412.jpg"></p>
+</li>
+</ul>
+<p>此时回到kali主机进行nmap扫描almaliunx主机，发现成功</p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213193507.jpg"></p>
+<p>至此已经完成。</p>
+<h4 id="流程详解"><a href="#流程详解" class="headerlink" title="流程详解"></a>流程详解</h4><p>此次攻击主要穿透两层，使得kali可以绕过两台主机访问almaliunx主机，这里使用启动了两次frp服务（反向socks代理，一次为kali做服务端，windows7做客户端，windows7连接kali，使得kali通过代理可以访问于windows7相通的win7主机，进而攻击win7活动webshell,使win7做frp客户端，windows7做frp服务端，进而windows7可以访问与win7相同的almaliunx主机，最后使得流量返回kali。</p>
+<ul>
+<li>这里 Windows7既做服务端，又做客户端，进而桥接起kali与win7的连接</li>
+<li>proxychain4的全局代理最后要多次socks5代理</li>
+<li>godzilla.jar软件对get传参的支持性不佳，建议改为post（至少攻击时get连接失败，害得我反复修改ini文件 (– __–)</li>
+<li>frp新版在一些情况下不支持ini文件，建议改为toml文件。</li>
+</ul>
+<h5 id="存在疑问："><a href="#存在疑问：" class="headerlink" title="存在疑问："></a>存在疑问：</h5><p>不知道为什么proxychain4下nmap rdesktop都可以执行，但是ping多次尝试也得不到回复？</p>
+<p>后来一想：代理是socks5,指定为tcp流了，ping是icmp协议。尬住了&lt;&#x3D;+__+&#x3D;&gt;。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>内网穿透</category>
+      </categories>
+      <tags>
+        <tag>渗透测试，路由</tag>
       </tags>
   </entry>
   <entry>
@@ -267,9 +327,10 @@
 <p>运行服务端，win7执行客户端。（shell乱码解决：chcp 65001</p>
 <p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231212215421.jpg"></p>
 <p>显示失败？？？？？靠，以后再弄，哭！！</p>
+<p>&#x2F;&#x2F; 补坑，frp的穿透已经实施成功，先补充道了这边文章中《frp内网渗透》</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
-        <category>内网渗透,sock代理</category>
+        <category>内网穿透</category>
       </categories>
       <tags>
         <tag>渗透测试，路由</tag>
