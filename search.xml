@@ -277,7 +277,7 @@
 <h3 id="内网穿透-msf配置路由和sock代理穿透内网配合"><a href="#内网穿透-msf配置路由和sock代理穿透内网配合" class="headerlink" title="内网穿透-msf配置路由和sock代理穿透内网配合"></a>内网穿透-msf配置路由和sock代理穿透内网配合</h3><ul>
 <li>本机环境搭建下网络拓扑图为：</li>
 </ul>
-<p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg" alt="11"></p>
+<p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg"></p>
 <p>操作大致流程：</p>
 <p>kali msf(msf17_010)–&gt;get shell(windos7)–&gt;上传+socks穿透-&gt;win7 反弹.exe –&gt;kali msf监听端口</p>
 <h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><p>进行windows7永恒之蓝攻击（因为已知存在永恒之蓝，便不再扫描是否存在</p>
@@ -326,7 +326,7 @@
 <p>运行服务端，win7执行客户端。（shell乱码解决：chcp 65001</p>
 <p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231212215421.jpg"></p>
 <p>显示失败？？？？？靠，以后再弄，哭！！</p>
-<p>&#x2F;&#x2F;12-13日 补坑，frp的穿透已经实施成功，先补充道了这边文章中<a href="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">《frp内网渗透》</a>（点击进入）。</p>
+<p>&#x2F;&#x2F;12-13日 补坑，frp的穿透已经实施成功，补充到了这篇文章中<a href="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">《frp内网渗透》</a>（点击进入）。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
         <category>内网穿透</category>
