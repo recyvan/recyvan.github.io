@@ -18,12 +18,12 @@
   <meta name="author" content="recyvan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="frp在liunx和windows下实现穿透网络拓扑图如下： 下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件） 攻击实施第二次穿透 kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务，windows7上传frps服务端 1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件">
+    <meta name="description" content="frp在liunx和windows下实现穿透网络拓扑图如下 下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件） 攻击实施第一次穿透kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务 1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件  先执行服务端：编写frps.ini文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="frp内网穿透">
 <meta property="og:url" content="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/index.html">
 <meta property="og:site_name" content="Recyvan">
-<meta property="og:description" content="frp在liunx和windows下实现穿透网络拓扑图如下： 下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件） 攻击实施第二次穿透 kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务，windows7上传frps服务端 1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件">
+<meta property="og:description" content="frp在liunx和windows下实现穿透网络拓扑图如下 下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件） 攻击实施第一次穿透kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务 1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件  先执行服务端：编写frps.ini文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213180613.jpg">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213193412.jpg">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213193507.jpg">
 <meta property="article:published_time" content="2023-12-13T09:30:59.000Z">
-<meta property="article:modified_time" content="2023-12-13T11:50:25.441Z">
+<meta property="article:modified_time" content="2023-12-13T12:22:02.556Z">
 <meta property="article:author" content="recyvan">
 <meta property="article:tag" content="渗透测试，路由">
 <meta name="twitter:card" content="summary_large_image">
@@ -349,10 +349,9 @@
             
               <div class="markdown-body">
                 
-                <h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下："><a href="#网络拓扑图如下：" class="headerlink" title="网络拓扑图如下："></a>网络拓扑图如下：</h4><p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg" srcset="/img/loading.gif" lazyload></p>
+                <h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件）</p>
-<p>攻击实施第二次穿透</p>
-<p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务，windows7上传frps服务端</p>
+<h4 id="攻击实施第一次穿透"><a href="#攻击实施第一次穿透" class="headerlink" title="攻击实施第一次穿透"></a>攻击实施第一次穿透</h4><p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务</p>
 <p>1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213180613.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>先执行服务端：编写frps.ini文件，并启动</p>
@@ -365,7 +364,7 @@
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181944.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>尝试远程连接第win7主机</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213182244.jpg" srcset="/img/loading.gif" lazyload></p>
-<p><strong>现对win7添加vm3网卡，新添主机almaliunx主机于win7相连进行第二次穿透</strong></p>
+<p><strong>现对win7添加vm3网卡，新添主机almaliunx主机(网卡为vm3)与win7相连进行</strong></p>
 <ul>
 <li>win7：VM3下IP：192.168.126.128</li>
 <li>almaliunx：VM3下IP：192.168.126.129</li>
@@ -374,7 +373,7 @@
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213184742.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>使用哥斯拉进行木马控制:</p>
 <p>tips:使用命令为：proxychain4 java -jar godzilla.jar</p>
-<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190057.jpg" srcset="/img/loading.gif" lazyload alt="QQ截图20231213190057"></p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190057.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>上传frpc服务，编写frpc.ini</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190457.jpg" srcset="/img/loading.gif" lazyload></p>
 <ul>

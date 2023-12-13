@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="Recyvan">
 <meta property="og:description" content="内网穿透在一次场景搭建（其概念图大致为：以liunx-1做跳板机，进入win10-1,在从win10-1访问与之相连的win7-1的80端口和linux-2的21端口）。在主机渗透时使用msf攻击时，若要访问win10,win7主机需要配置相关路由，因此要掌握内网穿透的知识。 NAT转换的多种模式 （三种模式的讲解参考《网络地址转换用户指南》  《静态NAT、动态NAT、PAT(端口多路复用)之间">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://recyvan.github.io/11-17022646760041.jpg">
+<meta property="og:image" content="https://recyvan.github.io/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231211114327.jpg">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231211114511.jpg">
 <meta property="og:image" content="https://recyvan.github.io/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231211115722.jpg">
@@ -44,7 +44,7 @@
 <meta property="article:author" content="recyvan">
 <meta property="article:tag" content="渗透测试，路由">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://recyvan.github.io/11-17022646760041.jpg">
+<meta name="twitter:image" content="https://recyvan.github.io/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -361,7 +361,7 @@
 <h3 id="内网穿透-msf配置路由和sock代理穿透内网配合"><a href="#内网穿透-msf配置路由和sock代理穿透内网配合" class="headerlink" title="内网穿透-msf配置路由和sock代理穿透内网配合"></a>内网穿透-msf配置路由和sock代理穿透内网配合</h3><ul>
 <li>本机环境搭建下网络拓扑图为：</li>
 </ul>
-<p><img src="/11-17022646760041.jpg" srcset="/img/loading.gif" lazyload alt="11"></p>
+<p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg" srcset="/img/loading.gif" lazyload alt="11"></p>
 <p>操作大致流程：</p>
 <p>kali msf(msf17_010)–&gt;get shell(windos7)–&gt;上传+socks穿透-&gt;win7 反弹.exe –&gt;kali msf监听端口</p>
 <h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><p>进行windows7永恒之蓝攻击（因为已知存在永恒之蓝，便不再扫描是否存在</p>

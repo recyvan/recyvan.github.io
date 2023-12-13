@@ -106,7 +106,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#97;&#x64;&#109;&#x69;&#110;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#56;&#48;&#x2e;&#49;&#x32;&#57;">&#109;&#115;&#102;&#97;&#x64;&#109;&#x69;&#110;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#54;&#56;&#x2e;&#56;&#48;&#x2e;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#x73;&#x66;&#97;&#100;&#109;&#x69;&#x6e;&#64;&#49;&#x39;&#50;&#46;&#49;&#54;&#x38;&#46;&#x38;&#x30;&#46;&#49;&#x32;&#57;">&#109;&#x73;&#x66;&#97;&#100;&#109;&#x69;&#x6e;&#64;&#49;&#x39;&#50;&#46;&#49;&#54;&#x38;&#46;&#x38;&#x30;&#46;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -164,10 +164,9 @@
   <entry>
     <title>frp内网穿透</title>
     <url>/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
-    <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下："><a href="#网络拓扑图如下：" class="headerlink" title="网络拓扑图如下："></a>网络拓扑图如下：</h4><p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg"></p>
+    <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg"></p>
 <p>下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件）</p>
-<p>攻击实施第二次穿透</p>
-<p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务，windows7上传frps服务端</p>
+<h4 id="攻击实施第一次穿透"><a href="#攻击实施第一次穿透" class="headerlink" title="攻击实施第一次穿透"></a>攻击实施第一次穿透</h4><p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务</p>
 <p>1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213180613.jpg"></p>
 <p>先执行服务端：编写frps.ini文件，并启动</p>
@@ -180,7 +179,7 @@
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213181944.jpg"></p>
 <p>尝试远程连接第win7主机</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213182244.jpg"></p>
-<p><strong>现对win7添加vm3网卡，新添主机almaliunx主机于win7相连进行第二次穿透</strong></p>
+<p><strong>现对win7添加vm3网卡，新添主机almaliunx主机(网卡为vm3)与win7相连进行</strong></p>
 <ul>
 <li>win7：VM3下IP：192.168.126.128</li>
 <li>almaliunx：VM3下IP：192.168.126.129</li>
@@ -189,7 +188,7 @@
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213184742.jpg"></p>
 <p>使用哥斯拉进行木马控制:</p>
 <p>tips:使用命令为：proxychain4 java -jar godzilla.jar</p>
-<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190057.jpg" alt="QQ截图20231213190057"></p>
+<p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190057.jpg"></p>
 <p>上传frpc服务，编写frpc.ini</p>
 <p><img src="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/QQ%E6%88%AA%E5%9B%BE20231213190457.jpg"></p>
 <ul>
@@ -278,7 +277,7 @@
 <h3 id="内网穿透-msf配置路由和sock代理穿透内网配合"><a href="#内网穿透-msf配置路由和sock代理穿透内网配合" class="headerlink" title="内网穿透-msf配置路由和sock代理穿透内网配合"></a>内网穿透-msf配置路由和sock代理穿透内网配合</h3><ul>
 <li>本机环境搭建下网络拓扑图为：</li>
 </ul>
-<p><img src="/11-17022646760041.jpg" alt="11"></p>
+<p><img src="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11-17022646760041.jpg" alt="11"></p>
 <p>操作大致流程：</p>
 <p>kali msf(msf17_010)–&gt;get shell(windos7)–&gt;上传+socks穿透-&gt;win7 反弹.exe –&gt;kali msf监听端口</p>
 <h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><p>进行windows7永恒之蓝攻击（因为已知存在永恒之蓝，便不再扫描是否存在</p>
@@ -872,6 +871,62 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       </tags>
   </entry>
   <entry>
+    <title>网络安全测试课程-作业-5</title>
+    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
+    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
+<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
+<ul>
+<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
+<ul>
+<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
+</ul>
+</li>
+<li><p>运输层(TCP，UDP)：端口扫描，</p>
+<ul>
+<li>:one:TCP协议扫描，全连接扫描</li>
+<li>:two:UDP协议扫描</li>
+<li>:three: SYN扫描</li>
+</ul>
+</li>
+</ul>
+<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
+<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
+<ul>
+<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
+<p>​			</p>
+<ul>
+<li><blockquote>
+<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
+<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
+<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
+
+<blockquote>
+<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><code class="hljs ada"><span class="hljs-comment">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></code></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
+<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
+<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
+<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/1.png" alt="域环境"></p>
+<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
+<p>分别ping两台主机，得到结果：</p>
+<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/2.png" alt="ping实验"></p>
+<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
+<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
+<img src="3.png" style="zoom:90%;" />
+
+<p>通过nmap扫描系统类型可以看到：</p>
+<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/4.png"></p>
+<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+  </entry>
+  <entry>
     <title>网络安全测试课程-作业-4</title>
     <url>/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/</url>
     <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
@@ -961,61 +1016,5 @@ graph LR;
       <tags>
         <tag>网络渗透测试基础知识,DNS,ARP</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>网络安全测试课程-作业-5</title>
-    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
-    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
-<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
-<ul>
-<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
-<ul>
-<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
-</ul>
-</li>
-<li><p>运输层(TCP，UDP)：端口扫描，</p>
-<ul>
-<li>:one:TCP协议扫描，全连接扫描</li>
-<li>:two:UDP协议扫描</li>
-<li>:three: SYN扫描</li>
-</ul>
-</li>
-</ul>
-<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
-<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
-<ul>
-<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
-<p>​			</p>
-<ul>
-<li><blockquote>
-<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
-<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
-<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
-
-<blockquote>
-<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
-<figure class="highlight ada"><table><tr><td class="code"><pre><code class="hljs ada"><span class="hljs-comment">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></code></pre></td></tr></table></figure>
-</blockquote>
-<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
-<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
-<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
-<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/1.png" alt="域环境"></p>
-<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
-<p>分别ping两台主机，得到结果：</p>
-<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/2.png" alt="ping实验"></p>
-<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
-<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
-<img src="3.png" style="zoom:90%;" />
-
-<p>通过nmap扫描系统类型可以看到：</p>
-<p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/4.png"></p>
-<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
   </entry>
 </search>
