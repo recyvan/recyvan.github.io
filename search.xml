@@ -106,7 +106,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#x73;&#x66;&#x61;&#100;&#x6d;&#105;&#x6e;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#x38;&#46;&#56;&#48;&#46;&#x31;&#x32;&#57;">&#x6d;&#x73;&#x66;&#x61;&#100;&#x6d;&#105;&#x6e;&#x40;&#49;&#x39;&#50;&#46;&#49;&#x36;&#x38;&#46;&#56;&#48;&#46;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#x61;&#x64;&#x6d;&#x69;&#x6e;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#56;&#46;&#x38;&#48;&#x2e;&#49;&#50;&#x39;">&#x6d;&#115;&#102;&#x61;&#x64;&#x6d;&#x69;&#x6e;&#64;&#x31;&#57;&#50;&#x2e;&#x31;&#x36;&#56;&#46;&#x38;&#48;&#x2e;&#49;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -408,6 +408,27 @@
       </categories>
       <tags>
         <tag>网络安全</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于aspx文件和dll文件的关系的学习</title>
+    <url>/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<hr>
+<hr>
+<p>在上班时发现一个问题：在畅捷通T+服务当中存在一个任意目录文件上传，但是该应用是整套程序进行了预编译，无法对aspx文件进行解析，因此只能上传与之相关的dll和compiled文件</p>
+<hr>
+<h3 id="ASP-NET"><a href="#ASP-NET" class="headerlink" title="ASP.NET"></a>ASP.NET</h3><p>ASP.NET 是一个免费的 Web 框架，用于使用 HTML、CSS 和 JavaScript 构建出色的网站和 Web 应用程序。 还可以创建 Web API 并使用实时技术，例如 Web 套接字。ASP.NET可以运行在安装了.NET Framework的<a href="https://zh.wikipedia.org/wiki/Internet_Information_Server">IIS</a>服务器上。</p>
+<p>ASP 和 ASPX 的区别在于 ASP 运行在 IIS 上，而 ASPX 运行在 .NET 框架上。  他们使用不同的编码语言。 ASP 使用 VBscript 作为其编码语言，而 ASPX 使用 C# 和 VB.NET 作为其编码语言。 因此ASPX文件可以执行c#中的系统命令函数。</p>
+<h4 id="ASPX文件的预编译"><a href="#ASPX文件的预编译" class="headerlink" title="ASPX文件的预编译"></a>ASPX文件的预编译</h4><p>相较于动态编译，预编译的速度更快，同时可以防止源代码被查看。在网站部署时使用aspx文件进行编译，转换成dll文件，放到指定位置，.NET程序便会在运行时会优先加载bin目录下的程序集 即<code>index.aspx -&gt; /bin/index.dll</code> 也就是说在访问index.aspx时，程序会去寻找&#x2F;bin目录下的index.dll文件加载网页(即使访问的目录下没有index.aspx文件)。</p>
+<h3 id="哥斯拉生成CShapDynamicPayload-net2-0及以上"><a href="#哥斯拉生成CShapDynamicPayload-net2-0及以上" class="headerlink" title="哥斯拉生成CShapDynamicPayload (.net2.0及以上)"></a>哥斯拉生成CShapDynamicPayload (.net2.0及以上)</h3><p>使用哥斯拉生成aspx文件，文件生成后放到一个单独的文件，方便接下来复现</p>
+<p><img src="/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/%7B0201F1AA-18C7-4562-AE12-7E5AE44796BD%7D-17037585455591.png" alt="哥斯拉生成木马"></p>
+<h3 id="aspnet-compiled程序"><a href="#aspnet-compiled程序" class="headerlink" title="aspnet_compiled程序"></a>aspnet_compiled程序</h3><h3 id="dll与compiled"><a href="#dll与compiled" class="headerlink" title="dll与compiled"></a>dll与compiled</h3><p>—————-待更新—————待更新——————–待更新———————–待更新—————–待更新————待更新————</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>ASP.NET</tag>
       </tags>
   </entry>
   <entry>
@@ -1299,5 +1320,65 @@ graph LR;
 <p><img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/4.png"></p>
 <p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+  </entry>
+  <entry>
+    <title>网络测试-efssetup_20181复现</title>
+    <url>/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<hr>
+<hr>
+<p>网络渗透实验复现作业-efssetup_20181复现</p>
+<hr>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="环境梳理"><a href="#环境梳理" class="headerlink" title="环境梳理"></a>环境梳理</h4><ul>
+<li>VM下windows10系统，ip：192.168.65.143</li>
+<li>攻击机：VM下kali系统，ip：193.168.65.128，物理机windows11</li>
+<li>靶机无使用杀毒软件</li>
+</ul>
+<h4 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h4><p>将插件下载至虚拟机，并双击exe程序进行安装</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B02B672F9-B19D-4e15-A58B-012EC8732A0E%7D.png" alt="安装界面"></p>
+<p>等待安装完成后，修改url地址为本地使用IP地址，关闭80端口的其他服务，或者修改该程序的端口</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BFBD55C7F-8CD3-4180-B821-61B016F62E9F%7D.png" alt="端口修改"></p>
+<p>确认windows防火墙开放了指定端口即可安装成功。</p>
+<h3 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h3><h4 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h4><p>1.kali下使用nmap进行扫描该ip,查看存在哪些服务</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B66592BA0-2F04-4927-8763-45ABDA87C5C1%7D.png" alt="扫描结果"></p>
+<p>发现靶机开放了80端口，且部署的服务为 Easy File Sharing Web Server httpd 6.9</p>
+<p>2.使用searchsploit搜索该服务</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BABE21C88-6327-457d-A299-0D4247460365%7D.png" alt="漏洞查询"></p>
+<p>下载该脚本，直接利用（这里原本想使用6.9版本，但执行后一直被拒绝）</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BB582CCEB-F015-4677-8B54-194E1BD93ACB%7D.png" alt="脚本下载"></p>
+<p>执行发现计算器已被弹起（这里的脚本为python2脚本，应使用python2）</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B4F5489B0-DB29-4a23-B7B7-953D0D92BE8E%7D.png" alt="脚本执行"></p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BC32B5177-E056-41a3-8EEB-4569FFAF1B26%7D.png" alt="执行结果"></p>
+<h4 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h4><p>方法一只能实现固定程序或命令的执行，无法进行交互，因此可以使用msf进行漏洞利用拿到shell</p>
+<p>1.搜索该服务</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B0E2456B0-6B35-4f08-BC1D-0E323F526ED3%7D.png" alt="漏洞搜索及设置"></p>
+<p>设置好该漏洞，并进行执行，拿到shell</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BD09DB7DF-E243-4aa6-8499-1336DF3AC909%7D.png" alt="shell"></p>
+<h4 id="生成主控端、被控端"><a href="#生成主控端、被控端" class="headerlink" title="生成主控端、被控端"></a>生成主控端、被控端</h4><p>这里使用MSFPC进行生成exe可执行程序进行控制</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B8FE1FCCB-22B3-4fa0-A131-775985D32D8E%7D.png" alt="使用步骤"></p>
+<p>将可执行脚本上传到windows上并等待执行,使用msf进行上传</p>
+<p><img src="C:/Users/a/AppData/Local/Temp/{42E5925B-E8B7-4ae2-AD0A-F1EF17536807}.png" alt="文件上传"></p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B2FCAEAF1-7169-42e5-A7D9-2BD063DD6360%7D.png" alt="上传成功"></p>
+<p>kali进行监听443，windows进行执行，使用handler进行监听</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7B394200B4-6B9C-40bd-A0E9-5CD2413FD29B%7D.png" alt="参数设置"></p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BDD5C6A0F-417B-4fd0-856A-3350BE6DAE94%7D.png" alt="获得shell"></p>
+<h4 id="随意下载文件"><a href="#随意下载文件" class="headerlink" title="随意下载文件"></a>随意下载文件</h4><p>例如下web.config到当前目录</p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/%7BE8FBE2D7-45E7-4824-8DF3-B08C036E56A8%7D.png" alt="内容下载"></p>
+<h3 id="所遇问题"><a href="#所遇问题" class="headerlink" title="所遇问题"></a>所遇问题</h3><ul>
+<li><p>之前的python脚本和msf在进行攻击时存在机率是的服务崩溃（尤其是python脚本）</p>
+</li>
+<li><p>生成主控端、被控端，其实msf漏洞利用是实现获得shell但是通过handler再次获得是为了巩固学习</p>
+</li>
+<li><p>对于msfpc生成的脚本建议多次执行以防止连接失败</p>
+</li>
+<li><p>使用msf进行连接时，务必要关闭掉windwos10的实施监控，否则服务将会被删除或服务崩溃。</p>
+</li>
+</ul>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>网络渗透测试</category>
+      </categories>
+      <tags>
+        <tag>easy file sharing server</tag>
+      </tags>
   </entry>
 </search>
