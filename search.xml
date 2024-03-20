@@ -77,91 +77,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Metasploitable2靶机本地练习记录</title>
-    <url>/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="Metasploitable2靶机本地练习记录"><a href="#Metasploitable2靶机本地练习记录" class="headerlink" title="Metasploitable2靶机本地练习记录"></a>Metasploitable2靶机本地练习记录</h2><h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>靶机ip: 192.168.80.129（位置）</p>
-<blockquote>
-<p>kali下对整个c端扫描 nmap  -sn   192.168.80.0&#x2F;24    (ping扫描)（arp-scan -l)</p>
-</blockquote>
-<p><img src="/1.png" alt="1"></p>
-<p>找到位置ip：192.168.80.129</p>
-<blockquote>
-<p>端口扫描 nmap （-sS) -sT  –min-rate 10000 -p- 192.168.80.129 -OA  nmapscan&#x2F;ports</p>
-<p>获得端口后提取到txt文本 grep open  nmapscan&#x2F;ports.nmap | awk -F  ‘&#x2F;‘  ‘{print  $1}’  | paste -sd ‘,’  </p>
-</blockquote>
-<p><img src="/2-16990060476021.png" alt="2">          </p>
-<p>写入变量$ports中方便后续使用</p>
-<blockquote>
-<p>查看靶机详细信息 nmap -sT -sV -O -p$ports(tab) 192.168.80.129 -oa nmapscan&#x2F;detail</p>
-<p>获得各个开放端口的应用信息：</p>
-</blockquote>
-<p> <img src="/3.png" alt="3"></p>
-<h3 id="21端口攻击"><a href="#21端口攻击" class="headerlink" title="21端口攻击"></a>21端口攻击</h3><blockquote>
-<p>扫描结果返回为ftp 2.3.4版本。google得知为vsftpd笑脸<em>漏洞</em>msf下验证并执行playload（这个有匿名登入的风险，后面会讲到）</p>
-</blockquote>
-<p> <img src="/4.png" alt="4"></p>
-<p>找到对应版本后，set参数并run命令</p>
-<p><img src="/5.png" alt="6"></p>
-<p>直接拿到root权限</p>
-<h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
-<p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
-<p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#97;&#100;&#x6d;&#x69;&#110;&#64;&#49;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x38;&#48;&#x2e;&#x31;&#50;&#x39;">&#109;&#115;&#102;&#97;&#100;&#x6d;&#x69;&#110;&#64;&#49;&#x39;&#50;&#x2e;&#x31;&#x36;&#x38;&#46;&#x38;&#48;&#x2e;&#x31;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
-</blockquote>
-<p><img src="/7.png" alt="7"></p>
-<h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
-<p>版本信息为telnet服务，同样是弱口令，根据靶机特性，一般所有服务多为同一账户密码。开始是思路为同样可通过22端口攻击的方式复刻出来，账户密码为msfadmin&#x2F;msfadmin。shell下&gt;远程登入即可拿到当前用户的shell。但登入是它直接告诉你了账户密码（-__-）。</p>
-</blockquote>
-<p><img src="/8.png" alt="8"></p>
-<h3 id="25与53端口攻击"><a href="#25与53端口攻击" class="headerlink" title="25与53端口攻击"></a>25与53端口攻击</h3><blockquote>
-<p>smtp协议多用于邮件传输当中,此处漏洞同样为弱口令,账户密码:msfadmin&#x2F;msfadmin</p>
-<p>domain称网域，是由一串用点分隔的名字组成的互联网上某一台计算机或计算机组的名称，用于在数据传输时对计算机的定位标识（有时也指地理位置）目前还不会,以后在更新</p>
-</blockquote>
-<h3 id="80端口攻击"><a href="#80端口攻击" class="headerlink" title="80端口攻击"></a>80端口攻击</h3><p>打开网站查看:</p>
-<p><img src="/9.png" alt="9"></p>
-<p>目录扫描没有得到可用结果</p>
-<p><img src="/10.png" alt="10"></p>
-<blockquote>
-<p>里面自带以下漏洞靶场便不做演示</p>
-<p>以下利用的其他漏洞，访问phpinfo.php得到php版本信息为：php为5.24，存在[PHP-CGI远程&gt;代码执行漏洞CVE-2012-1823]</p>
-<p>其就是用户请求的querystring（querystring字面上的意思就是查询字符串，一般是对http请求&gt;所带的数据进行解析，这里也是只http请求中所带的数据）被作为了php-cgi的参数，最终导致了&gt;一系列结果。CVE-2012-1823是在php-cgi运行模式下出现的漏洞，其漏洞只出现在以cgi模式运行&gt;的php中</p>
-<p>在文件后接**?-s**后会显示出源码,例如</p>
-</blockquote>
-<p> <img src="/11.png" alt="11"></p>
-<p>远程rce的poc为</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/-d+allow_url_include%<span class="number">3</span>don+-d+auto_prepend_file%<span class="number">3</span>dphp%<span class="number">3</span>a<span class="comment">//input</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POST:  <span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls -al&quot;</span>); <span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
-
-<p><img src="/12.png" alt="12"></p>
-<h5 id="cgi模式下的参数"><a href="#cgi模式下的参数" class="headerlink" title="cgi模式下的参数"></a>cgi模式下的参数</h5><ul>
-<li>-c 指定php.ini文件的位置</li>
-<li>n 不要加载php.ini文件</li>
-<li>-d 指定配置项</li>
-<li>-b 启动fastcgi进程</li>
-<li>-s 显示文件源码</li>
-<li>-T 执行指定次该文件</li>
-<li>-h和-? 显示帮助</li>
-</ul>
-<h3 id="445端口利用"><a href="#445端口利用" class="headerlink" title="445端口利用"></a>445端口利用</h3><p>该端口利用为CVE-2010-0926。</p>
-<p>nmap扫描得到445端口信息为 netbios-ssn Samba smbd 3.X - 4.X 。msf查找相关漏洞，并利用</p>
-<p>利用auxiliary&#x2F;admin&#x2F;smb&#x2F;samba_symlink_traversal模块进行攻击</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show options</span><br><span class="line">Set RHOST 192.168.80.129 </span><br><span class="line">set SMBSHARE tmp 设置SAM可写文件</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
-
-<p><img src="/13.png" alt="13"></p>
-<p>利用成功，输入smbclient  &#x2F;&#x2F;192.168.80.129&#x2F;tmp（提示输入密码处，直接回车即可），之后切换rootfs即可利用成功</p>
-<p><img src="/14.png" alt="14"></p>
-<p>6667端口攻击</p>
-<p>待续。。。。</p>
-]]></content>
-      <categories>
-        <category>靶机</category>
-      </categories>
-      <tags>
-        <tag>CVE,靶机,Metasploitable2</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>KSA软件应用及学习</title>
     <url>/2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[]]></content>
@@ -244,6 +159,91 @@
       </tags>
   </entry>
   <entry>
+    <title>Metasploitable2靶机本地练习记录</title>
+    <url>/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="Metasploitable2靶机本地练习记录"><a href="#Metasploitable2靶机本地练习记录" class="headerlink" title="Metasploitable2靶机本地练习记录"></a>Metasploitable2靶机本地练习记录</h2><h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>靶机ip: 192.168.80.129（位置）</p>
+<blockquote>
+<p>kali下对整个c端扫描 nmap  -sn   192.168.80.0&#x2F;24    (ping扫描)（arp-scan -l)</p>
+</blockquote>
+<p><img src="/1.png" alt="1"></p>
+<p>找到位置ip：192.168.80.129</p>
+<blockquote>
+<p>端口扫描 nmap （-sS) -sT  –min-rate 10000 -p- 192.168.80.129 -OA  nmapscan&#x2F;ports</p>
+<p>获得端口后提取到txt文本 grep open  nmapscan&#x2F;ports.nmap | awk -F  ‘&#x2F;‘  ‘{print  $1}’  | paste -sd ‘,’  </p>
+</blockquote>
+<p><img src="/2-16990060476021.png" alt="2">          </p>
+<p>写入变量$ports中方便后续使用</p>
+<blockquote>
+<p>查看靶机详细信息 nmap -sT -sV -O -p$ports(tab) 192.168.80.129 -oa nmapscan&#x2F;detail</p>
+<p>获得各个开放端口的应用信息：</p>
+</blockquote>
+<p> <img src="/3.png" alt="3"></p>
+<h3 id="21端口攻击"><a href="#21端口攻击" class="headerlink" title="21端口攻击"></a>21端口攻击</h3><blockquote>
+<p>扫描结果返回为ftp 2.3.4版本。google得知为vsftpd笑脸<em>漏洞</em>msf下验证并执行playload（这个有匿名登入的风险，后面会讲到）</p>
+</blockquote>
+<p> <img src="/4.png" alt="4"></p>
+<p>找到对应版本后，set参数并run命令</p>
+<p><img src="/5.png" alt="6"></p>
+<p>直接拿到root权限</p>
+<h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
+<p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
+<p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#x73;&#102;&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;">&#109;&#x73;&#102;&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+</blockquote>
+<p><img src="/7.png" alt="7"></p>
+<h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
+<p>版本信息为telnet服务，同样是弱口令，根据靶机特性，一般所有服务多为同一账户密码。开始是思路为同样可通过22端口攻击的方式复刻出来，账户密码为msfadmin&#x2F;msfadmin。shell下&gt;远程登入即可拿到当前用户的shell。但登入是它直接告诉你了账户密码（-__-）。</p>
+</blockquote>
+<p><img src="/8.png" alt="8"></p>
+<h3 id="25与53端口攻击"><a href="#25与53端口攻击" class="headerlink" title="25与53端口攻击"></a>25与53端口攻击</h3><blockquote>
+<p>smtp协议多用于邮件传输当中,此处漏洞同样为弱口令,账户密码:msfadmin&#x2F;msfadmin</p>
+<p>domain称网域，是由一串用点分隔的名字组成的互联网上某一台计算机或计算机组的名称，用于在数据传输时对计算机的定位标识（有时也指地理位置）目前还不会,以后在更新</p>
+</blockquote>
+<h3 id="80端口攻击"><a href="#80端口攻击" class="headerlink" title="80端口攻击"></a>80端口攻击</h3><p>打开网站查看:</p>
+<p><img src="/9.png" alt="9"></p>
+<p>目录扫描没有得到可用结果</p>
+<p><img src="/10.png" alt="10"></p>
+<blockquote>
+<p>里面自带以下漏洞靶场便不做演示</p>
+<p>以下利用的其他漏洞，访问phpinfo.php得到php版本信息为：php为5.24，存在[PHP-CGI远程&gt;代码执行漏洞CVE-2012-1823]</p>
+<p>其就是用户请求的querystring（querystring字面上的意思就是查询字符串，一般是对http请求&gt;所带的数据进行解析，这里也是只http请求中所带的数据）被作为了php-cgi的参数，最终导致了&gt;一系列结果。CVE-2012-1823是在php-cgi运行模式下出现的漏洞，其漏洞只出现在以cgi模式运行&gt;的php中</p>
+<p>在文件后接**?-s**后会显示出源码,例如</p>
+</blockquote>
+<p> <img src="/11.png" alt="11"></p>
+<p>远程rce的poc为</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/-d+allow_url_include%<span class="number">3</span>don+-d+auto_prepend_file%<span class="number">3</span>dphp%<span class="number">3</span>a<span class="comment">//input</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POST:  <span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls -al&quot;</span>); <span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
+
+<p><img src="/12.png" alt="12"></p>
+<h5 id="cgi模式下的参数"><a href="#cgi模式下的参数" class="headerlink" title="cgi模式下的参数"></a>cgi模式下的参数</h5><ul>
+<li>-c 指定php.ini文件的位置</li>
+<li>n 不要加载php.ini文件</li>
+<li>-d 指定配置项</li>
+<li>-b 启动fastcgi进程</li>
+<li>-s 显示文件源码</li>
+<li>-T 执行指定次该文件</li>
+<li>-h和-? 显示帮助</li>
+</ul>
+<h3 id="445端口利用"><a href="#445端口利用" class="headerlink" title="445端口利用"></a>445端口利用</h3><p>该端口利用为CVE-2010-0926。</p>
+<p>nmap扫描得到445端口信息为 netbios-ssn Samba smbd 3.X - 4.X 。msf查找相关漏洞，并利用</p>
+<p>利用auxiliary&#x2F;admin&#x2F;smb&#x2F;samba_symlink_traversal模块进行攻击</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show options</span><br><span class="line">Set RHOST 192.168.80.129 </span><br><span class="line">set SMBSHARE tmp 设置SAM可写文件</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/13.png" alt="13"></p>
+<p>利用成功，输入smbclient  &#x2F;&#x2F;192.168.80.129&#x2F;tmp（提示输入密码处，直接回车即可），之后切换rootfs即可利用成功</p>
+<p><img src="/14.png" alt="14"></p>
+<p>6667端口攻击</p>
+<p>待续。。。。</p>
+]]></content>
+      <categories>
+        <category>靶机</category>
+      </categories>
+      <tags>
+        <tag>CVE,靶机,Metasploitable2</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>frp内网穿透</title>
     <url>/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
     <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/11.jpg"></p>
@@ -300,78 +300,6 @@
       </categories>
       <tags>
         <tag>渗透测试，路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>windows域与用户组策略笔记(废弃)</title>
-    <url>/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/</url>
-    <content><![CDATA[<hr>
-<hr>
-<p>以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。</p>
-<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器集中进行身份验证。</p>
-<p>域可以分为单域，父域和子域，域树，域林等多种。</p>
-<h4 id="活动目录"><a href="#活动目录" class="headerlink" title="活动目录"></a>活动目录</h4><p>活动目录（ Active Directory , AD ）是指安装在域控制器上，为整个域环境提供集中式目录管理服务的组件。活动目录存储了有关域环境中各种对象的信息，如域、用户、用户组、计算机、组织单位、共享资源、安全策略等，目录数据存储在域控制器的 Ntds.dit 文件中，活动目录主要提供了以下功能：</p>
-<ul>
-<li>计算机集中管理：集中管理所有加入域的服务器及客户端计算机，统一下发组策略。</li>
-<li>用户集中管理：集中管理城用户、组织通讯录、用户组，对用户进行统一的身份认证、资源授权等。</li>
-<li>资源集中管理：集中管理域中的打印机、文件共享服务等网络资源。</li>
-<li>环境集中配置：集中的配置城中计算机的工作环境，如统一计算机桌面、统一网络连接配置，统一计算机安全配置等。</li>
-<li>应用集中管理：对城中的计算机统一推送软件、安全补丁、防病毒系统等。</li>
-</ul>
-<h4 id="Ntds-dit"><a href="#Ntds-dit" class="headerlink" title="Ntds.dit"></a>Ntds.dit</h4><p>该文件是一个二进制文件，保存在域环境的域控制系统上，是主要的活动目录数据库，该文件包含有关域用户的，用户密码的哈希散列值，用户组，组成员身份和组策略信息，是使用SYSTEM文件中的密钥对这些hash值进行加密。存储位置为域控的(一般情况或绝大情况下) <code>%SystemRoot%\ntds.dit</code></p>
-<p>在通常情况下，即使拥有管理员权限，也无法读取域控中的 ntds.dit 文件（因为活动目录始终访问这个文件，所以文件被禁止读取），它和 SAM 文件一样，是被 Windows 操作系统锁定的。而在<strong>非域环境下，用户的登录凭据等信息储存在本地的SAM文件下</strong>。</p>
-<p>​																																							有关域的内容等学会更多再更新。</p>
-<h3 id="用户组策略"><a href="#用户组策略" class="headerlink" title="用户组策略"></a>用户组策略</h3><hr>
-<p>前置：对于文章开篇问题，简单解决方案：启动administer用户并设置密码，禁用或删除其他管理员账户以解决权限问题（当然对于部分系统内置文件其最高权限也是无法需改，可以进PE启动盘删改（大概</p>
-<p><img src="/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png" alt="原环境为PVE,现环境为VM"></p>
-<hr>
-<h4 id="访问令牌"><a href="#访问令牌" class="headerlink" title="访问令牌"></a>访问令牌</h4><p>访问令牌(Access Tokens)是Windows操作系统安全性的一个概念。当用户登陆时，系统创建一个访问令牌，里面包含登录进程返回的SID和由本地安全策略分配给用户和用户的安全组的特权列表。此后代表该用户执行的每个进程都有此访问令牌的副本，每当线程或进程与安全对象交互或尝试执行需要特权的系统任务时，windows都会使用此令牌标识并确定关联账户。SID用来标识用户账户和该用户所属的组。（关联知识：DACL和SACL）</p>
-<h4 id="组策略"><a href="#组策略" class="headerlink" title="组策略"></a>组策略</h4><blockquote>
-<p>组策略（英语：Group Policy）是微软Windows NT家族操作系统的一个特性，它可以控制用户帐户和计算机帐户的工作环境。组策略提供了操作系统、应用程序和活动目录中用户设置的集中化管理和配置。组策略的其中一个版本名为本地组策略（缩写“LGPO”或“LocalGPO”），这可以在独立且非域的计算机上管理组策略对象。</p>
-<p>​                                                                                                                 														   –百度百科</p>
-</blockquote>
-<h3 id="影子账户设立"><a href="#影子账户设立" class="headerlink" title="影子账户设立"></a>影子账户设立</h3><p>之前想单独了解用户组和sam文件，但后来和组策略搞混了，只能以后学习了。。。</p>
-]]></content>
-      <categories>
-        <category>windows</category>
-      </categories>
-      <tags>
-        <tag>网络安全</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ping-ptunnel与icmp隧道绕过</title>
-    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
-    <content><![CDATA[<hr>
-<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
-<hr>
-<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
-<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
-<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
-<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
-<blockquote>
-<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
-<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
-</blockquote>
-<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
-<p>命令释义：</p>
-<ul>
-<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
-</li>
-<li><p>参数-lp：指定本地监听端口</p>
-</li>
-<li><p>参数-da：指定欲访问的目标服务器</p>
-</li>
-<li><p>参数-dp：指定欲访问的目标端口</p>
-<p>待更新。。。。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>内网穿透</category>
-      </categories>
-      <tags>
-        <tag>渗透测试，icmp协议</tag>
       </tags>
   </entry>
   <entry>
@@ -490,6 +418,78 @@
       </categories>
       <tags>
         <tag>网络安全，python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ping-ptunnel与icmp隧道绕过</title>
+    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<hr>
+<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
+<hr>
+<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
+<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
+<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
+<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
+<blockquote>
+<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
+<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
+</blockquote>
+<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
+<p>命令释义：</p>
+<ul>
+<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
+</li>
+<li><p>参数-lp：指定本地监听端口</p>
+</li>
+<li><p>参数-da：指定欲访问的目标服务器</p>
+</li>
+<li><p>参数-dp：指定欲访问的目标端口</p>
+<p>待更新。。。。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>内网穿透</category>
+      </categories>
+      <tags>
+        <tag>渗透测试，icmp协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>windows域与用户组策略笔记(废弃)</title>
+    <url>/2023/12/21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/</url>
+    <content><![CDATA[<hr>
+<hr>
+<p>以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。</p>
+<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器集中进行身份验证。</p>
+<p>域可以分为单域，父域和子域，域树，域林等多种。</p>
+<h4 id="活动目录"><a href="#活动目录" class="headerlink" title="活动目录"></a>活动目录</h4><p>活动目录（ Active Directory , AD ）是指安装在域控制器上，为整个域环境提供集中式目录管理服务的组件。活动目录存储了有关域环境中各种对象的信息，如域、用户、用户组、计算机、组织单位、共享资源、安全策略等，目录数据存储在域控制器的 Ntds.dit 文件中，活动目录主要提供了以下功能：</p>
+<ul>
+<li>计算机集中管理：集中管理所有加入域的服务器及客户端计算机，统一下发组策略。</li>
+<li>用户集中管理：集中管理城用户、组织通讯录、用户组，对用户进行统一的身份认证、资源授权等。</li>
+<li>资源集中管理：集中管理域中的打印机、文件共享服务等网络资源。</li>
+<li>环境集中配置：集中的配置城中计算机的工作环境，如统一计算机桌面、统一网络连接配置，统一计算机安全配置等。</li>
+<li>应用集中管理：对城中的计算机统一推送软件、安全补丁、防病毒系统等。</li>
+</ul>
+<h4 id="Ntds-dit"><a href="#Ntds-dit" class="headerlink" title="Ntds.dit"></a>Ntds.dit</h4><p>该文件是一个二进制文件，保存在域环境的域控制系统上，是主要的活动目录数据库，该文件包含有关域用户的，用户密码的哈希散列值，用户组，组成员身份和组策略信息，是使用SYSTEM文件中的密钥对这些hash值进行加密。存储位置为域控的(一般情况或绝大情况下) <code>%SystemRoot%\ntds.dit</code></p>
+<p>在通常情况下，即使拥有管理员权限，也无法读取域控中的 ntds.dit 文件（因为活动目录始终访问这个文件，所以文件被禁止读取），它和 SAM 文件一样，是被 Windows 操作系统锁定的。而在<strong>非域环境下，用户的登录凭据等信息储存在本地的SAM文件下</strong>。</p>
+<p>​																																							有关域的内容等学会更多再更新。</p>
+<h3 id="用户组策略"><a href="#用户组策略" class="headerlink" title="用户组策略"></a>用户组策略</h3><hr>
+<p>前置：对于文章开篇问题，简单解决方案：启动administer用户并设置密码，禁用或删除其他管理员账户以解决权限问题（当然对于部分系统内置文件其最高权限也是无法需改，可以进PE启动盘删改（大概</p>
+<p><img src="/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png" alt="原环境为PVE,现环境为VM"></p>
+<hr>
+<h4 id="访问令牌"><a href="#访问令牌" class="headerlink" title="访问令牌"></a>访问令牌</h4><p>访问令牌(Access Tokens)是Windows操作系统安全性的一个概念。当用户登陆时，系统创建一个访问令牌，里面包含登录进程返回的SID和由本地安全策略分配给用户和用户的安全组的特权列表。此后代表该用户执行的每个进程都有此访问令牌的副本，每当线程或进程与安全对象交互或尝试执行需要特权的系统任务时，windows都会使用此令牌标识并确定关联账户。SID用来标识用户账户和该用户所属的组。（关联知识：DACL和SACL）</p>
+<h4 id="组策略"><a href="#组策略" class="headerlink" title="组策略"></a>组策略</h4><blockquote>
+<p>组策略（英语：Group Policy）是微软Windows NT家族操作系统的一个特性，它可以控制用户帐户和计算机帐户的工作环境。组策略提供了操作系统、应用程序和活动目录中用户设置的集中化管理和配置。组策略的其中一个版本名为本地组策略（缩写“LGPO”或“LocalGPO”），这可以在独立且非域的计算机上管理组策略对象。</p>
+<p>​                                                                                                                 														   –百度百科</p>
+</blockquote>
+<h3 id="影子账户设立"><a href="#影子账户设立" class="headerlink" title="影子账户设立"></a>影子账户设立</h3><p>之前想单独了解用户组和sam文件，但后来和组策略搞混了，只能以后学习了。。。</p>
+]]></content>
+      <categories>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
@@ -996,6 +996,66 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
+    <title>网络安全测试课程_作业_1</title>
+    <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
+    <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
+<hr>
+<p>在VM下以kali为例子,在网络适配器下，存在三种模式：桥接模式，NAT模式，仅主机模式。</p>
+<p><img src="/%7B7C973C18-9891-47e5-AD86-A57960A6A5E9%7D.png" alt="1"></p>
+<p>存在两个网卡(在未安装docker，ks8等特殊情况下)VMnet0：用于桥接模式下的虚拟交换机，VMnet1：用于虚拟桥接网络下的虚拟交换机,VMnet8：用于虚拟 NAT 网络下的虚拟交换机。</p>
+<p><img src="/%7BBFFE2E6D-4087-4366-AC6B-F67AD26957D5%7D.png" alt="2"></p>
+<h4 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h4><p>桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<h4 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h4><p>NAT 模式，就是让虚拟系统借助 NAT（网络地址转换）功能，通过宿主机器所在的网络来访问公网。也就是说，使用 NAT 模式可以实现在虚拟系统里访问互联网，但前提是主机可以访问互联网。</p>
+<p>NAT 模式下的虚拟系统的 TCP&#x2F;IP 配置信息是由 VMnet8（NAT）虚拟网络的 DHCP 服务器提供的，因此虚拟系统也就无法和本局域网中的其他真实主机进行通讯。</p>
+<p>访问路径为虚拟机ip-&gt;主机-&gt;互联网</p>
+<h4 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h4><p>仅主机模式的虚拟网络是一个封闭的网络环境，使得虚拟机成为一个独立的系统，所以多个虚拟机之间也可以互相访问，但一般情况下虚拟网络不能连接到 Internet。主机和虚拟机之间的通信是通过 VMnet1 虚拟网卡来实现的。此时如果想要虚拟机上外网则需要主机联网并且网络共享。</p>
+<h3 id="相关配置命令"><a href="#相关配置命令" class="headerlink" title="相关配置命令"></a>相关配置命令</h3><p>win下可liunx下查看ip的一种方式：</p>
+<p><img src="/%7B1F97DB93-7F1E-4c6b-9E9F-FFFE21BAD996%7D.png" alt="3"></p>
+<p>win下查看路由表</p>
+<p><img src="/%7BA1ACE78D-927B-46a1-B2B6-7A11F3BC2A59%7D.png" alt="4"></p>
+<p>加入想要通过vpn访问另一台主机上的虚拟机可以使用route add ip mask 255.255.255.0 metric 接口列表  ，来访问。</p>
+<h4 id="kali下ip的配置文件为-etc-network-interfaces"><a href="#kali下ip的配置文件为-etc-network-interfaces" class="headerlink" title="kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces"></a>kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces</h4><p><img src="/%7B595364AB-7EBE-4afd-852A-7FE61C8118A2%7D.png" alt="5"></p>
+<p>该文件文件不同于centos的conf配置信息</p>
+<p>若为静态，应做如下设置：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">This file describes the network interfaces available on your system</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">and how to activate them. For more information， see interfaces（5）。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">The loopback network interface</span></span><br><span class="line">auto lo</span><br><span class="line"> </span><br><span class="line">iface lo inet loopback</span><br><span class="line"> </span><br><span class="line">auto eth0</span><br><span class="line"> </span><br><span class="line">iface eth0 inet static //配置eth0使用默认的静态地址</span><br><span class="line"> </span><br><span class="line">address 192.168.1.1 //设置eth0的IP地址</span><br><span class="line"> </span><br><span class="line">netmask 255.255.255.0 //配置eth0的子网掩码</span><br><span class="line"> </span><br><span class="line">gateway 192.168.1.0 //配置当前主机的默认网关```</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="实践作业"><a href="#实践作业" class="headerlink" title="实践作业"></a>实践作业</h3><h4 id="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？</h4><p>操作完成后。查看IP，发现，并不存在</p>
+<p><img src="/%7B9A0EE61E-CCC7-43a9-AF51-ADC5DB687072%7D.png" alt="6"></p>
+<p>所以无法获得IP地址</p>
+<ul>
+<li><p>但在手机热点或其他wifi下，kali在桥接模式下时可以获得ip，并在物理机上可以访问到的，且局域网内其他主机也可访问到。</p>
+<h4 id="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？</h4></li>
+</ul>
+<p>操作完成后。查看IP，发现可以获得</p>
+<p><img src="/%7B2632BCDC-B3E2-4d3e-A0A4-44851C24A492%7D.png" alt="7"></p>
+<ul>
+<li>注意事项，在win11 上连接热点时，最好将网络配置文件类型设置为”公用网络（推荐）“，同时重启网络。</li>
+</ul>
+<p><img src="/%7B4FE79C7D-C6B9-47b0-9317-FBBB03F6BDD1%7D.png" alt="8"></p>
+<h4 id="对于1、2的结果，进行总结分析。"><a href="#对于1、2的结果，进行总结分析。" class="headerlink" title="对于1、2的结果，进行总结分析。"></a>对于1、2的结果，进行总结分析。</h4><p>在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
+<p>在校园网环境下，易出现不一致情况，当然也可能是校园网的网络设置就是这样。</p>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><img src="/%7BB982FBEC-1487-4e76-8A02-2B56D1BEE6E3%7D.png" alt="9"></p>
+<p>将红框内的改为列表中主机使用的网络</p>
+<p>WLAN勾选红框内容</p>
+<p><img src="/%7BA984A41E-58C4-490c-B40F-B073A811619C%7D.png" alt="10"></p>
+<p>设置ip在同一网段下，网关不变。</p>
+<p><img src="/%7B5E8F22AA-2BF7-4f6f-A129-9FFF5C3CFF19%7D.png" alt="11"></p>
+<p>此时发现已经连接成功！！！</p>
+<p><img src="/%7B8075D6BE-EEB6-4f5c-B05D-9256BE44CD5D%7D.png" alt="12"></p>
+<hr>
+<hr>
+<p>作业完成!!!!</p>
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络安全测试课程_作业_2</title>
     <url>/2023/11/14/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-2/</url>
     <content><![CDATA[<h2 id="课堂总结"><a href="#课堂总结" class="headerlink" title="课堂总结"></a>课堂总结</h2><h3 id="主动扫描"><a href="#主动扫描" class="headerlink" title="主动扫描"></a>主动扫描</h3><p>主动扫描一般都是针对目标发送特定的数据包，然后根据目标的反应来获得一些信息。大多为利用爬虫模块对特定链接的GET,POST，Headers等请求的参数进行变形，然后重放并根据返回的数据包的信息或状态码进行判断。其行为有可能被目标系统查获。</p>
@@ -1085,66 +1145,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
 </div>
 
 
-]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网络安全测试课程_作业_1</title>
-    <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
-    <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
-<hr>
-<p>在VM下以kali为例子,在网络适配器下，存在三种模式：桥接模式，NAT模式，仅主机模式。</p>
-<p><img src="/%7B7C973C18-9891-47e5-AD86-A57960A6A5E9%7D.png" alt="1"></p>
-<p>存在两个网卡(在未安装docker，ks8等特殊情况下)VMnet0：用于桥接模式下的虚拟交换机，VMnet1：用于虚拟桥接网络下的虚拟交换机,VMnet8：用于虚拟 NAT 网络下的虚拟交换机。</p>
-<p><img src="/%7BBFFE2E6D-4087-4366-AC6B-F67AD26957D5%7D.png" alt="2"></p>
-<h4 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h4><p>桥接模式就是将主机网卡与虚拟机虚拟的网卡利用虚拟网桥进行通信。在桥接的作用下，类似于把物理主机虚拟为一个交换机，所有桥接设置的虚拟机连接到这个交换机的一个接口上，物理主机也同样插在这个交换机当中，所以所有桥接下的网卡与网卡都是交换模式的，相互可以访问而不干扰。在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
-<h4 id="NAT模式"><a href="#NAT模式" class="headerlink" title="NAT模式"></a>NAT模式</h4><p>NAT 模式，就是让虚拟系统借助 NAT（网络地址转换）功能，通过宿主机器所在的网络来访问公网。也就是说，使用 NAT 模式可以实现在虚拟系统里访问互联网，但前提是主机可以访问互联网。</p>
-<p>NAT 模式下的虚拟系统的 TCP&#x2F;IP 配置信息是由 VMnet8（NAT）虚拟网络的 DHCP 服务器提供的，因此虚拟系统也就无法和本局域网中的其他真实主机进行通讯。</p>
-<p>访问路径为虚拟机ip-&gt;主机-&gt;互联网</p>
-<h4 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h4><p>仅主机模式的虚拟网络是一个封闭的网络环境，使得虚拟机成为一个独立的系统，所以多个虚拟机之间也可以互相访问，但一般情况下虚拟网络不能连接到 Internet。主机和虚拟机之间的通信是通过 VMnet1 虚拟网卡来实现的。此时如果想要虚拟机上外网则需要主机联网并且网络共享。</p>
-<h3 id="相关配置命令"><a href="#相关配置命令" class="headerlink" title="相关配置命令"></a>相关配置命令</h3><p>win下可liunx下查看ip的一种方式：</p>
-<p><img src="/%7B1F97DB93-7F1E-4c6b-9E9F-FFFE21BAD996%7D.png" alt="3"></p>
-<p>win下查看路由表</p>
-<p><img src="/%7BA1ACE78D-927B-46a1-B2B6-7A11F3BC2A59%7D.png" alt="4"></p>
-<p>加入想要通过vpn访问另一台主机上的虚拟机可以使用route add ip mask 255.255.255.0 metric 接口列表  ，来访问。</p>
-<h4 id="kali下ip的配置文件为-etc-network-interfaces"><a href="#kali下ip的配置文件为-etc-network-interfaces" class="headerlink" title="kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces"></a>kali下ip的配置文件为&#x2F;etc&#x2F;network&#x2F;interfaces</h4><p><img src="/%7B595364AB-7EBE-4afd-852A-7FE61C8118A2%7D.png" alt="5"></p>
-<p>该文件文件不同于centos的conf配置信息</p>
-<p>若为静态，应做如下设置：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">This file describes the network interfaces available on your system</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">and how to activate them. For more information， see interfaces（5）。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">The loopback network interface</span></span><br><span class="line">auto lo</span><br><span class="line"> </span><br><span class="line">iface lo inet loopback</span><br><span class="line"> </span><br><span class="line">auto eth0</span><br><span class="line"> </span><br><span class="line">iface eth0 inet static //配置eth0使用默认的静态地址</span><br><span class="line"> </span><br><span class="line">address 192.168.1.1 //设置eth0的IP地址</span><br><span class="line"> </span><br><span class="line">netmask 255.255.255.0 //配置eth0的子网掩码</span><br><span class="line"> </span><br><span class="line">gateway 192.168.1.0 //配置当前主机的默认网关```</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="实践作业"><a href="#实践作业" class="headerlink" title="实践作业"></a>实践作业</h3><h4 id="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接Guet-WiFi，Kali中查看网络配置并截图，能获得IP地址吗？</h4><p>操作完成后。查看IP，发现，并不存在</p>
-<p><img src="/%7B9A0EE61E-CCC7-43a9-AF51-ADC5DB687072%7D.png" alt="6"></p>
-<p>所以无法获得IP地址</p>
-<ul>
-<li><p>但在手机热点或其他wifi下，kali在桥接模式下时可以获得ip，并在物理机上可以访问到的，且局域网内其他主机也可访问到。</p>
-<h4 id="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"><a href="#Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？" class="headerlink" title="Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？"></a>Kali虚拟机采用桥接模式；物理机连接手机热点，Kali中查看网络配置并截图，能获得IP地址吗？</h4></li>
-</ul>
-<p>操作完成后。查看IP，发现可以获得</p>
-<p><img src="/%7B2632BCDC-B3E2-4d3e-A0A4-44851C24A492%7D.png" alt="7"></p>
-<ul>
-<li>注意事项，在win11 上连接热点时，最好将网络配置文件类型设置为”公用网络（推荐）“，同时重启网络。</li>
-</ul>
-<p><img src="/%7B4FE79C7D-C6B9-47b0-9317-FBBB03F6BDD1%7D.png" alt="8"></p>
-<h4 id="对于1、2的结果，进行总结分析。"><a href="#对于1、2的结果，进行总结分析。" class="headerlink" title="对于1、2的结果，进行总结分析。"></a>对于1、2的结果，进行总结分析。</h4><p>在桥接模式下，虚拟机ip地址需要与主机在同一个网段，如果需要联网，则网关与DNS需要与主机网卡一致。</p>
-<p>在校园网环境下，易出现不一致情况，当然也可能是校园网的网络设置就是这样。</p>
-<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p><img src="/%7BB982FBEC-1487-4e76-8A02-2B56D1BEE6E3%7D.png" alt="9"></p>
-<p>将红框内的改为列表中主机使用的网络</p>
-<p>WLAN勾选红框内容</p>
-<p><img src="/%7BA984A41E-58C4-490c-B40F-B073A811619C%7D.png" alt="10"></p>
-<p>设置ip在同一网段下，网关不变。</p>
-<p><img src="/%7B5E8F22AA-2BF7-4f6f-A129-9FFF5C3CFF19%7D.png" alt="11"></p>
-<p>此时发现已经连接成功！！！</p>
-<p><img src="/%7B8075D6BE-EEB6-4f5c-B05D-9256BE44CD5D%7D.png" alt="12"></p>
-<hr>
-<hr>
-<p>作业完成!!!!</p>
 ]]></content>
       <categories>
         <category>网络渗透测试基础知识</category>
@@ -1338,62 +1338,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程-作业-5</title>
-    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
-    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
-<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
-<ul>
-<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
-<ul>
-<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
-</ul>
-</li>
-<li><p>运输层(TCP，UDP)：端口扫描，</p>
-<ul>
-<li>:one:TCP协议扫描，全连接扫描</li>
-<li>:two:UDP协议扫描</li>
-<li>:three: SYN扫描</li>
-</ul>
-</li>
-</ul>
-<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
-<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
-<ul>
-<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
-<p>​			</p>
-<ul>
-<li><blockquote>
-<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
-<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
-<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
-
-<blockquote>
-<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
-<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
-<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
-<p><img src="/1.png" alt="域环境"></p>
-<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
-<p>分别ping两台主机，得到结果：</p>
-<p><img src="/2.png" alt="ping实验"></p>
-<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
-<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
-<img src="3.png" style="zoom:90%;" />
-
-<p>通过nmap扫描系统类型可以看到：</p>
-<p><img src="/4.png"></p>
-<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>网络测试-efssetup_20181复现</title>
     <url>/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<hr>
@@ -1452,5 +1396,61 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       <tags>
         <tag>easy file sharing server</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>网络安全测试课程-作业-5</title>
+    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
+    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
+<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
+<ul>
+<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
+<ul>
+<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
+</ul>
+</li>
+<li><p>运输层(TCP，UDP)：端口扫描，</p>
+<ul>
+<li>:one:TCP协议扫描，全连接扫描</li>
+<li>:two:UDP协议扫描</li>
+<li>:three: SYN扫描</li>
+</ul>
+</li>
+</ul>
+<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
+<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
+<ul>
+<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
+<p>​			</p>
+<ul>
+<li><blockquote>
+<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
+<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
+<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
+
+<blockquote>
+<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
+<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
+<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
+<p><img src="/1.png" alt="域环境"></p>
+<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
+<p>分别ping两台主机，得到结果：</p>
+<p><img src="/2.png" alt="ping实验"></p>
+<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
+<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
+<img src="3.png" style="zoom:90%;" />
+
+<p>通过nmap扫描系统类型可以看到：</p>
+<p><img src="/4.png"></p>
+<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
+]]></content>
   </entry>
 </search>
