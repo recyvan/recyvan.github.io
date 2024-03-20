@@ -82,6 +82,91 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
+    <title>Metasploitable2靶机本地练习记录</title>
+    <url>/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="Metasploitable2靶机本地练习记录"><a href="#Metasploitable2靶机本地练习记录" class="headerlink" title="Metasploitable2靶机本地练习记录"></a>Metasploitable2靶机本地练习记录</h2><h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>靶机ip: 192.168.80.129（位置）</p>
+<blockquote>
+<p>kali下对整个c端扫描 nmap  -sn   192.168.80.0&#x2F;24    (ping扫描)（arp-scan -l)</p>
+</blockquote>
+<p><img src="/1.png" alt="1"></p>
+<p>找到位置ip：192.168.80.129</p>
+<blockquote>
+<p>端口扫描 nmap （-sS) -sT  –min-rate 10000 -p- 192.168.80.129 -OA  nmapscan&#x2F;ports</p>
+<p>获得端口后提取到txt文本 grep open  nmapscan&#x2F;ports.nmap | awk -F  ‘&#x2F;‘  ‘{print  $1}’  | paste -sd ‘,’  </p>
+</blockquote>
+<p><img src="/2-16990060476021.png" alt="2">          </p>
+<p>写入变量$ports中方便后续使用</p>
+<blockquote>
+<p>查看靶机详细信息 nmap -sT -sV -O -p$ports(tab) 192.168.80.129 -oa nmapscan&#x2F;detail</p>
+<p>获得各个开放端口的应用信息：</p>
+</blockquote>
+<p> <img src="/3.png" alt="3"></p>
+<h3 id="21端口攻击"><a href="#21端口攻击" class="headerlink" title="21端口攻击"></a>21端口攻击</h3><blockquote>
+<p>扫描结果返回为ftp 2.3.4版本。google得知为vsftpd笑脸<em>漏洞</em>msf下验证并执行playload（这个有匿名登入的风险，后面会讲到）</p>
+</blockquote>
+<p> <img src="/4.png" alt="4"></p>
+<p>找到对应版本后，set参数并run命令</p>
+<p><img src="/5.png" alt="6"></p>
+<p>直接拿到root权限</p>
+<h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
+<p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
+<p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#x61;&#x64;&#109;&#105;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#x31;&#x32;&#57;">&#109;&#115;&#102;&#x61;&#x64;&#109;&#105;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+</blockquote>
+<p><img src="/7.png" alt="7"></p>
+<h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
+<p>版本信息为telnet服务，同样是弱口令，根据靶机特性，一般所有服务多为同一账户密码。开始是思路为同样可通过22端口攻击的方式复刻出来，账户密码为msfadmin&#x2F;msfadmin。shell下&gt;远程登入即可拿到当前用户的shell。但登入是它直接告诉你了账户密码（-__-）。</p>
+</blockquote>
+<p><img src="/8.png" alt="8"></p>
+<h3 id="25与53端口攻击"><a href="#25与53端口攻击" class="headerlink" title="25与53端口攻击"></a>25与53端口攻击</h3><blockquote>
+<p>smtp协议多用于邮件传输当中,此处漏洞同样为弱口令,账户密码:msfadmin&#x2F;msfadmin</p>
+<p>domain称网域，是由一串用点分隔的名字组成的互联网上某一台计算机或计算机组的名称，用于在数据传输时对计算机的定位标识（有时也指地理位置）目前还不会,以后在更新</p>
+</blockquote>
+<h3 id="80端口攻击"><a href="#80端口攻击" class="headerlink" title="80端口攻击"></a>80端口攻击</h3><p>打开网站查看:</p>
+<p><img src="/9.png" alt="9"></p>
+<p>目录扫描没有得到可用结果</p>
+<p><img src="/10.png" alt="10"></p>
+<blockquote>
+<p>里面自带以下漏洞靶场便不做演示</p>
+<p>以下利用的其他漏洞，访问phpinfo.php得到php版本信息为：php为5.24，存在[PHP-CGI远程&gt;代码执行漏洞CVE-2012-1823]</p>
+<p>其就是用户请求的querystring（querystring字面上的意思就是查询字符串，一般是对http请求&gt;所带的数据进行解析，这里也是只http请求中所带的数据）被作为了php-cgi的参数，最终导致了&gt;一系列结果。CVE-2012-1823是在php-cgi运行模式下出现的漏洞，其漏洞只出现在以cgi模式运行&gt;的php中</p>
+<p>在文件后接**?-s**后会显示出源码,例如</p>
+</blockquote>
+<p> <img src="/11.png" alt="11"></p>
+<p>远程rce的poc为</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/-d+allow_url_include%<span class="number">3</span>don+-d+auto_prepend_file%<span class="number">3</span>dphp%<span class="number">3</span>a<span class="comment">//input</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POST:  <span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls -al&quot;</span>); <span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
+
+<p><img src="/12.png" alt="12"></p>
+<h5 id="cgi模式下的参数"><a href="#cgi模式下的参数" class="headerlink" title="cgi模式下的参数"></a>cgi模式下的参数</h5><ul>
+<li>-c 指定php.ini文件的位置</li>
+<li>n 不要加载php.ini文件</li>
+<li>-d 指定配置项</li>
+<li>-b 启动fastcgi进程</li>
+<li>-s 显示文件源码</li>
+<li>-T 执行指定次该文件</li>
+<li>-h和-? 显示帮助</li>
+</ul>
+<h3 id="445端口利用"><a href="#445端口利用" class="headerlink" title="445端口利用"></a>445端口利用</h3><p>该端口利用为CVE-2010-0926。</p>
+<p>nmap扫描得到445端口信息为 netbios-ssn Samba smbd 3.X - 4.X 。msf查找相关漏洞，并利用</p>
+<p>利用auxiliary&#x2F;admin&#x2F;smb&#x2F;samba_symlink_traversal模块进行攻击</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show options</span><br><span class="line">Set RHOST 192.168.80.129 </span><br><span class="line">set SMBSHARE tmp 设置SAM可写文件</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/13.png" alt="13"></p>
+<p>利用成功，输入smbclient  &#x2F;&#x2F;192.168.80.129&#x2F;tmp（提示输入密码处，直接回车即可），之后切换rootfs即可利用成功</p>
+<p><img src="/14.png" alt="14"></p>
+<p>6667端口攻击</p>
+<p>待续。。。。</p>
+]]></content>
+      <categories>
+        <category>靶机</category>
+      </categories>
+      <tags>
+        <tag>CVE,靶机,Metasploitable2</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Raspberry-pico-W制作badusb</title>
     <url>/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/</url>
     <content><![CDATA[<h3 id="BadUsb与HID攻击"><a href="#BadUsb与HID攻击" class="headerlink" title="BadUsb与HID攻击"></a>BadUsb与HID攻击</h3><h4 id="BadUsb"><a href="#BadUsb" class="headerlink" title="BadUsb"></a>BadUsb</h4><blockquote>
@@ -159,91 +244,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Metasploitable2靶机本地练习记录</title>
-    <url>/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="Metasploitable2靶机本地练习记录"><a href="#Metasploitable2靶机本地练习记录" class="headerlink" title="Metasploitable2靶机本地练习记录"></a>Metasploitable2靶机本地练习记录</h2><h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>靶机ip: 192.168.80.129（位置）</p>
-<blockquote>
-<p>kali下对整个c端扫描 nmap  -sn   192.168.80.0&#x2F;24    (ping扫描)（arp-scan -l)</p>
-</blockquote>
-<p><img src="/1.png" alt="1"></p>
-<p>找到位置ip：192.168.80.129</p>
-<blockquote>
-<p>端口扫描 nmap （-sS) -sT  –min-rate 10000 -p- 192.168.80.129 -OA  nmapscan&#x2F;ports</p>
-<p>获得端口后提取到txt文本 grep open  nmapscan&#x2F;ports.nmap | awk -F  ‘&#x2F;‘  ‘{print  $1}’  | paste -sd ‘,’  </p>
-</blockquote>
-<p><img src="/2-16990060476021.png" alt="2">          </p>
-<p>写入变量$ports中方便后续使用</p>
-<blockquote>
-<p>查看靶机详细信息 nmap -sT -sV -O -p$ports(tab) 192.168.80.129 -oa nmapscan&#x2F;detail</p>
-<p>获得各个开放端口的应用信息：</p>
-</blockquote>
-<p> <img src="/3.png" alt="3"></p>
-<h3 id="21端口攻击"><a href="#21端口攻击" class="headerlink" title="21端口攻击"></a>21端口攻击</h3><blockquote>
-<p>扫描结果返回为ftp 2.3.4版本。google得知为vsftpd笑脸<em>漏洞</em>msf下验证并执行playload（这个有匿名登入的风险，后面会讲到）</p>
-</blockquote>
-<p> <img src="/4.png" alt="4"></p>
-<p>找到对应版本后，set参数并run命令</p>
-<p><img src="/5.png" alt="6"></p>
-<p>直接拿到root权限</p>
-<h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
-<p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
-<p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#x73;&#102;&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;">&#109;&#x73;&#102;&#97;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
-</blockquote>
-<p><img src="/7.png" alt="7"></p>
-<h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
-<p>版本信息为telnet服务，同样是弱口令，根据靶机特性，一般所有服务多为同一账户密码。开始是思路为同样可通过22端口攻击的方式复刻出来，账户密码为msfadmin&#x2F;msfadmin。shell下&gt;远程登入即可拿到当前用户的shell。但登入是它直接告诉你了账户密码（-__-）。</p>
-</blockquote>
-<p><img src="/8.png" alt="8"></p>
-<h3 id="25与53端口攻击"><a href="#25与53端口攻击" class="headerlink" title="25与53端口攻击"></a>25与53端口攻击</h3><blockquote>
-<p>smtp协议多用于邮件传输当中,此处漏洞同样为弱口令,账户密码:msfadmin&#x2F;msfadmin</p>
-<p>domain称网域，是由一串用点分隔的名字组成的互联网上某一台计算机或计算机组的名称，用于在数据传输时对计算机的定位标识（有时也指地理位置）目前还不会,以后在更新</p>
-</blockquote>
-<h3 id="80端口攻击"><a href="#80端口攻击" class="headerlink" title="80端口攻击"></a>80端口攻击</h3><p>打开网站查看:</p>
-<p><img src="/9.png" alt="9"></p>
-<p>目录扫描没有得到可用结果</p>
-<p><img src="/10.png" alt="10"></p>
-<blockquote>
-<p>里面自带以下漏洞靶场便不做演示</p>
-<p>以下利用的其他漏洞，访问phpinfo.php得到php版本信息为：php为5.24，存在[PHP-CGI远程&gt;代码执行漏洞CVE-2012-1823]</p>
-<p>其就是用户请求的querystring（querystring字面上的意思就是查询字符串，一般是对http请求&gt;所带的数据进行解析，这里也是只http请求中所带的数据）被作为了php-cgi的参数，最终导致了&gt;一系列结果。CVE-2012-1823是在php-cgi运行模式下出现的漏洞，其漏洞只出现在以cgi模式运行&gt;的php中</p>
-<p>在文件后接**?-s**后会显示出源码,例如</p>
-</blockquote>
-<p> <img src="/11.png" alt="11"></p>
-<p>远程rce的poc为</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/-d+allow_url_include%<span class="number">3</span>don+-d+auto_prepend_file%<span class="number">3</span>dphp%<span class="number">3</span>a<span class="comment">//input</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POST:  <span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls -al&quot;</span>); <span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
-
-<p><img src="/12.png" alt="12"></p>
-<h5 id="cgi模式下的参数"><a href="#cgi模式下的参数" class="headerlink" title="cgi模式下的参数"></a>cgi模式下的参数</h5><ul>
-<li>-c 指定php.ini文件的位置</li>
-<li>n 不要加载php.ini文件</li>
-<li>-d 指定配置项</li>
-<li>-b 启动fastcgi进程</li>
-<li>-s 显示文件源码</li>
-<li>-T 执行指定次该文件</li>
-<li>-h和-? 显示帮助</li>
-</ul>
-<h3 id="445端口利用"><a href="#445端口利用" class="headerlink" title="445端口利用"></a>445端口利用</h3><p>该端口利用为CVE-2010-0926。</p>
-<p>nmap扫描得到445端口信息为 netbios-ssn Samba smbd 3.X - 4.X 。msf查找相关漏洞，并利用</p>
-<p>利用auxiliary&#x2F;admin&#x2F;smb&#x2F;samba_symlink_traversal模块进行攻击</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">show options</span><br><span class="line">Set RHOST 192.168.80.129 </span><br><span class="line">set SMBSHARE tmp 设置SAM可写文件</span><br><span class="line">exploit</span><br></pre></td></tr></table></figure>
-
-<p><img src="/13.png" alt="13"></p>
-<p>利用成功，输入smbclient  &#x2F;&#x2F;192.168.80.129&#x2F;tmp（提示输入密码处，直接回车即可），之后切换rootfs即可利用成功</p>
-<p><img src="/14.png" alt="14"></p>
-<p>6667端口攻击</p>
-<p>待续。。。。</p>
-]]></content>
-      <categories>
-        <category>靶机</category>
-      </categories>
-      <tags>
-        <tag>CVE,靶机,Metasploitable2</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>frp内网穿透</title>
     <url>/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
     <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/11.jpg"></p>
@@ -300,6 +300,41 @@
       </categories>
       <tags>
         <tag>渗透测试，路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ping-ptunnel与icmp隧道绕过</title>
+    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<hr>
+<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
+<hr>
+<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
+<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
+<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
+<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
+<blockquote>
+<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
+<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
+</blockquote>
+<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
+<p>命令释义：</p>
+<ul>
+<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
+</li>
+<li><p>参数-lp：指定本地监听端口</p>
+</li>
+<li><p>参数-da：指定欲访问的目标服务器</p>
+</li>
+<li><p>参数-dp：指定欲访问的目标端口</p>
+<p>待更新。。。。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>内网穿透</category>
+      </categories>
+      <tags>
+        <tag>渗透测试，icmp协议</tag>
       </tags>
   </entry>
   <entry>
@@ -418,41 +453,6 @@
       </categories>
       <tags>
         <tag>网络安全，python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ping-ptunnel与icmp隧道绕过</title>
-    <url>/2023/12/14/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/</url>
-    <content><![CDATA[<hr>
-<p>填坑，之前frp和socks隧道代理后，proxychain4 ping无法返回包，此次学习了pingtunnel与icmp隧道绕过</p>
-<hr>
-<h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/pingtunnel%E4%B8%8Eicmp%E9%9A%A7%E9%81%93%E7%BB%95%E8%BF%87/11-17022646760041.jpg"></p>
-<h4 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h4><h5 id="icmp协议"><a href="#icmp协议" class="headerlink" title="icmp协议"></a>icmp协议</h5><p>ICMP（Internet Control Message Protocol）Internet控制<a href="https://baike.baidu.com/item/%E6%8A%A5%E6%96%87/3164352?fromModule=lemma_inlink">报文</a>协议。它是<a href="https://baike.baidu.com/item/TCP/IP/214077?fromModule=lemma_inlink">TCP&#x2F;IP</a>协议簇的一个子协议，用于在IP<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1%E5%99%A8/108294?fromModule=lemma_inlink">路由器</a>之间传递控制消息。控制消息是指网络通不通、<a href="https://baike.baidu.com/item/%E4%B8%BB%E6%9C%BA/455151?fromModule=lemma_inlink">主机</a>是否可达、<a href="https://baike.baidu.com/item/%E8%B7%AF%E7%94%B1/363497?fromModule=lemma_inlink">路由</a>是否可用等网络本身的消息。这些控制消息虽然并不传输用户数据，但是对于用户数据的传递起着重要的作用 （百度百科）</p>
-<h4 id="icmp隧道"><a href="#icmp隧道" class="headerlink" title="icmp隧道"></a>icmp隧道</h4><p>在实际的后渗透阶段：因为防火墙（大多不止一个）存在，未必开启了可以使用的端口（有时是因为要到的shell权限过低等无权操作防火墙）进行利用。那么可以利用icmp隧道建立联系。因为icmp协议工作在网络层，依附于IP工作，（像上一篇文章的坑：ping无数据包返回）。</p>
-<p>因此，我们可以包tcp&#x2F;unp数据包封装到icmp协议中（还在学习中，解释如下）：</p>
-<blockquote>
-<p><strong>请求端的 Ping 工具通常会在 ICMP 数据包后面附加上一段随机的数据作为 Payload，而响应端则会拷贝这段 Payload 到 ICMP 响应数据包中返还给请求端，用于识别和匹配 Ping 请求。</strong> </p>
-<p><strong>Windows 和 Linux 系统下的 Ping 工具默认的 Payload 长度为 64 比特，但实际上协议允许附加最大 64K 大小的 Payload。 对于隧道数据，icmptunnel 首先会指定客户端和服务器端。随后，客户端会将 IP 帧封装在 ICMP 请求数据包中发送给服务器，而服务器端则会使用相匹配的 ICMP 响应数据包进行回复。这样在旁人看来，网络中传播的仅仅只是正常的 ICMP 数据包。</strong> 																																解释内容参考：先知社区《内网渗透之icmp隐藏隧道》</p>
-</blockquote>
-<h4 id="ptunnel工具"><a href="#ptunnel工具" class="headerlink" title="ptunnel工具"></a>ptunnel工具</h4><p>ptunnel是一款建立ICMP隧道传输数据的工具。</p>
-<p>命令释义：</p>
-<ul>
-<li><p>参数-p：指定代理服务器，即此示例中的代理服务器B（192.168.1.2）</p>
-</li>
-<li><p>参数-lp：指定本地监听端口</p>
-</li>
-<li><p>参数-da：指定欲访问的目标服务器</p>
-</li>
-<li><p>参数-dp：指定欲访问的目标端口</p>
-<p>待更新。。。。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>内网穿透</category>
-      </categories>
-      <tags>
-        <tag>渗透测试，icmp协议</tag>
       </tags>
   </entry>
   <entry>
@@ -1056,6 +1056,103 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
+    <title>网络安全测试课程-作业-3</title>
+    <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
+    <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
+<p>无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。在TCP&#x2F;IP协议中，TCP协议提供可靠的连接服务，连接是通过<strong>三次握手</strong>进行初始化的。同时由于TCP协议是一种面向连接的、可靠的、基于字节流的运输层通信协议，TCP是<strong>全双工模式</strong>，所以需要<strong>四次挥手</strong>关闭连接。</p>
+<p><img src="/v2-8ce8c897b4d5e7397b25eb4d4b31d7fc_720w.png" alt="0"></p>
+<blockquote>
+<ol>
+<li><strong>SYN</strong>：简写为<code>S</code>，同步标志位，用于建立会话连接，同步序列号；</li>
+<li><strong>ACK</strong>： 简写为<code>.</code>，确认标志位，对已接收的数据包进行确认；</li>
+<li><strong>FIN</strong>： 简写为<code>F</code>，完成标志位，表示我已经没有数据要发送了，即将关闭连接；</li>
+<li>PSH：简写为<code>P</code>，推送标志位，表示该数据包被对方接收后应立即交给上层应用，而不在缓冲区排队；</li>
+<li>RST：简写为<code>R</code>，重置标志位，用于连接复位、拒绝错误和非法的数据包；</li>
+<li>URG：简写为<code>U</code>，紧急标志位，表示数据包的紧急指针域有效，用来保证连接不被阻断，并督促中间设备尽快处理。</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>TCP(Transfer Control Protocol，传输控制协议)和IP(Internet Protocol，网际协议)TCP&#x2F;IP演变为一种体系结构，即TCP&#x2F;IP参考模型。现在的TCP&#x2F;IP已成为一个工业标准的协议集，它最早应用于ARPAnet。</p>
+</li>
+<li><p>TCP&#x2F;IP是一个协议簇或协议栈，是由多个子协议组成的集合。</p>
+</li>
+<li><p>与OSI参考模型不同，TCP&#x2F;IP模型由应用层(Application Layer)、传输层(Transport Layer)、网际层(Internet Layer，也称为Internet层)和网络接口层(Network Interface Layer)四部分组成。</p>
+</li>
+</ul>
+<p><img src="/1.png" alt="1"></p>
+<p><img src="/image-20231120084635374.png" alt="2"></p>
+<p>​														<strong>TCP&#x2F;IP</strong> <strong>体系中的主要协议及与各层的对应关系</strong> </p>
+<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><ul>
+<li><strong>网络接口层属于最低的一层，它负责通过网络发送和接收分组(帧Frame)。</strong></li>
+<li><strong>交换机</strong>、<strong>MAC</strong>  <strong>地址</strong>、<strong>通信媒体</strong> <strong>定义</strong> </li>
+<li><strong>MAC(</strong> <strong>Media Access Control Address</strong> <strong>)</strong> <strong>地址</strong> </li>
+<li><strong>物理地址</strong> <strong>-</strong> <strong>网卡地址</strong> <strong>-</strong> <strong>硬件地址</strong></li>
+<li><strong>48bit</strong>： <strong>6</strong>  <strong>8</strong> <strong>字节</strong>，<strong>十六进制描述</strong> （例如Mac地址）</li>
+<li><strong>唯一性</strong></li>
+<li><strong>确实存在，不能更改</strong></li>
+</ul>
+<h4 id="网际层"><a href="#网际层" class="headerlink" title="网际层"></a>网际层</h4><p>• 也称为“互联网络层”</p>
+<p>• 它相当于OSI参考模型网络层的无连接网络服务。网际层的任务是：允许位于同一网络或不同网络中的两台主机之间以分组(包Packet)的形式进行通信。</p>
+<ul>
+<li><p><strong>路由器、路由选择、转发分组 、IP 地址</strong> </p>
+</li>
+<li><p><strong>ACL（访问控制列表）、防火墙、NAT</strong></p>
+</li>
+<li><p>**IP  地址： 32bit **</p>
+</li>
+<li><p><strong>点分十进制描述</strong></p>
+</li>
+<li><p><strong>随着网络规划</strong></p>
+</li>
+<li><p><strong>可更改</strong></p>
+</li>
+</ul>
+<h4 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h4><ul>
+<li><p>允许在源和目的主机的对等体之间进行会话，负责会话对等体的应用进程之间的通信。功能类似于OSI参考模型传输层的功能。</p>
+</li>
+<li><p>进程 Port端口(也是个地址)、TCP、UDP</p>
+</li>
+</ul>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><ul>
+<li><p>最高层。应用层主要包括根据应用需要开发的一些高层协议，如HTTP、DNS、DHCP、telnet、FTP、SMTP、SNMP、等。随着网络应用的不断发展，新的应用层协议还会不断出现。</p>
+</li>
+<li><p>应用有关、用户、域名</p>
+</li>
+</ul>
+<h3 id="TCP-IP网络中分组的传输示例"><a href="#TCP-IP网络中分组的传输示例" class="headerlink" title="TCP&#x2F;IP网络中分组的传输示例"></a>TCP&#x2F;IP网络中分组的传输示例</h3><ul>
+<li><p>子网-网络由多个子网(Subnetwork)组成，每一个子网属于某一种特定类型的网络，局域网中的以太网、令牌环网、FDDI，广域网的x.25、帧中继等。</p>
+</li>
+<li><p>网络接入协议-计算机接入网络，必须使用这一子网中规定的接入协议。通过网络接入协议，可以让一台主机将数据通过子网发送到其他的主机。</p>
+</li>
+<li><p>路由器-它是连接不同子网的设备，一台路由器相当于一个中继站，将一个IP分组从某一子网中的一台主机通过一个或多个子网发送到目的主机。</p>
+</li>
+</ul>
+<p><img src="/image-20231120093010546.png" alt="4"></p>
+<ul>
+<li><p>全局地址:  对于Internet等互联网络来说，每一台主机必须拥有一个全网唯一的IP地址作为其身份的唯一标识，这个IP地址称为全局地址。当源主机发送数据到目的主机时，源主机首先要知道目的主机的IP地址。(NAT技术)</p>
+</li>
+<li><p>端口:  主机中的每一个进程必须具有一个在本主机中唯一的地址，这个地址称为端口（port）。通过端口，端到端的协议（如TCP）才能够将数据正确地交付给相应的进程。</p>
+</li>
+</ul>
+<h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>Wireshark</strong>是一个<a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">免费的开源</a> <a href="https://en.wikipedia.org/wiki/Packet_analyzer">数据包分析器</a>。它用于<a href="https://en.wikipedia.org/wiki/Computer_network">网络</a>故障排除、分析、软件和<a href="https://en.wikipedia.org/wiki/Communications_protocol">通信协议</a>开发以及教育。–wikipedia</p>
+<p>详细简介参考<a href="https://pdai.tech/md/develop/protocol/dev-protocol-tool-wireshark.html">《工具: Wireshark介绍及抓包分析》</a>  。与之相同的还有Charies软件（可以在开发中调试端口外，Charles也可以用于分析第三方应用的通讯协议，配合Charles的SSL功能，还可以分析HTTPS协议）可以用于在PC处使用模拟器抓取app软件。</p>
+<h4 id="抓取旧版QQ消息"><a href="#抓取旧版QQ消息" class="headerlink" title="抓取旧版QQ消息"></a>抓取旧版QQ消息</h4><p><img src="/5.png" alt="5"></p>
+<p>选取已连接的网卡，这里选取WLAN，输入oicq抓取qq流量数据。</p>
+<p><img src="/7.png" alt="7"></p>
+<p>此处可以看到相应的网络路由设备厂商，服务端口，网络协议，QQ号码等信息</p>
+<p>发送一张png图片进行获取</p>
+<p>选择tcp流查找png的16进制文件头：FFD8,右键追踪流并另存为xx.png,用winHex打开</p>
+<p><img src="/8.png" alt="8"></p>
+<p><img src="/9.png" alt="9"></p>
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,wireshark</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络安全测试课程_作业_2</title>
     <url>/2023/11/14/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-2/</url>
     <content><![CDATA[<h2 id="课堂总结"><a href="#课堂总结" class="headerlink" title="课堂总结"></a>课堂总结</h2><h3 id="主动扫描"><a href="#主动扫描" class="headerlink" title="主动扫描"></a>主动扫描</h3><p>主动扫描一般都是针对目标发送特定的数据包，然后根据目标的反应来获得一些信息。大多为利用爬虫模块对特定链接的GET,POST，Headers等请求的参数进行变形，然后重放并根据返回的数据包的信息或状态码进行判断。其行为有可能被目标系统查获。</p>
@@ -1154,103 +1251,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程-作业-3</title>
-    <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
-    <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
-<p>无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。在TCP&#x2F;IP协议中，TCP协议提供可靠的连接服务，连接是通过<strong>三次握手</strong>进行初始化的。同时由于TCP协议是一种面向连接的、可靠的、基于字节流的运输层通信协议，TCP是<strong>全双工模式</strong>，所以需要<strong>四次挥手</strong>关闭连接。</p>
-<p><img src="/v2-8ce8c897b4d5e7397b25eb4d4b31d7fc_720w.png" alt="0"></p>
-<blockquote>
-<ol>
-<li><strong>SYN</strong>：简写为<code>S</code>，同步标志位，用于建立会话连接，同步序列号；</li>
-<li><strong>ACK</strong>： 简写为<code>.</code>，确认标志位，对已接收的数据包进行确认；</li>
-<li><strong>FIN</strong>： 简写为<code>F</code>，完成标志位，表示我已经没有数据要发送了，即将关闭连接；</li>
-<li>PSH：简写为<code>P</code>，推送标志位，表示该数据包被对方接收后应立即交给上层应用，而不在缓冲区排队；</li>
-<li>RST：简写为<code>R</code>，重置标志位，用于连接复位、拒绝错误和非法的数据包；</li>
-<li>URG：简写为<code>U</code>，紧急标志位，表示数据包的紧急指针域有效，用来保证连接不被阻断，并督促中间设备尽快处理。</li>
-</ol>
-</blockquote>
-<ul>
-<li><p>TCP(Transfer Control Protocol，传输控制协议)和IP(Internet Protocol，网际协议)TCP&#x2F;IP演变为一种体系结构，即TCP&#x2F;IP参考模型。现在的TCP&#x2F;IP已成为一个工业标准的协议集，它最早应用于ARPAnet。</p>
-</li>
-<li><p>TCP&#x2F;IP是一个协议簇或协议栈，是由多个子协议组成的集合。</p>
-</li>
-<li><p>与OSI参考模型不同，TCP&#x2F;IP模型由应用层(Application Layer)、传输层(Transport Layer)、网际层(Internet Layer，也称为Internet层)和网络接口层(Network Interface Layer)四部分组成。</p>
-</li>
-</ul>
-<p><img src="/1.png" alt="1"></p>
-<p><img src="/image-20231120084635374.png" alt="2"></p>
-<p>​														<strong>TCP&#x2F;IP</strong> <strong>体系中的主要协议及与各层的对应关系</strong> </p>
-<h4 id="网络接口层"><a href="#网络接口层" class="headerlink" title="网络接口层"></a>网络接口层</h4><ul>
-<li><strong>网络接口层属于最低的一层，它负责通过网络发送和接收分组(帧Frame)。</strong></li>
-<li><strong>交换机</strong>、<strong>MAC</strong>  <strong>地址</strong>、<strong>通信媒体</strong> <strong>定义</strong> </li>
-<li><strong>MAC(</strong> <strong>Media Access Control Address</strong> <strong>)</strong> <strong>地址</strong> </li>
-<li><strong>物理地址</strong> <strong>-</strong> <strong>网卡地址</strong> <strong>-</strong> <strong>硬件地址</strong></li>
-<li><strong>48bit</strong>： <strong>6</strong>  <strong>8</strong> <strong>字节</strong>，<strong>十六进制描述</strong> （例如Mac地址）</li>
-<li><strong>唯一性</strong></li>
-<li><strong>确实存在，不能更改</strong></li>
-</ul>
-<h4 id="网际层"><a href="#网际层" class="headerlink" title="网际层"></a>网际层</h4><p>• 也称为“互联网络层”</p>
-<p>• 它相当于OSI参考模型网络层的无连接网络服务。网际层的任务是：允许位于同一网络或不同网络中的两台主机之间以分组(包Packet)的形式进行通信。</p>
-<ul>
-<li><p><strong>路由器、路由选择、转发分组 、IP 地址</strong> </p>
-</li>
-<li><p><strong>ACL（访问控制列表）、防火墙、NAT</strong></p>
-</li>
-<li><p>**IP  地址： 32bit **</p>
-</li>
-<li><p><strong>点分十进制描述</strong></p>
-</li>
-<li><p><strong>随着网络规划</strong></p>
-</li>
-<li><p><strong>可更改</strong></p>
-</li>
-</ul>
-<h4 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h4><ul>
-<li><p>允许在源和目的主机的对等体之间进行会话，负责会话对等体的应用进程之间的通信。功能类似于OSI参考模型传输层的功能。</p>
-</li>
-<li><p>进程 Port端口(也是个地址)、TCP、UDP</p>
-</li>
-</ul>
-<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><ul>
-<li><p>最高层。应用层主要包括根据应用需要开发的一些高层协议，如HTTP、DNS、DHCP、telnet、FTP、SMTP、SNMP、等。随着网络应用的不断发展，新的应用层协议还会不断出现。</p>
-</li>
-<li><p>应用有关、用户、域名</p>
-</li>
-</ul>
-<h3 id="TCP-IP网络中分组的传输示例"><a href="#TCP-IP网络中分组的传输示例" class="headerlink" title="TCP&#x2F;IP网络中分组的传输示例"></a>TCP&#x2F;IP网络中分组的传输示例</h3><ul>
-<li><p>子网-网络由多个子网(Subnetwork)组成，每一个子网属于某一种特定类型的网络，局域网中的以太网、令牌环网、FDDI，广域网的x.25、帧中继等。</p>
-</li>
-<li><p>网络接入协议-计算机接入网络，必须使用这一子网中规定的接入协议。通过网络接入协议，可以让一台主机将数据通过子网发送到其他的主机。</p>
-</li>
-<li><p>路由器-它是连接不同子网的设备，一台路由器相当于一个中继站，将一个IP分组从某一子网中的一台主机通过一个或多个子网发送到目的主机。</p>
-</li>
-</ul>
-<p><img src="/image-20231120093010546.png" alt="4"></p>
-<ul>
-<li><p>全局地址:  对于Internet等互联网络来说，每一台主机必须拥有一个全网唯一的IP地址作为其身份的唯一标识，这个IP地址称为全局地址。当源主机发送数据到目的主机时，源主机首先要知道目的主机的IP地址。(NAT技术)</p>
-</li>
-<li><p>端口:  主机中的每一个进程必须具有一个在本主机中唯一的地址，这个地址称为端口（port）。通过端口，端到端的协议（如TCP）才能够将数据正确地交付给相应的进程。</p>
-</li>
-</ul>
-<h3 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><strong>Wireshark</strong>是一个<a href="https://en.wikipedia.org/wiki/Free_and_open-source_software">免费的开源</a> <a href="https://en.wikipedia.org/wiki/Packet_analyzer">数据包分析器</a>。它用于<a href="https://en.wikipedia.org/wiki/Computer_network">网络</a>故障排除、分析、软件和<a href="https://en.wikipedia.org/wiki/Communications_protocol">通信协议</a>开发以及教育。–wikipedia</p>
-<p>详细简介参考<a href="https://pdai.tech/md/develop/protocol/dev-protocol-tool-wireshark.html">《工具: Wireshark介绍及抓包分析》</a>  。与之相同的还有Charies软件（可以在开发中调试端口外，Charles也可以用于分析第三方应用的通讯协议，配合Charles的SSL功能，还可以分析HTTPS协议）可以用于在PC处使用模拟器抓取app软件。</p>
-<h4 id="抓取旧版QQ消息"><a href="#抓取旧版QQ消息" class="headerlink" title="抓取旧版QQ消息"></a>抓取旧版QQ消息</h4><p><img src="/5.png" alt="5"></p>
-<p>选取已连接的网卡，这里选取WLAN，输入oicq抓取qq流量数据。</p>
-<p><img src="/7.png" alt="7"></p>
-<p>此处可以看到相应的网络路由设备厂商，服务端口，网络协议，QQ号码等信息</p>
-<p>发送一张png图片进行获取</p>
-<p>选择tcp流查找png的16进制文件头：FFD8,右键追踪流并另存为xx.png,用winHex打开</p>
-<p><img src="/8.png" alt="8"></p>
-<p><img src="/9.png" alt="9"></p>
-]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,wireshark</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网络安全测试课程-作业-4</title>
     <url>/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/</url>
     <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
@@ -1338,6 +1338,62 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       </tags>
   </entry>
   <entry>
+    <title>网络安全测试课程-作业-5</title>
+    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
+    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
+<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
+<ul>
+<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
+<ul>
+<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
+</ul>
+</li>
+<li><p>运输层(TCP，UDP)：端口扫描，</p>
+<ul>
+<li>:one:TCP协议扫描，全连接扫描</li>
+<li>:two:UDP协议扫描</li>
+<li>:three: SYN扫描</li>
+</ul>
+</li>
+</ul>
+<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
+<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
+<ul>
+<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
+<p>​			</p>
+<ul>
+<li><blockquote>
+<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
+<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
+<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
+
+<blockquote>
+<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
+<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
+<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
+<p><img src="/1.png" alt="域环境"></p>
+<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
+<p>分别ping两台主机，得到结果：</p>
+<p><img src="/2.png" alt="ping实验"></p>
+<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
+<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
+<img src="3.png" style="zoom:90%;" />
+
+<p>通过nmap扫描系统类型可以看到：</p>
+<p><img src="/4.png"></p>
+<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>网络测试-efssetup_20181复现</title>
     <url>/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<hr>
@@ -1396,61 +1452,5 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
       <tags>
         <tag>easy file sharing server</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>网络安全测试课程-作业-5</title>
-    <url>/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/</url>
-    <content><![CDATA[<h2 id="操作系统协议栈指纹"><a href="#操作系统协议栈指纹" class="headerlink" title="操作系统协议栈指纹"></a>操作系统协议栈指纹</h2><p>(Namp使用手册)[<a href="https://nmap.org/man/zh/man-port-scanning-techniques.html]">https://nmap.org/man/zh/man-port-scanning-techniques.html]</a></p>
-<p>前置知识–主动扫描摘记（主动指纹识别是指主动往远程主机发送数据包并对相应的响应进行分析的过程，使扫描器在更短的时间内获得比被动扫描更准确的结果。）：</p>
-<ul>
-<li><p>网络层：ping命令，icmp协议，速度快(可跨网段)：防护墙可以静ping（检测报文中协议类型为01，即icmp协议便丢弃）。</p>
-<ul>
-<li>ping失败后，可查看arp缓存表(arp -a)是否存在mac地址(仅限同一个子网)</li>
-</ul>
-</li>
-<li><p>运输层(TCP，UDP)：端口扫描，</p>
-<ul>
-<li>:one:TCP协议扫描，全连接扫描</li>
-<li>:two:UDP协议扫描</li>
-<li>:three: SYN扫描</li>
-</ul>
-</li>
-</ul>
-<p>系统的指纹实际上来源于TCP&#x2F;IP协议栈。TCP&#x2F;IP协议栈技术只是在RFC文档中描述，并没有一个统一的行业标准，各个公司在编写应用于自己的操作系统的TCP&#x2F;IP协议栈时，对RFC文档做出了不尽相同的诠释，造成了各个操作系统在TCP&#x2F;IP协议的实现上有所不同。通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，就可以判定操作系统类型及版本，这种方式也称为“指纹方法学”。</p>
-<p>例如我们可以通过ping命令观测TLL值得大小来是否为windows和liunx系统。亦可以使用nmap扫描指定好参数就可以探别系统版本和信息。</p>
-<ul>
-<li><p>TTL即Time to live，是由发送数据包的计算机等设备设置的。数据包每次经过路由转发后，该值都会被减1，当TTL值变为0，该数据包便会被丢弃。</p>
-<p>​			</p>
-<ul>
-<li><blockquote>
-<p>常见系统的TTL值-&gt;实际探测会因为经过路由不断衰减而改变，但一般大致范围不会变(可计算)，不影响判断。</p>
-<p>Windows 9x&#x2F;NT&#x2F;2000 Intel   128<br>Digital Unix 4.0 Alpha      60<br>Linux 2.2.x Intel         64<br>Netware 4.11 Intel         128</p>
-</blockquote>
-</li>
-</ul>
-</li>
-</ul>
-<p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
-<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
-
-<blockquote>
-<p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">--《基于TCP/IP协议栈指纹辨识的远程操作系统探测》</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h3 id="TCP-与-ICMP-指纹识别"><a href="#TCP-与-ICMP-指纹识别" class="headerlink" title="TCP 与 ICMP 指纹识别"></a><strong>TCP</strong> <strong>与</strong> <strong>ICMP</strong> <strong>指纹识别</strong></h3><p>对操作系统的扫描大多是通过TCP&#x2F;IP协议簇进行的。应因为TCP&#x2F;IP是互联网的基础协议，网络上所有的通信交互都通过该协议簇进行，所以操作系统OS想要与外界通信（这是必然的）一定要实现该协议。这些标记对操作系统特别重要，每个操作系统根据数据包的不同类型做出不同的反应，如果是TCP包就发送 到系统自己的网络栈。</p>
-<p>ICMP协议也经常被用来进行指纹识别。许多traceroute功能使用ICMP协议发现起点到目标的网络路径。如果数据报没有被正确 处理，不管是设备没有激活还是数据报自己的问题，ICMP都会返回错误消息，这些错误消息有时也很有用。</p>
-<h3 id="本机实验"><a href="#本机实验" class="headerlink" title="本机实验"></a>本机实验</h3><p>本机环境下的域下有多台靶机，实验使用kali,Ubuntu,windows7进行实验。</p>
-<p><img src="/1.png" alt="域环境"></p>
-<p>ip地址分别win7:192.168.65.138,ubuntu:192.168.65.137</p>
-<p>分别ping两台主机，得到结果：</p>
-<p><img src="/2.png" alt="ping实验"></p>
-<p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
-<p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
-<img src="3.png" style="zoom:90%;" />
-
-<p>通过nmap扫描系统类型可以看到：</p>
-<p><img src="/4.png"></p>
-<p>通过比较不同的操作系统的TCP&#x2F;IP协议栈的细微差异，可以识别出OS类型甚至是具体版本。</p>
-]]></content>
   </entry>
 </search>
