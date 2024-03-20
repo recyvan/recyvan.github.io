@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>内网穿透一 | Recyvan</title><noscript>开启JavaScript才能访问本站哦~</noscript><link rel="icon" href="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><!-- index.css--><link rel="stylesheet" href="/css/index.css?v=1.5.1"><!-- inject head--><link rel="stylesheet" href="https://cdn.cbd.int/solitude-source/icon/scoicon.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.css"><!-- aplayer--><link rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"><!-- swiper--><link rel="stylesheet" href="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.9/katex.min.css"><!-- Open Graph--><meta name="description" content="内网穿透在一次场景搭建（其概念图大致为：以liunx-1做跳板机，进入win10-1,在从win10-1访问与之相连的win7-1的80端口和linux-2的21端口）。在主机渗透时使用msf攻击时，若要访问win10,win7主机需要配置相关路由，因此要掌握内网穿透的知识。 NAT转换的多种模式"><!-- pwa--><script>(win => {
+        win.saveToLocal = {
+            set: function setWithExpiry(key, value, ttl) {
+                if (ttl === 0)
+                    return
+                const now = new Date()
+                const expiryDay = ttl * 86400000
+                const item = {
+                    value: value,
+                    expiry: now.getTime() + expiryDay,
+                }
+                localStorage.setItem(key, JSON.stringify(item))
+            },
+
+            get: function getWithExpiry(key) {
+                const itemStr = localStorage.getItem(key)
+
+                if (!itemStr) {
+                    return undefined
+                }
+                const item = JSON.parse(itemStr)
+                const now = new Date()
+
+                if (now.getTime() > item.expiry) {
+                    localStorage.removeItem(key)
+                    return undefined
+                }
+                return item.value
+            }
+        }
+
+        const DarkModeStatus = localStorage.getItem('theme')
+        if (DarkModeStatus !== null) {
+            if (DarkModeStatus === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+            }
+        }
+
+        const asideStatus = saveToLocal.get('aside-status')
+        if (asideStatus !== undefined) {
+            if (asideStatus === 'hide') {
+                document.documentElement.classList.add('hide-aside')
+            } else {
+                document.documentElement.classList.remove('hide-aside')
+            }
+        }
+    }
+)(window)
+
+console.log(
+    "%c Program: Hexo %c Theme: Solitude %c Version: v1.5.1",
+    "border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#ff3842;",
+    "padding: 5px 10px;color:white;background:#3e9f50;",
+    "border-radius:0 5px 5px 0;padding: 5px 10px;background:#0084ff;color:white;"
+);</script><!-- global head--><script>const GLOBAL_CONFIG = {
+    root: '/',
+    algolia: undefined,
+    localsearch: {"preload":false,"path":"/search.xml"},
+    runtime: '2023-04-20 00:00:00',
+    lazyload: {
+        enable: false,
+        error: '/img/error_load.png'
+    },
+    hightlight: {
+        enable: false,
+        limit: 200,
+        expand: false,
+        copy: true,
+    },
+    randomlinks: false,
+    lang: {
+        theme: {
+            dark: '已切换至深色模式',
+            light: '已切换至浅色模式',
+        },
+        copy: {
+            success: '复制成功',
+            error: '复制失败',
+        },
+        backtop: '返回顶部',
+        time: {
+            recent: '最近',
+            yesterday: '昨天',
+            berforeyesterday: '前天',
+            daybefore: '天前',
+            runtime: '天',
+        },
+        search: {
+            empty: '找不到你查询的内容：${query}',
+            hit: '找到 ${hits} 条结果，用时 ${time} 毫秒',
+            placeholder: '输入关键词快速查找',
+        },
+        chs: {
+            chs_to_cht: '繁體中文',
+            cht_to_chs: '简体中文',
+        }
+    },
+    aside: {
+        sayhello: {
+            morning: '一日之计在于晨',
+            noon: '吃饱了才有力气干活',
+            afternoon: '集中精力，攻克难关',
+            night: '不要太劳累了，早睡更健康',
+            goodnight: '睡个好觉，保证精力充沛',
+        },
+        sayhello2: ["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多","🎮 电竞游戏爱好者"],
+    },
+    covercolor: {
+        enable: false
+    },
+    comment: {
+        enable: false,
+        type: '',
+        commentBarrage: false,
+        randomInfoStart: ["聪敏的","可爱的","美丽的"],
+        randomInfoEnd: ["白菜","小可爱","小仙女"],
+        twikoo: {
+            url: '',
+            accessToken: ''
+        },
+        waline: {
+            url: '',
+        }
+    },
+    lightbox: 'fancybox',
+    rightside: {
+        enable: false
+    },
+    ai: {
+        enable: false,
+        key: '',
+        talk: '我是王卓Sco开发的摘要生成助理ScoGPT，ScoGPT在静态部署时进行摘要的撰写，并且在访客访问时通过ScoCorrection转译后的文本摘要实现工具。我在这里只负责已经生成的摘要显示，你无法与我直接沟通，但我可以回答一些预设的问题。',
+        randomPost: false,
+    },
+    music: {
+        enable: true,
+    },
+    translate: undefined,
+};</script><meta name="generator" content="Hexo 7.1.1"></head><body id="body"><!-- universe--><canvas id="universe"></canvas><!-- loading--><!-- console--><div id="console"><div class="close-btn" onclick="sco.hideConsole()"><i class="scoicon sco-close-fill"></i></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="sco.switchDarkMode()" title="昼夜切换" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i></a></div><div class="console-btn-item" id="consoleHideAside"><a class="asideSwitch" onclick="sco.switchHideAside()" title="边栏显示控制" href="javascript:void(0);"><i class="scoicon sco-side-bar-fill"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="sco.musicToggle()"><a class="music-switch" title="音乐开关" href="javascript:void(0);"><i class="scoicon sco-disc-fill"></i></a></div></div><div class="console-mask" onclick="sco.hideConsole()"></div></div><!-- sidebar--><div id="sidebar" style="zoom: 1;"><div id="menu-mask" style="display: none;"></div><div id="sidebar-menus"><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" onclick="sco.switchDarkMode()" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="/categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="/music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>关于</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="scoicon  sco-contacts-fill"></i><span>关于本站</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-widget card-tags card-archives card-webinfo card-allinfo"><div class="card-tag-cloud"><a href="/tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/">JAVA安全,序列化<sup>1</sup></a><a href="/tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/">CVE,靶机,Metasploitable2<sup>1</sup></a><a href="/tags/pico/">pico<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/">渗透测试，路由<sup>2</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8Cicmp%E5%8D%8F%E8%AE%AE/">渗透测试，icmp协议<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/">网络安全，python<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%85%8D%E6%9D%80/">渗透测试，免杀<sup>1</sup></a><a href="/tags/ASP-NET/">ASP.NET<sup>1</sup></a><a href="/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/">php代码分析，webmin<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">网络渗透测试<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/">信息搜集，渗透测试，网络安全，红蓝对抗<sup>1</sup></a><a href="/tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">C语言,数据结构,线性表<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/">网络渗透测试基础知识,kali,网卡与路由<sup>2</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-wireshark/">网络渗透测试基础知识,wireshark<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-DNS-ARP/">网络渗透测试基础知识,DNS,ARP<sup>1</sup></a><a href="/tags/easy-file-sharing-server/">easy file sharing server<sup>1</sup></a></div></div></div></div><!-- keyboard--><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav class="show" id="nav"><div id="nav-group"><div id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon scoicon sco-more-fill"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div></div><a id="site-name" href="/" title="返回博客主页"><span class="title">recyvan</span></a></div><div id="page-name-mask"><div id="page-name"><a id="page-name-text" onclick="sco.toTop()">内网穿透一</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="/categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="/music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>关于</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="scoicon  sco-contacts-fill"></i><span>关于本站</span></a></li></ul></div></div></div><div id="nav-left"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机一篇文章" href="javascript:void(0);"><i class="scoicon sco-signal-tower-fill"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索"><i class="scoicon sco-search-line"></i></a></div><div class="nav-button" id="nav-totop" onclick="sco.toTop()"><a class="totopbtn"><i class="scoicon sco-arrow-up-line"></i><span id="percent">0</span></a></div><div id="toggle-menu"><a class="site-page"><i class="scoicon sco-menu-line"></i></a></div></div></div></nav><div class="coverdiv" id="coverdiv"><img class="nolazyload" id="post-cover" src="/img/default.png" alt="内网穿透一"></div><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original" title="该文章为原创文章，注意版权协议">原创</a><span class="post-meta-categories"><a class="post-meta-categories" href="/categories/内网穿透/">内网穿透</a></span><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/"><span class="tags-name tags-punctuation">渗透测试，路由</span></a></div></div></div></div><h1 class="post-title">内网穿透一</h1><div id="post-meta"><div class="meta-secondline"><span class="post-meta-wordcount"><span class="post-meta-separator"></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h2><p>在一次场景搭建（其概念图大致为：以liunx-1做跳板机，进入win10-1,在从win10-1访问与之相连的win7-1的80端口和linux-2的21端口）。在主机渗透时使用msf攻击时，若要访问win10,win7主机需要配置相关路由，因此要掌握内网穿透的知识。</p>
+<h3 id="NAT转换的多种模式"><a href="#NAT转换的多种模式" class="headerlink" title="NAT转换的多种模式"></a>NAT转换的多种模式</h3><blockquote>
+<p>（三种模式的讲解参考<a target="_blank" rel="noopener" href="https://www.juniper.net/documentation/cn/zh/software/junos/nat/topics/topic-map/security-nat-static.html">《网络地址转换用户指南》</a>  <a target="_blank" rel="noopener" href="https://blog.csdn.net/xtggbmdk/article/details/89222407">《静态NAT、动态NAT、PAT(端口多路复用)之间的区别》</a> <a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/ede737a71f5e1e1eec9784239">《三张图解释静态 NAT、动态 NAT、PAT》</a>）</p>
+</blockquote>
+<h4 id="静态转换"><a href="#静态转换" class="headerlink" title="静态转换"></a>静态转换</h4><p>静态NAT将网络信息流从静态外部 IP 地址映射到内部 IP 地址或网络。它创建实际地址到映射地址的静态转换。静态NAT通过具有未注册专用 IP 地址的专用 LAN 提供与网络设备的互联网连接。</p>
+<p>静态NAT可定义从一个 IP 子网到另一个 IP 子网的一对一映射。映射包括一个方向的目标 IP 地址转换，以及反向的源 IP 地址转换。从NAT设备，原始目标地址是虚拟主机 IP 地址，而映射至地址是真正的主机 IP 地址。手动写入 IP 地址映射条目，配置 NAT 表，一个内网地址对应着一个外网地址，举例，192.168.x.x 对应 1.1.x.x。当 192.168.x.x 向外网发包，则过路由的时候，会根据静态 NAT 表，将 192.168 .x.x更换为 1.1.x.x。–&gt;但并不意味着一个公网IP<strong>只能</strong>对应一个IP。</p>
+<h4 id="动态转发"><a href="#动态转发" class="headerlink" title="动态转发"></a>动态转发</h4><p>指将内部私有IP转换为公网IP地址时，IP的对应关系是不确定的。也就是说只要指定哪些内部地址可以进行NAT转换，以及哪些可以的合法的IP地址可以作为外部地址，就可以进行动态转换了。也可以使用多个合法地址集。</p>
+<p>在动态转发中，一个公网IP可以对应一个网关IP，例如：192.168.1.0&#x2F;24 这个网段对应着 100.1.x.x；192.168.1.1 发包；在 NAT 地址转换里，形成了一条映射（条目），就是，192.168.1.1 映射 100.1.x.x，这个时候，由于 192.168.1.1 占用着 100.1.x.x，则别人无法再使用这个 100.1.x.x，直到 192.168.1.映射表项老化后 ，则可以把 100.1 .x.x给别人；别人无法使用的原因是，如果别人也在使这个 100.1， 得不到回包。内网主机发起连接请求时，会自动分配一个公网IP和端口。</p>
+<h4 id="端口多路复用-PAT"><a href="#端口多路复用-PAT" class="headerlink" title="端口多路复用(PAT)"></a>端口多路复用(PAT)</h4><p>端口多路复用(OverLoad)是指改变外出数据包的源端口并进行端口转换，即端口地址转换(PAT，Port Address Translation).采用端口多路复用方式。内部网络的所有主机均可共享一个合法外部IP地址实现对Internet的访问，从而可以最大限度地节约IP地址资源。同时，又可隐藏网络内部的所有主机，有效避免来自internet的攻击。因此，目前网络中应用最多的就是端口多路复用方式。</p>
+<p>例如在一个网段中，192.168.1.1向外发送请求，经过路由时，会将192.168.1.1映射到8.0.130.x(公网IP)的一个端口上，当12.168.1.1的会话不结束，那该IP会一直占用8.0.130.x这个IP和端口号（端口号已使用，其他主机无法在使用，直至会话结束）。</p>
+<h3 id="内网穿透-msf配置路由和sock代理穿透内网配合"><a href="#内网穿透-msf配置路由和sock代理穿透内网配合" class="headerlink" title="内网穿透-msf配置路由和sock代理穿透内网配合"></a>内网穿透-msf配置路由和sock代理穿透内网配合</h3><ul>
+<li>本机环境搭建下网络拓扑图为：</li>
+</ul>
+<p><img src="/11-17022646760041.jpg"></p>
+<p>操作大致流程：</p>
+<p>kali msf(msf17_010)–&gt;get shell(windos7)–&gt;上传+socks穿透-&gt;win7 反弹.exe –&gt;kali msf监听端口</p>
+<h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><p>进行windows7永恒之蓝攻击（因为已知存在永恒之蓝，便不再扫描是否存在</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211114327.jpg"></p>
+<p>执行返回shell</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211114511.jpg"></p>
+<p>向window7上传natbypass可执行文件到temp目录下（temp目录具有可执行权限）该步骤用于之后win7反弹shell使用（先埋个坑，等以后学到时再更新。</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211115722.jpg"></p>
+<p>arp -a后找到存在的内网主机,发现目标主机192.168.56.102，但该主机只能window7可以ping通，因此要内网穿透。</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211122900.jpg"></p>
+<p>设置自动路由，发现设置成功。</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211160344.jpg"></p>
+<p>设置socks代理</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211160544.jpg"></p>
+<p>设置&#x2F;ect&#x2F;proxychains4.conf文件：将dynamic_chain取消注释，proxy_dns加入注释，在[ProxyList]选项中加入代理:</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211192852.jpg"></p>
+<p>之前扫描开放了80端口：使用kali下载内容:</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211192950.jpg"></p>
+<p>发现可以正常访问。在firefox下设置好proxy后同样可以访问web服务</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211193749.jpg"></p>
+<p>然后就可以找漏洞上传shell了。（其实这里可以用natbypass.exe来进行）当然如果win7开启了远程连接，那么直接rdesktop连接。</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231211194855.jpg"></p>
+<h4 id="流程详解"><a href="#流程详解" class="headerlink" title="流程详解"></a>流程详解</h4><h5 id="socks代理"><a href="#socks代理" class="headerlink" title="socks代理"></a>socks代理</h5><p><strong>SOCKS</strong>是一种<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">网络传输协议</a>，主要用于客户端与外网服务器之间通讯的中间传递。socks协议属于会话层的协议，位于表示层和传输层之间。socks代理相较于http代理还可以转发UDP代理，socks代理有socks4,socks4a,socks5多个分支。此次实验使用的时socks5版本。</p>
+<p><code>msf</code>中内置了三个socks代理模块，分别是socks4a、socks5、socks_unc。一般常使用 socks4a和socks5进行代理。其二者只是由于所支持的具体应用不同而存在差异。socks4只支持TCP协议而socks5支持TCP&#x2F;UDP协议，还支持各种身份验证机制等协议，也就是说这里使用socks5的话还需要设置用户名与密码。</p>
+<blockquote>
+<blockquote>
+<p>​	等以后学习socks代理后,单独写文章深入研究.</p>
+</blockquote>
+</blockquote>
+<h5 id="全局代理proxychain4"><a href="#全局代理proxychain4" class="headerlink" title="全局代理proxychain4"></a>全局代理proxychain4</h5><p>用于对指定工具进行代理,例如实验中proxychains4 nmap -sn xxx.xxx.xx.xxx,是指proxychains4通过socks5代理,对内网主机win7进行nmap扫描。</p>
+<p>ProxyChains 是一个 UNIX 程序，它通过预加载的 DLL（dlsym()、LD_PRELOAD）在动态链接程序中挂钩网络相关的 libc 函数，并通过 SOCKS4a&#x2F;5 或 HTTP 代理重定向连接。它仅支持 TCP(不支持 UDP&#x2F;ICMP 等)。</p>
+<p>通过修改配置文件&#x2F;ect&#x2F;proxychains4.conf,来指定代理的具体功能,例如代理方式,IP,端口等。</p>
+<h5 id="远程连接win7"><a href="#远程连接win7" class="headerlink" title="远程连接win7"></a>远程连接win7</h5><p>这种情况十分少,多是可以通过代理可以ping通主机后,寻找漏洞点,再反弹shell。</p>
+<h5 id="msf正向路由和反向路由"><a href="#msf正向路由和反向路由" class="headerlink" title="msf正向路由和反向路由"></a>msf正向路由和反向路由</h5><ul>
+<li><p>正向连接是受害主机监听一个端口，由攻击主机主动去连接受害主机的过程，适用于受害主机具有公网ip的情况.</p>
+</li>
+<li><p>反向连接是控制机主机监听一个端口，由受害主机反向去连接攻击主机的过程，适用于受害主机出网（或出网且没有公网ip）的情况.</p>
+</li>
+</ul>
+<h3 id="内网穿透-frp"><a href="#内网穿透-frp" class="headerlink" title="内网穿透-frp"></a>内网穿透-frp</h3><p>frp 是一个反向代理工具.可以轻松地进行内网穿透.对外网提供服务,frp支持 tcp协议, http协议, https 等协议类型,并且 web 服务支持根据域名进行路由转发。之前在搭建赵师傅CTFd时，对于动态靶机的使用用到了frp技术。</p>
+<p>主要文件为frpc（客户端），frps（服务端），配置文件为frpc.ini,frps.ini文件。</p>
+<h5 id="攻击流程-1"><a href="#攻击流程-1" class="headerlink" title="攻击流程"></a>攻击流程</h5><p>修改frp客户端：</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231212215326.jpg"></p>
+<p>上传frpc文件（反向的代理</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231212215421.jpg"></p>
+<p>运行服务端，win7执行客户端。（shell乱码解决：chcp 65001</p>
+<p><img src="/QQ%E6%88%AA%E5%9B%BE20231212215421.jpg"></p>
+<p>显示失败？？？？？靠，以后再弄，哭！！</p>
+<p>&#x2F;&#x2F;12-13日 补坑，frp的穿透已经实施成功，补充到了这篇文章中<a href="https://recyvan.github.io/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">《frp内网渗透》</a>（点击进入）。</p>
+</article><div class="post-copyright"><div class="post-copyright__author_group"><a class="post-copyright__author_img" href="/about/"><img class="post-copyright__author_img_front" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"></a><div class="post-copyright__author_name">Recyvan</div><div class="post-copyright__author_desc">~blog~</div></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div id="quit-box" onclick="RemoveRewardMask()"></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本文是原创文章，采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>协议，完整转载请注明来自<a href="/">Recyvan</a></span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/"><span class="tags-punctuation"></span>渗透测试，路由<span class="tagsPageCount">2</span></a></div></div></div><nav class="needEndHide pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">frp内网穿透</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">实验课一</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="scoicon sco-star-smile-fill"></i><span>喜欢这篇的人也看了</span><div class="relatedPosts-link"><a onclick="event.preventDefault(); toRandomPost();" href="javascript:void(0);" rel="external nofollow" data-pjax-state="">随便逛逛</a></div></div><div class="relatedPosts-list"><div><a href="/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/" title="frp内网穿透"><img class="cover" src="/img/default.png" alt="cover"><div class="content is-center"><div class="title">frp内网穿透</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><div class="author-info__top-group"><div class="author-info__sayhi" id="author-info__sayhi" onclick="sco.changeSayHelloText()">sayhello.morning</div></div></div><div class="avatar-img-group"><img class="avatar-img" alt="头像" src="/img/auto.jpg"><div class="avatar-sticker"><img class="avatar-sticker-img" src="https://bu.dusays.com/2023/12/30/659011053e246.png" alt="心情贴纸"></div></div><div class="author-info__description_group"><div class="author-info__description">分享自己对编程的<b>热爱</b>，对美好生活的<b>向往</b>，对知识海洋<b>探索历程</b>。</div><div class="author-info__description2">相信你可以在这里找到对你有用的知识和教程。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about/"><div class="author-info__name">Recyvan</div><div class="author-info__desc">~blog~</div></a><div class="card-info-social-icons is-center"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="scoicon sco-menu-line"></i><span>文章目录</span></div><div class="toc-content" id="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F"><span class="toc-text">内网穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#NAT%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%A4%9A%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="toc-text">NAT转换的多种模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%BD%AC%E6%8D%A2"><span class="toc-text">静态转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%BD%AC%E5%8F%91"><span class="toc-text">动态转发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%AF%E5%8F%A3%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8-PAT"><span class="toc-text">端口多路复用(PAT)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F-msf%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1%E5%92%8Csock%E4%BB%A3%E7%90%86%E7%A9%BF%E9%80%8F%E5%86%85%E7%BD%91%E9%85%8D%E5%90%88"><span class="toc-text">内网穿透-msf配置路由和sock代理穿透内网配合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B"><span class="toc-text">攻击流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3"><span class="toc-text">流程详解</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#socks%E4%BB%A3%E7%90%86"><span class="toc-text">socks代理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E4%BB%A3%E7%90%86proxychain4"><span class="toc-text">全局代理proxychain4</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5win7"><span class="toc-text">远程连接win7</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#msf%E6%AD%A3%E5%90%91%E8%B7%AF%E7%94%B1%E5%92%8C%E5%8F%8D%E5%90%91%E8%B7%AF%E7%94%B1"><span class="toc-text">msf正向路由和反向路由</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F-frp"><span class="toc-text">内网穿透-frp</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B-1"><span class="toc-text">攻击流程</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="scoicon sco-map-line"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习"><img alt="KSA软件应用及学习" src="/img/default.png"></a><div class="content"><a class="title" href="/2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习">KSA软件应用及学习</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb"><img alt="Raspberry-pico-W制作badusb" src="/img/default.png"></a><div class="content"><a class="title" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb">Raspberry-pico-W制作badusb</a><a class="article-recent_post_categories" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/">hack硬件</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现"><img alt="网络测试-efssetup_20181复现" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现">网络测试-efssetup_20181复现</a><a class="article-recent_post_categories" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/">网络渗透测试</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习"><img alt="关于aspx文件和dll文件的关系的学习" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习">关于aspx文件和dll文件的关系的学习</a><a class="article-recent_post_categories" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/">windows</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库"><img alt="python之request库" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库">python之request库</a><a class="article-recent_post_categories" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/">python</a></div></div></div></div></div></div></main><footer id="footer"><div id="sco-footer-bar"><div class="footer-logo"><span class="scoicon">recyvan</span></div><div class="footer-bar-description">来自Recyvan - ~blog~的文章</div><a class="footer-bar-link" href="/">了解更多</a></div><div id="footer_deal"><a class="deal_link" href="https://recyvan.github.io" title="Github"><i class="scoicon  sco-github-line"></i></a><div class="footer_mini_logo" id="footer_mini_logo" title="返回顶部" onclick="sco.toTop()"><img src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg" alt="返回顶部"></div><a class="deal_link" target="_blank" rel="noopener" href="https://space.bilibili.com/399156594" title="Bilibili"><i class="scoicon  sco-bilibili-line"></i></a></div><div id="sco-footer"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div class="copyright">© 2023 - 2024 By&nbsp;<a class="footer-bar-link" href="/">Recyvan</a></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/wleelw/hexo-theme-solitude" title="主题">主题</a><a class="footer-bar-link cc"><i class="scoicon sco-copyright-line"></i><i class="scoicon sco-creative-commons-by-line"></i><i class="scoicon sco-creative-commons-nc-line"></i><i class="scoicon sco-creative-commons-nd-line"></i></a></div></div></div></footer></div><!-- inject body--><div><script src="/js/main.js?v=1.5.1"></script><script src="/js/utils.js?v=1.5.1"></script><script src="https://cdn.cbd.int/solitude-source/js/universe.min.js"></script><script>dark()
+</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.js"></script><script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js"></script><script>const meting_api = 'https://api.injahow.cn/meting/';
+</script><script src="https://cdn.cbd.int/solitude-source/js/waterfall.min.js"></script><script src="/js/music.js?v=1.5.1"></script><script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script><script src="https://cdn.staticfile.org/lunr.js/2.3.9/lunr.min.js"></script></div><div id="js-pjax"><script async src="https://cdn.staticfile.org/busuanzi/2.3.0/bsz.pure.mini.min.js"></script><script id="config-diff">var PAGE_CONFIG = {
+    is_post: true,
+    is_page: false,
+    is_home: false,
+    page: 'post',
+    toc: true,
+    comment: false,
+}
+</script></div><!-- newest comment--><!-- pjax--><script>let pjaxSelectors = [
+    'title',
+    '#body-wrap',
+    '#site-config',
+    'meta[name="description"]',
+    '#js-pjax',
+    'meta[property^="og:"]',
+]
+
+const pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+})
+
+document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+})
+
+document.addEventListener('pjax:complete', () => {
+    window.refreshFn()
+})
+
+document.addEventListener('pjax:error', (e) => {
+    if (e.request.status === 404) {
+        pjax.loadUrl('/404.html')
+    }
+})</script><!-- theme--><script>initTheme = () => {
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const cachedMode = saveToLocal.get('theme');
+    if (cachedMode === undefined) {
+        const nowMode =
+            isDarkMode ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', nowMode);
+    } else {
+        document.documentElement.setAttribute('data-theme', cachedMode);
+    }
+}
+initTheme()</script><!-- google adsense--><!-- search--><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="scoicon sco-close-fill"></i></button></nav><div class="search-wrap"><div class="search-box"><input class="search-box-input" id="search-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="输入关键词快速查找"></div><div id="search-results"><div id="search-hits"><a class="tag-list" href="javascript:void(0);" onclick="pjax.loadUrl('/tags/Hexo/')">Hexo</a></div></div><div id="search-pagination"></div><div id="search-tips"></div></div></div><div id="search-mask"></div></div><script src="/js/search/local.js?v=1.5.1"></script><!-- music--><div class="needEndHide" id="nav-music" onclick="sco.musicToggle()"><div id="nav-music-hoverTips">音乐已暂停</div><meting-js id="8407304077" server="netease" type="playlist" mutex="true" preload="none" data-lrctype="0" order="random" theme="var(--sco-main)"></meting-js></div></body></html><script>const posts=["2024/03/13/KSA软件应用及学习/","2024/03/03/Raspberry-pico-W制作badusb/","2023/12/29/网络测试-efssetup-20181复现/","2023/12/27/关于aspx文件和dll文件的关系的学习/","2023/12/24/python之request库/","2023/12/21/windows域与用户组策略/","2023/12/15/免杀基础了解笔记/","2023/12/14/pingtunnel与icmp隧道绕过/","2023/12/13/frp内网穿透/","2023/12/10/内网穿透/","2023/12/07/实验一网络扫描与网络侦察/","2023/12/04/网络安全测试课程-作业-5/","2023/11/27/网络安全测试课程-作业-4/","2023/11/20/网络安全测试课程-作业-3/","2023/11/14/网络安全测试课程-作业-2/","2023/11/12/JAVA安全入门学习一/","2023/11/08/网络安全测试课程-作业-1/","2023/11/04/Metasploitable2靶机本地练习记录/","2023/11/01/红蓝对抗-信息搜集-1/","2023/11/01/线性结构总结/","2023/09/20/关于webmin-CVE-2019-15107的注入点代码分析/"];function toRandomPost(){ pjax.loadUrl('/'+posts[Math.floor(Math.random()*posts.length)]); };</script>

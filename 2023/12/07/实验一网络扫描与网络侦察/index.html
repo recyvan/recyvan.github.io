@@ -1,0 +1,277 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>实验课一 | Recyvan</title><noscript>开启JavaScript才能访问本站哦~</noscript><link rel="icon" href="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><!-- index.css--><link rel="stylesheet" href="/css/index.css?v=1.5.1"><!-- inject head--><link rel="stylesheet" href="https://cdn.cbd.int/solitude-source/icon/scoicon.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.css"><!-- aplayer--><link rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"><!-- swiper--><link rel="stylesheet" href="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.9/katex.min.css"><!-- Open Graph--><meta name="description" content="网络渗透测试实验报告 一 实验目的和要求理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。 二 实验步骤1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf"><!-- pwa--><script>(win => {
+        win.saveToLocal = {
+            set: function setWithExpiry(key, value, ttl) {
+                if (ttl === 0)
+                    return
+                const now = new Date()
+                const expiryDay = ttl * 86400000
+                const item = {
+                    value: value,
+                    expiry: now.getTime() + expiryDay,
+                }
+                localStorage.setItem(key, JSON.stringify(item))
+            },
+
+            get: function getWithExpiry(key) {
+                const itemStr = localStorage.getItem(key)
+
+                if (!itemStr) {
+                    return undefined
+                }
+                const item = JSON.parse(itemStr)
+                const now = new Date()
+
+                if (now.getTime() > item.expiry) {
+                    localStorage.removeItem(key)
+                    return undefined
+                }
+                return item.value
+            }
+        }
+
+        const DarkModeStatus = localStorage.getItem('theme')
+        if (DarkModeStatus !== null) {
+            if (DarkModeStatus === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+            }
+        }
+
+        const asideStatus = saveToLocal.get('aside-status')
+        if (asideStatus !== undefined) {
+            if (asideStatus === 'hide') {
+                document.documentElement.classList.add('hide-aside')
+            } else {
+                document.documentElement.classList.remove('hide-aside')
+            }
+        }
+    }
+)(window)
+
+console.log(
+    "%c Program: Hexo %c Theme: Solitude %c Version: v1.5.1",
+    "border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#ff3842;",
+    "padding: 5px 10px;color:white;background:#3e9f50;",
+    "border-radius:0 5px 5px 0;padding: 5px 10px;background:#0084ff;color:white;"
+);</script><!-- global head--><script>const GLOBAL_CONFIG = {
+    root: '/',
+    algolia: undefined,
+    localsearch: {"preload":false,"path":"/search.xml"},
+    runtime: '2023-04-20 00:00:00',
+    lazyload: {
+        enable: false,
+        error: '/img/error_load.png'
+    },
+    hightlight: {
+        enable: false,
+        limit: 200,
+        expand: false,
+        copy: true,
+    },
+    randomlinks: false,
+    lang: {
+        theme: {
+            dark: '已切换至深色模式',
+            light: '已切换至浅色模式',
+        },
+        copy: {
+            success: '复制成功',
+            error: '复制失败',
+        },
+        backtop: '返回顶部',
+        time: {
+            recent: '最近',
+            yesterday: '昨天',
+            berforeyesterday: '前天',
+            daybefore: '天前',
+            runtime: '天',
+        },
+        search: {
+            empty: '找不到你查询的内容：${query}',
+            hit: '找到 ${hits} 条结果，用时 ${time} 毫秒',
+            placeholder: '输入关键词快速查找',
+        },
+        chs: {
+            chs_to_cht: '繁體中文',
+            cht_to_chs: '简体中文',
+        }
+    },
+    aside: {
+        sayhello: {
+            morning: '一日之计在于晨',
+            noon: '吃饱了才有力气干活',
+            afternoon: '集中精力，攻克难关',
+            night: '不要太劳累了，早睡更健康',
+            goodnight: '睡个好觉，保证精力充沛',
+        },
+        sayhello2: ["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多","🎮 电竞游戏爱好者"],
+    },
+    covercolor: {
+        enable: false
+    },
+    comment: {
+        enable: false,
+        type: '',
+        commentBarrage: false,
+        randomInfoStart: ["聪敏的","可爱的","美丽的"],
+        randomInfoEnd: ["白菜","小可爱","小仙女"],
+        twikoo: {
+            url: '',
+            accessToken: ''
+        },
+        waline: {
+            url: '',
+        }
+    },
+    lightbox: 'fancybox',
+    rightside: {
+        enable: false
+    },
+    ai: {
+        enable: false,
+        key: '',
+        talk: '我是王卓Sco开发的摘要生成助理ScoGPT，ScoGPT在静态部署时进行摘要的撰写，并且在访客访问时通过ScoCorrection转译后的文本摘要实现工具。我在这里只负责已经生成的摘要显示，你无法与我直接沟通，但我可以回答一些预设的问题。',
+        randomPost: false,
+    },
+    music: {
+        enable: true,
+    },
+    translate: undefined,
+};</script><meta name="generator" content="Hexo 7.1.1"></head><body id="body"><!-- universe--><canvas id="universe"></canvas><!-- loading--><!-- console--><div id="console"><div class="close-btn" onclick="sco.hideConsole()"><i class="scoicon sco-close-fill"></i></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="sco.switchDarkMode()" title="昼夜切换" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i></a></div><div class="console-btn-item" id="consoleHideAside"><a class="asideSwitch" onclick="sco.switchHideAside()" title="边栏显示控制" href="javascript:void(0);"><i class="scoicon sco-side-bar-fill"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="sco.musicToggle()"><a class="music-switch" title="音乐开关" href="javascript:void(0);"><i class="scoicon sco-disc-fill"></i></a></div></div><div class="console-mask" onclick="sco.hideConsole()"></div></div><!-- sidebar--><div id="sidebar" style="zoom: 1;"><div id="menu-mask" style="display: none;"></div><div id="sidebar-menus"><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" onclick="sco.switchDarkMode()" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="/categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="/music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>关于</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="scoicon  sco-contacts-fill"></i><span>关于本站</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-widget card-tags card-archives card-webinfo card-allinfo"><div class="card-tag-cloud"><a href="/tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/">JAVA安全,序列化<sup>1</sup></a><a href="/tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/">CVE,靶机,Metasploitable2<sup>1</sup></a><a href="/tags/pico/">pico<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/">渗透测试，路由<sup>2</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8Cicmp%E5%8D%8F%E8%AE%AE/">渗透测试，icmp协议<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/">网络安全，python<sup>1</sup></a><a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%85%8D%E6%9D%80/">渗透测试，免杀<sup>1</sup></a><a href="/tags/ASP-NET/">ASP.NET<sup>1</sup></a><a href="/tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/">php代码分析，webmin<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">网络渗透测试<sup>1</sup></a><a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/">信息搜集，渗透测试，网络安全，红蓝对抗<sup>1</sup></a><a href="/tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">C语言,数据结构,线性表<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/">网络渗透测试基础知识,kali,网卡与路由<sup>2</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-wireshark/">网络渗透测试基础知识,wireshark<sup>1</sup></a><a href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-DNS-ARP/">网络渗透测试基础知识,DNS,ARP<sup>1</sup></a><a href="/tags/easy-file-sharing-server/">easy file sharing server<sup>1</sup></a></div></div></div></div><!-- keyboard--><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav class="show" id="nav"><div id="nav-group"><div id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon scoicon sco-more-fill"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div></div><a id="site-name" href="/" title="返回博客主页"><span class="title">recyvan</span></a></div><div id="page-name-mask"><div id="page-name"><a id="page-name-text" onclick="sco.toTop()">实验课一</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="/categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="/music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>关于</span></a><ul class="menus_item_child"><li><a class="site-page child" href="/about/"><i class="scoicon  sco-contacts-fill"></i><span>关于本站</span></a></li></ul></div></div></div><div id="nav-left"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机一篇文章" href="javascript:void(0);"><i class="scoicon sco-signal-tower-fill"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索"><i class="scoicon sco-search-line"></i></a></div><div class="nav-button" id="nav-totop" onclick="sco.toTop()"><a class="totopbtn"><i class="scoicon sco-arrow-up-line"></i><span id="percent">0</span></a></div><div id="toggle-menu"><a class="site-page"><i class="scoicon sco-menu-line"></i></a></div></div></div></nav><div class="coverdiv" id="coverdiv"><img class="nolazyload" id="post-cover" src="/img/default.png" alt="实验课一"></div><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original" title="该文章为原创文章，注意版权协议">原创</a><span class="post-meta-categories"><a class="post-meta-categories" href="/categories/网络扫描与网络侦察/">网络扫描与网络侦察</a></span><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><span class="tags-name tags-punctuation">网络渗透测试</span></a></div></div></div></div><h1 class="post-title">实验课一</h1><div id="post-meta"><div class="meta-secondline"><span class="post-meta-wordcount"><span class="post-meta-separator"></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>网络渗透测试实验报告</strong> </p>
+<hr>
+<h2 id="一-实验目的和要求"><a href="#一-实验目的和要求" class="headerlink" title="一 实验目的和要求"></a>一 实验目的和要求</h2><p>理解网络扫描、网络侦察的作用；通过搭建网络渗透测试平台，了解并熟悉常用搜索引擎、扫描工具的应用，通过信息收集为下一步渗透工作打下基础。</p>
+<h2 id="二-实验步骤"><a href="#二-实验步骤" class="headerlink" title="二 实验步骤"></a>二 实验步骤</h2><h3 id="1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。"><a href="#1-用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network-security”的pdf文档，截图搜索得到的页面。" class="headerlink" title="1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。"></a>1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。</h3><p>使用Google搜索：</p>
+<p><img src="/image-20231209195152905.png" alt="image-20231209195152905"></p>
+<p>查找相关网页：</p>
+<p><img src="/image-20231209195206871.png" alt="image-20231209195206871"></p>
+<p><img src="/image-20231209195211299.png" alt="image-20231209195211299"></p>
+<h3 id="2-照片中的女生在哪里旅行？截图搜索到的地址信息。"><a href="#2-照片中的女生在哪里旅行？截图搜索到的地址信息。" class="headerlink" title="2.照片中的女生在哪里旅行？截图搜索到的地址信息。"></a>2.照片中的女生在哪里旅行？截图搜索到的地址信息。</h3><p><img src="/image-20231209195232804.png" alt="image-20231209195232804"></p>
+<p>Google搜索：letrentehuit café brasserie发现：</p>
+<p><img src="/image-20231209195249443.png" alt="image-20231209195249443"></p>
+<p>地址是：38 avenue de Suffren.75015 Paris.France。</p>
+<h3 id="3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"><a href="#3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。" class="headerlink" title="3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"></a>3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</h3><p>华为手机应该拨号*#* #2846579# *#*进入工程模式</p>
+<p><img src="/image-20231209195332722.png" alt="image-20231209195332722"></p>
+<p>但是honor系列并不能在工程菜单找到相关信息。</p>
+<img src="11-17021235157051.png" style="zoom:50%;" />
+
+<p>在基站查询工具得到如下信息：</p>
+<img src="qq_pic_merged_1702124303982.jpg" alt="qq_pic_merged_1702124303982" style="zoom:50%;" />
+
+
+
+<h3 id="4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。"><a href="#4-编码解码将Z29vZCBnb29kIHN0dWR5IQ-解码。截图。" class="headerlink" title="4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。"></a>4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。</h3><p><img src="/image-20231209195413526.png" alt="image-20231209195413526"></p>
+<h3 id="5-地址信息"><a href="#5-地址信息" class="headerlink" title="5.地址信息"></a>5.地址信息</h3><h4 id="5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"><a href="#5-1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202-193-64-34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。" class="headerlink" title="5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。"></a>5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。</h4><p><img src="/image-20231209195442914.png" alt="image-20231209195442914"></p>
+<p><img src="/image-20231209195447579.png" alt="image-20231209195447579"></p>
+<p><img src="/image-20231209195450786.png" alt="image-20231209195450786"></p>
+<p>该用户使用的apple品牌的的设备，访问的是广西桂林市教育网桂林电子科技大学网站。</p>
+<h4 id="5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"><a href="#5-2访问https-whatismyipaddress-com得到MyIP信息，利用ipconfig-Windows-或ifconfig-Linux-查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。" class="headerlink" title="5.2访问https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。"></a>5.2访问<a href="https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。">https://whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。</a></h4><p><img src="/image-20231209195521692.png" alt="image-20231209195521692"></p>
+<p>可以发现两个值并不一样，cmd下查询的IP是局域网内的私有IP，网站查询的为为公网IP，是当前网络连接的出口IP。但此处公网IP为US归属，是因为接入了VPN使用。</p>
+<p>这里涉及到的知识点是：可以通过NAT实现从私网IP到公网IP之间的联系。在报文离开私网进入Internet时，将源IP替换为公网地址，通常是出口设备的接口地址；一个对外的访问请求在到达目标以后，表现为由本组织出口设备发起，因此被请求的服务端可将响应由Internet发回出口网关；</p>
+<p>出口网关再将目的地址替换为私网的源主机地址，发回内部。</p>
+<h3 id="6-NMAP使用"><a href="#6-NMAP使用" class="headerlink" title="6.NMAP使用"></a>6.NMAP使用</h3><h4 id="6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"><a href="#6-1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。" class="headerlink" title="6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。"></a>6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。</h4><p><img src="/image-20231209195601791.png" alt="image-20231209195601791"></p>
+<p>端口21的ftp（文件传输协议）服务，用于文件传输使用，是一种基于TCP的协议，采用客户&#x2F;服务器模式。通过FTP协议，用户可以在FTP服务器中进行文件的上传或下载等操作。（部分情况下可匿名登录</p>
+<p>端口22的ssh服务：用于远程登录管理计算机或服务器等，专为远程登陆会话和其他网络服务提供的安全性协议。利用SSH协议可以有效的防止远程管理过程中的信息泄漏问题。</p>
+<p>端口3306的mysql服务，mysql数据库用于管理网站等用户数据和信息。开放3306端口，可以远程登录并管理mysql服务。远程登录的话漏洞大多为弱口令，然后数据库写马。各个数据库端口开放不同。</p>
+<p>端口80的http服务，这里的端口开放表示靶机有基于apache&#x2F;nhinx等的网站开放。</p>
+<h4 id="6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"><a href="#6-2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。" class="headerlink" title="6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。"></a>6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。</h4><p><img src="/image-20231209195637125.png" alt="image-20231209195637125"></p>
+<p>OS类型为liunx系统，版本范围为；2.6.9-2.6.33</p>
+<h4 id="6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。"><a href="#6-3利用NMAP穷举-Metasploitable2上dvwa的登录账号和密码。" class="headerlink" title="6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。"></a>6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。</h4><p><img src="/image-20231209195657193.png" alt="image-20231209195657193"></p>
+<h4 id="6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"><a href="#6-4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。" class="headerlink" title="6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。"></a>6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。</h4><p>WannaCry是一种“蠕虫式”勒索病毒软件，由不法分子利用NSA泄露方程式工具包的危险漏洞“EternalBlue”（永恒之蓝）进行传播。该蠕虫感染计算机后会向计算机中植入敲诈者病毒，导致电脑大量文件被加密。</p>
+<p>这是msf中对于ms17_010_eternalblue.rb的简介：</p>
+<p><img src="/image-20231209195717671.png" alt="image-20231209195717671"></p>
+<p>永恒之蓝”利用了某些版本的微软服务器消息块（SMB）协议中的数个漏洞，而当中最严重的漏洞是允许远程电脑执行代码。大多利用复现多使用msfconsole进行。其利用Windows系统的SMB漏洞获取系统的最高权限，该工具通过恶意代码扫描开放445端口的Windows系统。被扫描到的Windows系统，只要开机上线，不需要用户进行任何操作，即可通过SMB漏洞上传WannaCry勒索病毒等恶意程序。</p>
+<h3 id="7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"><a href="#7-利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。" class="headerlink" title="7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。"></a>7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。</h3><p><img src="/image-20231209195750810.png" alt="image-20231209195750810"></p>
+<p>服务为CNIX HTTP Server 1.0版本过低，存在历史漏洞。</p>
+<h3 id="8-Winhex简单数据恢复与取证"><a href="#8-Winhex简单数据恢复与取证" class="headerlink" title="8.Winhex简单数据恢复与取证"></a>8.Winhex简单数据恢复与取证</h3><h4 id="8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。"><a href="#8-1elephant-jpg不能打开了，利用WinHex修复，说明修复过程。" class="headerlink" title="8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。"></a>8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。</h4><p> 使用winHex打开后发现，文件格式头出现错误，修改一下即可。（将前四个数字改为FFD8）</p>
+<p><img src="/image-20231209195846138.png" alt="image-20231209195846138"></p>
+<h4 id="8-2笑脸背后的阴霾：图片smile有什么隐藏信息。"><a href="#8-2笑脸背后的阴霾：图片smile有什么隐藏信息。" class="headerlink" title="8.2笑脸背后的阴霾：图片smile有什么隐藏信息。"></a>8.2笑脸背后的阴霾：图片smile有什么隐藏信息。</h4><p><img src="/image-20231209195859266.png" alt="image-20231209195859266"></p>
+<h4 id="8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"><a href="#8-3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。" class="headerlink" title="8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。"></a>8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。</h4><p> 因为U盘中存在之前删除的文件，所以直接用DiskGenius软件进行恢复：</p>
+<p><img src="/image-20231209195919729.png" alt="image-20231209195919729"></p>
+<h3 id="9-讨论学校热点GUET-WiFi的安全问题，以截图说明。"><a href="#9-讨论学校热点GUET-WiFi的安全问题，以截图说明。" class="headerlink" title="9.讨论学校热点GUET-WiFi的安全问题，以截图说明。"></a>9.讨论学校热点GUET-WiFi的安全问题，以截图说明。</h3><p>校园网存在端口隔离的安全保护。</p>
+<p>同一校园网下，设备之间可以进行IP访问通讯，因此存在校内钓鱼网站的危险。例如使用setoolkit进行模拟<a target="_blank" rel="noopener" href="http://www.baidu.com网站,获取查询信息./">www.baidu.com网站,获取查询信息。</a></p>
+<p><img src="/image-20231209200045641.png" alt="image-20231209200045641"></p>
+<p>2.可能存在Arp欺骗。可以使用arpspoof工具进行欺骗。</p>
+<ul>
+<li>详细见<a href="https://recyvan.github.io/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/">网络安全测试课程-作业-4</a></li>
+</ul>
+<p>3.校园网存在端口隔离的安全保护。</p>
+<p>校园网下                                                    </p>
+<p><img src="/image-20231210172047736.png" alt="image-20231210172047736"></p>
+<p> 手机热点</p>
+<p><img src="/image-20231210172059959.png" alt="image-20231210172059959"></p>
+<h4 id="扫描另一台物理主机，查看端口开放情况"><a href="#扫描另一台物理主机，查看端口开放情况" class="headerlink" title="扫描另一台物理主机，查看端口开放情况"></a>扫描另一台物理主机，查看端口开放情况</h4><p>扫描另一台物理主机，查看端口开放情况。</p>
+<p><img src="/image-20231210154508721.png" alt="image-20231210154508721"></p>
+<p> 发现开放了80端口和135端口等多个端口，其中80端口为一道序列化题目，构造pop链后，可以通过include包含来获取权限。</p>
+<p><img src="/image-20231210154520869.png" alt="image-20231210154520869"></p>
+<p>135端口：主要用于使用RPC（Remote Procedure Call，远程过程调用）协议并提供DCOM（分布式组件对象模型）服务，RPC本身在处理通过TCP&#x2F;IP的消息交换部分有一个漏洞，该漏洞是由于错误地处理格式不正确的消息造成的。“冲击波”病毒，利用RPC漏洞可以攻击计算机。</p>
+<h2 id="三-实验小结"><a href="#三-实验小结" class="headerlink" title="三 实验小结"></a>三 实验小结</h2><p>1.道德黑客的理解：</p>
+<p>道德黑客，在我的认知中狭义地等同于白帽子。专门从事渗透测试及其他测试方法，确保信息系统安全。通过渗透测试来保证系统和设备安全。白帽黑客在网络用语中指站在黑客的立场攻击自己或被别人允许攻击的系统以进行安全漏洞排查的程序员。他们用的是黑客惯用的破坏攻击的方法，行的却是维护安全之事。</p>
+<p>2.实验总结</p>
+<ul>
+<li><p>google hacker语法的简单实用</p>
+</li>
+<li><p>Kali exiftools工具使用</p>
+</li>
+<li><p>Kali msfconsole 简单使用</p>
+</li>
+<li><p>网络空间引擎的简单使用</p>
+</li>
+<li><p>公用IP和私有IP的区别</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author_group"><a class="post-copyright__author_img" href="/about/"><img class="post-copyright__author_img_front" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"></a><div class="post-copyright__author_name">Recyvan</div><div class="post-copyright__author_desc">~blog~</div></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div id="quit-box" onclick="RemoveRewardMask()"></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本文是原创文章，采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>协议，完整转载请注明来自<a href="/">Recyvan</a></span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"><span class="tags-punctuation"></span>网络渗透测试<span class="tagsPageCount">1</span></a></div></div></div><nav class="needEndHide pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">内网穿透一</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网络安全测试课程-作业-5</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><div class="author-info__top-group"><div class="author-info__sayhi" id="author-info__sayhi" onclick="sco.changeSayHelloText()">sayhello.morning</div></div></div><div class="avatar-img-group"><img class="avatar-img" alt="头像" src="/img/auto.jpg"><div class="avatar-sticker"><img class="avatar-sticker-img" src="https://bu.dusays.com/2023/12/30/659011053e246.png" alt="心情贴纸"></div></div><div class="author-info__description_group"><div class="author-info__description">分享自己对编程的<b>热爱</b>，对美好生活的<b>向往</b>，对知识海洋<b>探索历程</b>。</div><div class="author-info__description2">相信你可以在这里找到对你有用的知识和教程。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/about/"><div class="author-info__name">Recyvan</div><div class="author-info__desc">~blog~</div></a><div class="card-info-social-icons is-center"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="scoicon sco-menu-line"></i><span>文章目录</span></div><div class="toc-content" id="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84%E5%92%8C%E8%A6%81%E6%B1%82"><span class="toc-text">一 实验目的和要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-text">二 实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%94%A8%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8EGoogle%E6%88%96%E7%99%BE%E5%BA%A6%E6%90%9C%E7%B4%A2%E9%BA%BB%E7%9C%81%E7%90%86%E5%B7%A5%E5%AD%A6%E9%99%A2%E7%BD%91%E7%AB%99%E4%B8%AD%E6%96%87%E4%BB%B6%E5%90%8D%E5%8C%85%E5%90%AB%E2%80%9Cnetwork-security%E2%80%9D%E7%9A%84pdf%E6%96%87%E6%A1%A3%EF%BC%8C%E6%88%AA%E5%9B%BE%E6%90%9C%E7%B4%A2%E5%BE%97%E5%88%B0%E7%9A%84%E9%A1%B5%E9%9D%A2%E3%80%82"><span class="toc-text">1.用搜索引擎Google或百度搜索麻省理工学院网站中文件名包含“network security”的pdf文档，截图搜索得到的页面。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%85%A7%E7%89%87%E4%B8%AD%E7%9A%84%E5%A5%B3%E7%94%9F%E5%9C%A8%E5%93%AA%E9%87%8C%E6%97%85%E8%A1%8C%EF%BC%9F%E6%88%AA%E5%9B%BE%E6%90%9C%E7%B4%A2%E5%88%B0%E7%9A%84%E5%9C%B0%E5%9D%80%E4%BF%A1%E6%81%AF%E3%80%82"><span class="toc-text">2.照片中的女生在哪里旅行？截图搜索到的地址信息。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%89%8B%E6%9C%BA%E4%BD%8D%E7%BD%AE%E5%AE%9A%E4%BD%8D%E3%80%82%E9%80%9A%E8%BF%87LAC%EF%BC%88Location-Area-Code%EF%BC%8C%E4%BD%8D%E7%BD%AE%E5%8C%BA%E5%9F%9F%E7%A0%81%EF%BC%89%E5%92%8CCID%EF%BC%88Cell-Identity%EF%BC%8C%E5%9F%BA%E7%AB%99%E7%BC%96%E5%8F%B7%EF%BC%8C%E6%98%AF%E4%B8%AA16%E4%BD%8D%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%88%E8%8C%83%E5%9B%B4%E6%98%AF0%E5%88%B065535%EF%BC%89%E5%8F%AF%E4%BB%A5%E6%9F%A5%E8%AF%A2%E6%89%8B%E6%9C%BA%E6%8E%A5%E5%85%A5%E7%9A%84%E5%9F%BA%E7%AB%99%E7%9A%84%E4%BD%8D%E7%BD%AE%EF%BC%8C%E4%BB%8E%E8%80%8C%E5%88%9D%E6%AD%A5%E7%A1%AE%E5%AE%9A%E6%89%8B%E6%9C%BA%E7%94%A8%E6%88%B7%E7%9A%84%E4%BD%8D%E7%BD%AE%E3%80%82"><span class="toc-text">3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BC%96%E7%A0%81%E8%A7%A3%E7%A0%81%E5%B0%86Z29vZCBnb29kIHN0dWR5IQ-%E8%A7%A3%E7%A0%81%E3%80%82%E6%88%AA%E5%9B%BE%E3%80%82"><span class="toc-text">4.编码解码将Z29vZCBnb29kIHN0dWR5IQ&#x3D;&#x3D;解码。截图。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%9C%B0%E5%9D%80%E4%BF%A1%E6%81%AF"><span class="toc-text">5.地址信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1%E5%86%85%E7%BD%91%E4%B8%AD%E6%8D%95%E8%8E%B7%E5%88%B0%E4%B8%80%E4%B8%AA%E4%BB%A5%E5%A4%AA%E5%B8%A7%EF%BC%8C%E6%BA%90MAC%E5%9C%B0%E5%9D%80%E4%B8%BA%EF%BC%9A98-CA-33-02-27-B5%EF%BC%9B%E7%9B%AE%E7%9A%84IP%E5%9C%B0%E5%9D%80%E4%B8%BA%EF%BC%9A202-193-64-34%EF%BC%8C%E5%9B%9E%E7%AD%94%E9%97%AE%E9%A2%98%EF%BC%9A%E8%AF%A5%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%80%E4%B9%88%E5%93%81%E7%89%8C%E7%9A%84%E8%AE%BE%E5%A4%87%EF%BC%8C%E8%AE%BF%E9%97%AE%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%E7%BD%91%E7%AB%99%EF%BC%9F%E5%B9%B6%E9%99%84%E6%88%AA%E5%9B%BE%E3%80%82"><span class="toc-text">5.1内网中捕获到一个以太帧，源MAC地址为：98-CA-33-02-27-B5；目的IP地址为：202.193.64.34，回答问题：该用户使用的什么品牌的设备，访问的是什么网站？并附截图。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2%E8%AE%BF%E9%97%AEhttps-whatismyipaddress-com%E5%BE%97%E5%88%B0MyIP%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%88%A9%E7%94%A8ipconfig-Windows-%E6%88%96ifconfig-Linux-%E6%9F%A5%E7%9C%8B%E6%9C%AC%E6%9C%BAIP%E5%9C%B0%E5%9D%80%EF%BC%8C%E4%B8%A4%E8%80%85%E5%80%BC%E7%9B%B8%E5%90%8C%E5%90%97%EF%BC%9F%E5%A6%82%E6%9E%9C%E4%B8%8D%E7%9B%B8%E5%90%8C%E7%9A%84%E8%AF%9D%EF%BC%8C%E8%AF%B4%E6%98%8E%E5%8E%9F%E5%9B%A0%E3%80%82"><span class="toc-text">5.2访问https:&#x2F;&#x2F;whatismyipaddress.com得到MyIP信息，利用ipconfig(Windows)或ifconfig(Linux)查看本机IP地址，两者值相同吗？如果不相同的话，说明原因。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-NMAP%E4%BD%BF%E7%94%A8"><span class="toc-text">6.NMAP使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1%E5%88%A9%E7%94%A8NMAP%E6%89%AB%E6%8F%8FMetasploitable2%EF%BC%88%E9%9C%80%E4%B8%8B%E8%BD%BD%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%95%9C%E5%83%8F%EF%BC%89%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%BC%80%E6%94%BE%E6%83%85%E5%86%B5%E3%80%82%E5%B9%B6%E9%99%84%E6%88%AA%E5%9B%BE%E3%80%82%E8%AF%B4%E6%98%8E%E5%85%B6%E4%B8%AD%E5%9B%9B%E4%B8%AA%E7%AB%AF%E5%8F%A3%E7%9A%84%E6%8F%90%E4%BE%9B%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%8C%E6%9F%A5%E9%98%85%E8%B5%84%E6%96%99%EF%BC%8C%E7%AE%80%E8%A6%81%E8%AF%B4%E6%98%8E%E8%AF%A5%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%8A%9F%E8%83%BD%E3%80%82"><span class="toc-text">6.1利用NMAP扫描Metasploitable2（需下载虚拟机镜像）的端口开放情况。并附截图。说明其中四个端口的提供的服务，查阅资料，简要说明该服务的功能。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2%E5%88%A9%E7%94%A8NMAP%E6%89%AB%E6%8F%8FMetasploitable2%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E5%9E%8B%EF%BC%8C%E5%B9%B6%E9%99%84%E6%88%AA%E5%9B%BE%E3%80%82"><span class="toc-text">6.2利用NMAP扫描Metasploitable2的操作系统类型，并附截图。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3%E5%88%A9%E7%94%A8NMAP%E7%A9%B7%E4%B8%BE-Metasploitable2%E4%B8%8Advwa%E7%9A%84%E7%99%BB%E5%BD%95%E8%B4%A6%E5%8F%B7%E5%92%8C%E5%AF%86%E7%A0%81%E3%80%82"><span class="toc-text">6.3利用NMAP穷举 Metasploitable2上dvwa的登录账号和密码。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-4%E6%9F%A5%E9%98%85%E8%B5%84%E6%96%99%EF%BC%8C%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D-WannaCry%E8%A0%95%E8%99%AB%E5%88%A9%E7%94%A8%E6%BC%8F%E6%B4%9E%E7%9A%84%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF%E3%80%82"><span class="toc-text">6.4查阅资料，永恒之蓝-WannaCry蠕虫利用漏洞的相关信息。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%88%A9%E7%94%A8ZoomEye%E6%90%9C%E7%B4%A2%E4%B8%80%E4%B8%AA%E8%A5%BF%E9%97%A8%E5%AD%90%E5%85%AC%E5%8F%B8%E5%B7%A5%E6%8E%A7%E8%AE%BE%E5%A4%87%EF%BC%8C%E5%B9%B6%E6%8F%8F%E8%BF%B0%E5%85%B6%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E3%80%82"><span class="toc-text">7.利用ZoomEye搜索一个西门子公司工控设备，并描述其可能存在的安全问题。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Winhex%E7%AE%80%E5%8D%95%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%8F%96%E8%AF%81"><span class="toc-text">8.Winhex简单数据恢复与取证</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1elephant-jpg%E4%B8%8D%E8%83%BD%E6%89%93%E5%BC%80%E4%BA%86%EF%BC%8C%E5%88%A9%E7%94%A8WinHex%E4%BF%AE%E5%A4%8D%EF%BC%8C%E8%AF%B4%E6%98%8E%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B%E3%80%82"><span class="toc-text">8.1elephant.jpg不能打开了，利用WinHex修复，说明修复过程。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2%E7%AC%91%E8%84%B8%E8%83%8C%E5%90%8E%E7%9A%84%E9%98%B4%E9%9C%BE%EF%BC%9A%E5%9B%BE%E7%89%87smile%E6%9C%89%E4%BB%80%E4%B9%88%E9%9A%90%E8%97%8F%E4%BF%A1%E6%81%AF%E3%80%82"><span class="toc-text">8.2笑脸背后的阴霾：图片smile有什么隐藏信息。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3%E5%B0%9D%E8%AF%95%E4%BD%BF%E7%94%A8%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D%E8%BD%AF%E4%BB%B6%E6%81%A2%E5%A4%8D%E4%BD%A0%E7%9A%84U%E7%9B%98%E4%B8%AD%E6%9B%BE%E7%BB%8F%E5%88%A0%E9%99%A4%E7%9A%84%E6%96%87%E4%BB%B6%E3%80%82"><span class="toc-text">8.3尝试使用数据恢复软件恢复你的U盘中曾经删除的文件。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E8%AE%A8%E8%AE%BA%E5%AD%A6%E6%A0%A1%E7%83%AD%E7%82%B9GUET-WiFi%E7%9A%84%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BB%A5%E6%88%AA%E5%9B%BE%E8%AF%B4%E6%98%8E%E3%80%82"><span class="toc-text">9.讨论学校热点GUET-WiFi的安全问题，以截图说明。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F%E5%8F%A6%E4%B8%80%E5%8F%B0%E7%89%A9%E7%90%86%E4%B8%BB%E6%9C%BA%EF%BC%8C%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E5%BC%80%E6%94%BE%E6%83%85%E5%86%B5"><span class="toc-text">扫描另一台物理主机，查看端口开放情况</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%AE%9E%E9%AA%8C%E5%B0%8F%E7%BB%93"><span class="toc-text">三 实验小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="scoicon sco-map-line"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习"><img alt="KSA软件应用及学习" src="/img/default.png"></a><div class="content"><a class="title" href="/2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习">KSA软件应用及学习</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb"><img alt="Raspberry-pico-W制作badusb" src="/img/default.png"></a><div class="content"><a class="title" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb">Raspberry-pico-W制作badusb</a><a class="article-recent_post_categories" href="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/">hack硬件</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现"><img alt="网络测试-efssetup_20181复现" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现">网络测试-efssetup_20181复现</a><a class="article-recent_post_categories" href="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/">网络渗透测试</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习"><img alt="关于aspx文件和dll文件的关系的学习" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习">关于aspx文件和dll文件的关系的学习</a><a class="article-recent_post_categories" href="/2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/">windows</a></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库"><img alt="python之request库" src="/img/default.png"></a><div class="content"><a class="title" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库">python之request库</a><a class="article-recent_post_categories" href="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/">python</a></div></div></div></div></div></div></main><footer id="footer"><div id="sco-footer-bar"><div class="footer-logo"><span class="scoicon">recyvan</span></div><div class="footer-bar-description">来自Recyvan - ~blog~的文章</div><a class="footer-bar-link" href="/">了解更多</a></div><div id="footer_deal"><a class="deal_link" href="https://recyvan.github.io" title="Github"><i class="scoicon  sco-github-line"></i></a><div class="footer_mini_logo" id="footer_mini_logo" title="返回顶部" onclick="sco.toTop()"><img src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg" alt="返回顶部"></div><a class="deal_link" target="_blank" rel="noopener" href="https://space.bilibili.com/399156594" title="Bilibili"><i class="scoicon  sco-bilibili-line"></i></a></div><div id="sco-footer"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div class="copyright">© 2023 - 2024 By&nbsp;<a class="footer-bar-link" href="/">Recyvan</a></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/wleelw/hexo-theme-solitude" title="主题">主题</a><a class="footer-bar-link cc"><i class="scoicon sco-copyright-line"></i><i class="scoicon sco-creative-commons-by-line"></i><i class="scoicon sco-creative-commons-nc-line"></i><i class="scoicon sco-creative-commons-nd-line"></i></a></div></div></div></footer></div><!-- inject body--><div><script src="/js/main.js?v=1.5.1"></script><script src="/js/utils.js?v=1.5.1"></script><script src="https://cdn.cbd.int/solitude-source/js/universe.min.js"></script><script>dark()
+</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.js"></script><script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js"></script><script>const meting_api = 'https://api.injahow.cn/meting/';
+</script><script src="https://cdn.cbd.int/solitude-source/js/waterfall.min.js"></script><script src="/js/music.js?v=1.5.1"></script><script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script><script src="https://cdn.staticfile.org/lunr.js/2.3.9/lunr.min.js"></script></div><div id="js-pjax"><script async src="https://cdn.staticfile.org/busuanzi/2.3.0/bsz.pure.mini.min.js"></script><script id="config-diff">var PAGE_CONFIG = {
+    is_post: true,
+    is_page: false,
+    is_home: false,
+    page: 'post',
+    toc: true,
+    comment: false,
+}
+</script></div><!-- newest comment--><!-- pjax--><script>let pjaxSelectors = [
+    'title',
+    '#body-wrap',
+    '#site-config',
+    'meta[name="description"]',
+    '#js-pjax',
+    'meta[property^="og:"]',
+]
+
+const pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+})
+
+document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+})
+
+document.addEventListener('pjax:complete', () => {
+    window.refreshFn()
+})
+
+document.addEventListener('pjax:error', (e) => {
+    if (e.request.status === 404) {
+        pjax.loadUrl('/404.html')
+    }
+})</script><!-- theme--><script>initTheme = () => {
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const cachedMode = saveToLocal.get('theme');
+    if (cachedMode === undefined) {
+        const nowMode =
+            isDarkMode ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', nowMode);
+    } else {
+        document.documentElement.setAttribute('data-theme', cachedMode);
+    }
+}
+initTheme()</script><!-- google adsense--><!-- search--><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="scoicon sco-close-fill"></i></button></nav><div class="search-wrap"><div class="search-box"><input class="search-box-input" id="search-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="输入关键词快速查找"></div><div id="search-results"><div id="search-hits"><a class="tag-list" href="javascript:void(0);" onclick="pjax.loadUrl('/tags/Hexo/')">Hexo</a></div></div><div id="search-pagination"></div><div id="search-tips"></div></div></div><div id="search-mask"></div></div><script src="/js/search/local.js?v=1.5.1"></script><!-- music--><div class="needEndHide" id="nav-music" onclick="sco.musicToggle()"><div id="nav-music-hoverTips">音乐已暂停</div><meting-js id="8407304077" server="netease" type="playlist" mutex="true" preload="none" data-lrctype="0" order="random" theme="var(--sco-main)"></meting-js></div></body></html><script>const posts=["2024/03/13/KSA软件应用及学习/","2024/03/03/Raspberry-pico-W制作badusb/","2023/12/29/网络测试-efssetup-20181复现/","2023/12/27/关于aspx文件和dll文件的关系的学习/","2023/12/24/python之request库/","2023/12/21/windows域与用户组策略/","2023/12/15/免杀基础了解笔记/","2023/12/14/pingtunnel与icmp隧道绕过/","2023/12/13/frp内网穿透/","2023/12/10/内网穿透/","2023/12/07/实验一网络扫描与网络侦察/","2023/12/04/网络安全测试课程-作业-5/","2023/11/27/网络安全测试课程-作业-4/","2023/11/20/网络安全测试课程-作业-3/","2023/11/14/网络安全测试课程-作业-2/","2023/11/12/JAVA安全入门学习一/","2023/11/08/网络安全测试课程-作业-1/","2023/11/04/Metasploitable2靶机本地练习记录/","2023/11/01/红蓝对抗-信息搜集-1/","2023/11/01/线性结构总结/","2023/09/20/关于webmin-CVE-2019-15107的注入点代码分析/"];function toRandomPost(){ pjax.loadUrl('/'+posts[Math.floor(Math.random()*posts.length)]); };</script>
