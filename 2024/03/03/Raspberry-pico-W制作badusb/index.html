@@ -148,11 +148,11 @@ console.log(
 <h3 id="Raspberry-pico-W"><a href="#Raspberry-pico-W" class="headerlink" title="Raspberry pico W"></a>Raspberry pico W</h3><p>Raspberry Pi Pico 是一款搭载了 RP 2040 芯片的微处理器开发板。对于 Pico 的编程开发，官方开发了 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_c_sdk.pdf">Pico C&#x2F;C++ SDK</a> 和 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_python_sdk.pdf">Pico Python SDK</a> 软件开发工具包，用户可以选择 C&#x2F;C++ 或者 Python 对 Pico 进行开发。</p>
 <p><img src="/4cbf7fedd48fc86177e461582368fae2-17094624419241.jpg" alt="4cbf7fedd48fc86177e461582368fae2"></p>
 <p>其规格参数如下：</p>
-<img src="1709462560513.png" alt="1709462560513" style="zoom: 50%;" />
+<img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/1709462560513.png" alt="1709462560513" style="zoom: 50%;">
 
 <h3 id="Python-SDK-开发制作badusb"><a href="#Python-SDK-开发制作badusb" class="headerlink" title="Python SDK 开发制作badusb"></a>Python SDK 开发制作badusb</h3><p> Python SDK 开发 Pico 的思路是，将 MicroPython（微处理器上运行的 Python 固件）拖拽到 Pico 中，然后将计算机上的 Python (3)代码传给 Pico 运行。树莓派官网提供了MicroPython固件，只需要将其烧录进去即可。已经编译好的固件：<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/rp2040/getting-started/">getting-started</a>这里可以下载到</p>
 <p>首先按住BOOTSET选项并链接USB接口到计算机上，其将显示为名为 RPI-RP2 的可移动媒体设备（但注意是识别出来容量可能有误，具体按照产品参数为准）并生成INDEX.HTM和INFO_UF2.TXT文件</p>
-<img src="{F9519DD5-C17F-4728-9D05-168685C8900B}.png" alt="{F9519DD5-C17F-4728-9D05-168685C8900B}" style="zoom:80%;" />
+<img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/{F9519DD5-C17F-4728-9D05-168685C8900B}.png" alt="{F9519DD5-C17F-4728-9D05-168685C8900B}" style="zoom:80%;">
 
 <p>下载<a target="_blank" rel="noopener" href="https://downloads.circuitpython.org/bin/raspberry_pi_pico_w/en_US/adafruit-circuitpython-raspberry_pi_pico_w-en_US-8.2.10.uf2">adafruit-circuitpython-raspberry_pi_pico-en_US-8.2.10.uf2</a> 到设备的根目录下，大约3秒后设备将会自动重启，并命名为CIRCUITPY设备并重新连接。生成以下文件：</p>
 <p><img src="/%7B40AE3F73-9CBF-4337-9ACC-262E25518D0B%7D.png" alt="{40AE3F73-9CBF-4337-9ACC-262E25518D0B}"></p>

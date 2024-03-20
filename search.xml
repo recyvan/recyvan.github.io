@@ -5,7 +5,7 @@
     <url>/2023/11/12/JAVA%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E4%B8%80/</url>
     <content><![CDATA[<hr>
 <p><del>制胜法宝(不是)</del></p>
-<iframe src="https://www.bing.com/" width="100%" height="300" name="topFrame" scrolling="yes"  noresize="noresize" frameborder="0" id="topFrame"></iframe>
+<iframe src="https://www.bing.com/" width="100%" height="300" name="topFrame" scrolling="yes" noresize="noresize" frameborder="0" id="topFrame"></iframe>
 
 <details> <summary>JAVA安全学习路线</summary> IDEA
     Maven<br>
@@ -111,7 +111,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#x61;&#x64;&#109;&#105;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#x31;&#x32;&#57;">&#109;&#115;&#102;&#x61;&#x64;&#109;&#105;&#110;&#64;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#x31;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#x73;&#102;&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x31;&#57;&#50;&#46;&#49;&#54;&#56;&#46;&#56;&#48;&#x2e;&#49;&#50;&#x39;">&#109;&#x73;&#102;&#x61;&#x64;&#x6d;&#x69;&#110;&#64;&#x31;&#57;&#50;&#46;&#49;&#54;&#56;&#46;&#56;&#48;&#x2e;&#49;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -179,11 +179,11 @@
 <h3 id="Raspberry-pico-W"><a href="#Raspberry-pico-W" class="headerlink" title="Raspberry pico W"></a>Raspberry pico W</h3><p>Raspberry Pi Pico 是一款搭载了 RP 2040 芯片的微处理器开发板。对于 Pico 的编程开发，官方开发了 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_c_sdk.pdf">Pico C&#x2F;C++ SDK</a> 和 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_python_sdk.pdf">Pico Python SDK</a> 软件开发工具包，用户可以选择 C&#x2F;C++ 或者 Python 对 Pico 进行开发。</p>
 <p><img src="/4cbf7fedd48fc86177e461582368fae2-17094624419241.jpg" alt="4cbf7fedd48fc86177e461582368fae2"></p>
 <p>其规格参数如下：</p>
-<img src="1709462560513.png" alt="1709462560513" style="zoom: 50%;" />
+<img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/1709462560513.png" alt="1709462560513" style="zoom: 50%;">
 
 <h3 id="Python-SDK-开发制作badusb"><a href="#Python-SDK-开发制作badusb" class="headerlink" title="Python SDK 开发制作badusb"></a>Python SDK 开发制作badusb</h3><p> Python SDK 开发 Pico 的思路是，将 MicroPython（微处理器上运行的 Python 固件）拖拽到 Pico 中，然后将计算机上的 Python (3)代码传给 Pico 运行。树莓派官网提供了MicroPython固件，只需要将其烧录进去即可。已经编译好的固件：<a href="https://www.raspberrypi.org/documentation/rp2040/getting-started/">getting-started</a>这里可以下载到</p>
 <p>首先按住BOOTSET选项并链接USB接口到计算机上，其将显示为名为 RPI-RP2 的可移动媒体设备（但注意是识别出来容量可能有误，具体按照产品参数为准）并生成INDEX.HTM和INFO_UF2.TXT文件</p>
-<img src="{F9519DD5-C17F-4728-9D05-168685C8900B}.png" alt="{F9519DD5-C17F-4728-9D05-168685C8900B}" style="zoom:80%;" />
+<img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/{F9519DD5-C17F-4728-9D05-168685C8900B}.png" alt="{F9519DD5-C17F-4728-9D05-168685C8900B}" style="zoom:80%;">
 
 <p>下载<a href="https://downloads.circuitpython.org/bin/raspberry_pi_pico_w/en_US/adafruit-circuitpython-raspberry_pi_pico_w-en_US-8.2.10.uf2">adafruit-circuitpython-raspberry_pi_pico-en_US-8.2.10.uf2</a> 到设备的根目录下，大约3秒后设备将会自动重启，并命名为CIRCUITPY设备并重新连接。生成以下文件：</p>
 <p><img src="/%7B40AE3F73-9CBF-4337-9ACC-262E25518D0B%7D.png" alt="{40AE3F73-9CBF-4337-9ACC-262E25518D0B}"></p>
@@ -246,7 +246,7 @@
   <entry>
     <title>frp内网穿透</title>
     <url>/2023/12/13/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
-    <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/11.jpg"></p>
+    <content><![CDATA[<h3 id="frp在liunx和windows下实现穿透"><a href="#frp在liunx和windows下实现穿透" class="headerlink" title="frp在liunx和windows下实现穿透"></a>frp在liunx和windows下实现穿透</h3><h4 id="网络拓扑图如下"><a href="#网络拓扑图如下" class="headerlink" title="网络拓扑图如下"></a>网络拓扑图如下</h4><p><img src="/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/11.jpg"></p>
 <p>下载frp包（包含liunx&#x2F;windows下的可执行程序和配置文件）</p>
 <h4 id="攻击实施第一次穿透"><a href="#攻击实施第一次穿透" class="headerlink" title="攻击实施第一次穿透"></a>攻击实施第一次穿透</h4><p>kali使用msf进行永恒之蓝攻击，上传frpc服务到window7，kali开启frps服务,win7上传frpc服务</p>
 <p>1.永恒之蓝攻破windows7,上传frpc服务。编写frpc.ini文件</p>
@@ -739,10 +739,10 @@
 <h3 id="3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"><a href="#3-手机位置定位。通过LAC（Location-Area-Code，位置区域码）和CID（Cell-Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。" class="headerlink" title="3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。"></a>3.手机位置定位。通过LAC（Location Area Code，位置区域码）和CID（Cell Identity，基站编号，是个16位的数据（范围是0到65535）可以查询手机接入的基站的位置，从而初步确定手机用户的位置。</h3><p>华为手机应该拨号*#* #2846579# *#*进入工程模式</p>
 <p><img src="/image-20231209195332722.png" alt="image-20231209195332722"></p>
 <p>但是honor系列并不能在工程菜单找到相关信息。</p>
-<img src="11-17021235157051.png" style="zoom:50%;" />
+<img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/11-17021235157051.png" style="zoom:50%;">
 
 <p>在基站查询工具得到如下信息：</p>
-<img src="qq_pic_merged_1702124303982.jpg" alt="qq_pic_merged_1702124303982" style="zoom:50%;" />
+<img src="/2023/12/07/%E5%AE%9E%E9%AA%8C%E4%B8%80%E7%BD%91%E7%BB%9C%E6%89%AB%E6%8F%8F%E4%B8%8E%E7%BD%91%E7%BB%9C%E4%BE%A6%E5%AF%9F/qq_pic_merged_1702124303982.jpg" alt="qq_pic_merged_1702124303982" style="zoom:50%;">
 
 
 
@@ -867,7 +867,7 @@
 <li>缓存系统：用户通过收到的最佳接入节点 IP 访问对应的缓存节点，如果节点已经缓存了用户请求的资源，会直接将资源返回给用户。</li>
 <li>支撑系统：支撑服务系统包括天眼、数据智能和配置管理系统，分别具备了资源监测、数据分析和配置管理能力。</li>
 </ul>
-<p><img src="D:/typora/image/1650356594030-55b0ee85-bfc9-4aa8-aec9-b0d09c825de7.png" alt="image"></p>
+<p><img src="/2023/11/01/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86-1/typora/image/1650356594030-55b0ee85-bfc9-4aa8-aec9-b0d09c825de7.png" alt="image"></p>
 <p>创建 CDN 加速域名后，CDN 将为您的加速域名分配 CNAME 记录值，您需要将域名解析至 CNAME 记录后才能接入CDN的智能调度系统。在正式接入 CDN 后，终端用户访问时经过的流程大致如下：</p>
 <ol>
 <li>本机 DNS 发起对访问域名的解析查询，加速域名权威DNS将响应您所配置的 CNAME 地址，DNS 继续对CNAME 记录发起查询后，解析结果将根据阿里云调度系统决策，从权威 DNS 中返回最优节点 IP 地址。</li>
@@ -1056,6 +1056,100 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
+    <title>网络安全测试课程_作业_2</title>
+    <url>/2023/11/14/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-2/</url>
+    <content><![CDATA[<h2 id="课堂总结"><a href="#课堂总结" class="headerlink" title="课堂总结"></a>课堂总结</h2><h3 id="主动扫描"><a href="#主动扫描" class="headerlink" title="主动扫描"></a>主动扫描</h3><p>主动扫描一般都是针对目标发送特定的数据包，然后根据目标的反应来获得一些信息。大多为利用爬虫模块对特定链接的GET,POST，Headers等请求的参数进行变形，然后重放并根据返回的数据包的信息或状态码进行判断。其行为有可能被目标系统查获。</p>
+<p>以nmap为例可以通过ping ,ARP,TCP,UDP等协议进行主动扫描</p>
+<ul>
+<li>当目标主机与我们处于同一网段时，使用ARP协议扫描不仅速度最快而且扫描结果也是十分精准</li>
+<li>对于大量主机扫描时，可以使用ping协议扫描，较为快速</li>
+<li>TCP协议扫描时一般情况下使用较多的扫描方式</li>
+<li>UDP协议扫描多用于非TCP协议建立连接的扫描</li>
+</ul>
+<h3 id="被动扫描"><a href="#被动扫描" class="headerlink" title="被动扫描"></a>被动扫描</h3><p>相较于主动扫描，被动扫描多是通过系统发出的包进行判断或通过流量、代理等方式去采集测试数据源。与目标系统不产生交互。</p>
+<p><img src="/%7B3D0F4BB3-1DF3-4669-877D-EFCCD049117C%7D.png" alt="1"></p>
+<h4 id="扫描的范围"><a href="#扫描的范围" class="headerlink" title="扫描的范围"></a>扫描的范围</h4><p>多为域名，子域名，指纹等资产。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">A(被动扫描范围) --&gt;B[域名]--&gt;C[子域名]</span><br><span class="line">A--&gt;D[是否含有CDN,WAF等等]</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>CDN即<strong>內容分发网络</strong>（英语：Content Delivery Network或Content Distribution Network，缩写：CDN）是指一种透过互联网互相连接的电脑网络系统，利用最靠近每位用户的服务器，更快、更可靠地将音乐、图片、影片、应用程序及其他文件发送给用户，来提供高性能、可扩展性及低成本的网络内容传递给用户。</p>
+</blockquote>
+<p><img src="/%7B6F21AD28-46E8-408f-95CC-943FBD80D3D3%7D.png" alt="2"></p>
+<h3 id="google-hacking语法"><a href="#google-hacking语法" class="headerlink" title="google hacking语法"></a>google hacking语法</h3><h4 id="基本搜索"><a href="#基本搜索" class="headerlink" title="基本搜索"></a>基本搜索</h4><ul>
+<li>逻辑与：and</li>
+<li>逻辑或： or</li>
+<li>逻辑非： -</li>
+<li>完整匹配：”关键词”</li>
+<li>通配符：* ?</li>
+</ul>
+<h4 id="高级搜索"><a href="#高级搜索" class="headerlink" title="高级搜索"></a>高级搜索</h4><p><strong>intext:</strong> 寻找正文中含有关键字的网页</p>
+<p><strong>intitle:</strong> 寻找标题中含有关键字的网页</p>
+<p><strong>allintitle:</strong> 用法和intitle类似，只不过可以指定多个词</p>
+<p><strong>inurl</strong> 将返回url中含有关键词的网页</p>
+<p><strong>site:</strong> 指定访问的站点</p>
+<p><strong>filetype:</strong> 指定访问的文件类型</p>
+<p><strong>link:</strong> 指定链接的网页</p>
+<p>搜索引擎：ZoomEye 工业控制系统</p>
+<h3 id="图片信息-metadata"><a href="#图片信息-metadata" class="headerlink" title="图片信息 metadata"></a>图片信息 metadata</h3><p>Exif专门为数码相机的照片设定的，可以记录数码照片的属性信息和拍摄数据。如GPS等隐私信息。</p>
+<p>在kali里可通过exiftool 图片来查看图片的exif信息</p>
+<h3 id="信息收集–字典"><a href="#信息收集–字典" class="headerlink" title="信息收集–字典"></a>信息收集–字典</h3><p><img src="/%7B9E187E01-700D-4056-B3F3-380C050577E4%7D.png" alt="3"></p>
+<p>字典爆破与生成有着多款工具可以使用，其中kali自带Hydra爆破工具。pydictor可以基于网页内容自定义密码，同时支持增插删改自定义密码内容。而Hascat支持MD5等多种hash算法可用于rar,pdf,office,windows账户进行破解。</p>
+<h3 id="搜索引擎"><a href="#搜索引擎" class="headerlink" title="搜索引擎"></a>搜索引擎</h3><p>常用的有ZooEye ,fofa,360quark等，每种产品功能基本相同，多用于搜索指定网站，CMS等。尤其是在SRC挖掘，攻防演练中。</p>
+<p><img src="/%7B9E3C8FFA-0CBB-4a19-A31A-0EB159157AD4%7D.png" alt="4"></p>
+<details>  <summary>网络安全搜索引擎相关语法</summary> 
+= ：匹配，=""时，可查询不存在字段或者值为空的情况。<p></p>
+== ：完全匹配，==""时，可查询存在且值为空的情况。<p></p>
+&& ：与<p></p>
+|| ：或者<p></p>
+!= ：不匹配，!=""时，可查询值为空的情况。<p></p>
+*= ：模糊匹配，使用*或者?进行搜索，比如banner*="mys??" (个人版及以上可用)。<p></p>
+() ：确认查询优先级，括号内容优先级最高。<p></p>
+app：组件名称  ver：组件版本 app:apache ver:2.4   搜索 apache 2.4<p></p>
+port：搜索端口号 port:22  搜索开放了SSH端口的主机<p></p>
+OS：搜索指定的操作系统 OS:linux<p></p>
+service：服务名称 Service:SSH   搜索SSH服务<p></p>
+country：国家名   city：城市名  country:China    city: Beijing<p></p>
+Device：搜索指定的设备类型，divice:router<p></p>
+ip:搜索特定的IP地址，ip:192.168.1.1<p></p>
+cidr：指定的CIDR网段   CIDR：192.168.158.12/24<p></p>
+Service：搜索指定的服务类型，service:http<p></p>
+Hostname：guet.edu.cn<p></p>
+icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></p>
+</details>
+
+<h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="•与ZoomEye功能类似的搜索引擎还有哪些？"><a href="#•与ZoomEye功能类似的搜索引擎还有哪些？" class="headerlink" title="•与ZoomEye功能类似的搜索引擎还有哪些？"></a>•与ZoomEye功能类似的搜索引擎还有哪些？</h3><p>相似的有很多，比如fofa,360quark，鹰眼等</p>
+<p><img src="/%7BBA3C6A68-F555-47b6-AB1D-7EF087D3EABB%7D.png" alt="5"></p>
+<p>每种引擎功能大多相似。用于对企业所有暴露在公网的暴露面进行梳理,迅速进行网站资产匹配，加快后续工作进程，如漏洞影响范围分析，应用分布统计等，帮助企业最大程度上保护自己的互联网资产。</p>
+<h3 id="利用ZoomEye进行相关搜索，截图"><a href="#利用ZoomEye进行相关搜索，截图" class="headerlink" title="利用ZoomEye进行相关搜索，截图"></a>利用ZoomEye进行相关搜索，截图</h3><p>例如搜索运行在中国的apahce服务：</p>
+<p>语法：app:apache &amp;&amp; country:china</p>
+<p><img src="/%7B0DBD880E-84E8-4948-9D43-9BF1B49BD19E%7D.png" alt="6"></p>
+<h3 id="子域名收集"><a href="#子域名收集" class="headerlink" title="子域名收集"></a>子域名收集</h3><p>这里利用layer子域名收集工具来完成。对guet.edu.cn进行暴力扫描（也可以用kali自带的TheHarvester）</p>
+<blockquote>
+<p>TheHarvester能够收集电子邮件账号、用户名、主机名和子域名等信息。它通过Google、Bing、LinkedIn、Baidu、Yandex、People123、Jigsaw、Shodan等公开资源整理收集这些信息。 </p>
+</blockquote>
+<p><img src="/%7BD7840373-E424-4037-85E1-C7AD3096E7C5%7D.png" alt="8"></p>
+<hr>
+<p>以外发现了学校网盘和超速管理界面。。。。</p>
+<h5 id="题外化"><a href="#题外化" class="headerlink" title="题外化"></a>题外化</h5><p>发现一处异常网址</p>
+<p><img src="/%7B47111BEB-01F6-4bac-B16B-5FE6D051B285%7D.png" alt="10"></p>
+<p>Apache Tomcat 是8.5.42版本，版本符合一个CVE。。。。。</p>
+<hr>
+<hr>
+<div style="width: 220%;">
+<iframe style="width:45%; transform: scale(0.9);" height="350" src="https://fofa.info/" frameborder="3" allowfullscreen>
+</iframe>
+</div>
+
+
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络安全测试课程-作业-3</title>
     <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
     <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
@@ -1150,104 +1244,6 @@ DNS历史查询：（https://securitytrails.com/）
       </categories>
       <tags>
         <tag>网络渗透测试基础知识,wireshark</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网络安全测试课程_作业_2</title>
-    <url>/2023/11/14/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-2/</url>
-    <content><![CDATA[<h2 id="课堂总结"><a href="#课堂总结" class="headerlink" title="课堂总结"></a>课堂总结</h2><h3 id="主动扫描"><a href="#主动扫描" class="headerlink" title="主动扫描"></a>主动扫描</h3><p>主动扫描一般都是针对目标发送特定的数据包，然后根据目标的反应来获得一些信息。大多为利用爬虫模块对特定链接的GET,POST，Headers等请求的参数进行变形，然后重放并根据返回的数据包的信息或状态码进行判断。其行为有可能被目标系统查获。</p>
-<p>以nmap为例可以通过ping ,ARP,TCP,UDP等协议进行主动扫描</p>
-<ul>
-<li>当目标主机与我们处于同一网段时，使用ARP协议扫描不仅速度最快而且扫描结果也是十分精准</li>
-<li>对于大量主机扫描时，可以使用ping协议扫描，较为快速</li>
-<li>TCP协议扫描时一般情况下使用较多的扫描方式</li>
-<li>UDP协议扫描多用于非TCP协议建立连接的扫描</li>
-</ul>
-<h3 id="被动扫描"><a href="#被动扫描" class="headerlink" title="被动扫描"></a>被动扫描</h3><p>相较于主动扫描，被动扫描多是通过系统发出的包进行判断或通过流量、代理等方式去采集测试数据源。与目标系统不产生交互。</p>
-<p><img src="/%7B3D0F4BB3-1DF3-4669-877D-EFCCD049117C%7D.png" alt="1"></p>
-<h4 id="扫描的范围"><a href="#扫描的范围" class="headerlink" title="扫描的范围"></a>扫描的范围</h4><p>多为域名，子域名，指纹等资产。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR</span><br><span class="line"></span><br><span class="line">A(被动扫描范围) --&gt;B[域名]--&gt;C[子域名]</span><br><span class="line">A--&gt;D[是否含有CDN,WAF等等]</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>CDN即<strong>內容分发网络</strong>（英语：Content Delivery Network或Content Distribution Network，缩写：CDN）是指一种透过互联网互相连接的电脑网络系统，利用最靠近每位用户的服务器，更快、更可靠地将音乐、图片、影片、应用程序及其他文件发送给用户，来提供高性能、可扩展性及低成本的网络内容传递给用户。</p>
-</blockquote>
-<p><img src="/%7B6F21AD28-46E8-408f-95CC-943FBD80D3D3%7D.png" alt="2"></p>
-<h3 id="google-hacking语法"><a href="#google-hacking语法" class="headerlink" title="google hacking语法"></a>google hacking语法</h3><h4 id="基本搜索"><a href="#基本搜索" class="headerlink" title="基本搜索"></a>基本搜索</h4><ul>
-<li>逻辑与：and</li>
-<li>逻辑或： or</li>
-<li>逻辑非： -</li>
-<li>完整匹配：”关键词”</li>
-<li>通配符：* ?</li>
-</ul>
-<h4 id="高级搜索"><a href="#高级搜索" class="headerlink" title="高级搜索"></a>高级搜索</h4><p><strong>intext:</strong> 寻找正文中含有关键字的网页</p>
-<p><strong>intitle:</strong> 寻找标题中含有关键字的网页</p>
-<p><strong>allintitle:</strong> 用法和intitle类似，只不过可以指定多个词</p>
-<p><strong>inurl</strong> 将返回url中含有关键词的网页</p>
-<p><strong>site:</strong> 指定访问的站点</p>
-<p><strong>filetype:</strong> 指定访问的文件类型</p>
-<p><strong>link:</strong> 指定链接的网页</p>
-<p>搜索引擎：ZoomEye 工业控制系统</p>
-<h3 id="图片信息-metadata"><a href="#图片信息-metadata" class="headerlink" title="图片信息 metadata"></a>图片信息 metadata</h3><p>Exif专门为数码相机的照片设定的，可以记录数码照片的属性信息和拍摄数据。如GPS等隐私信息。</p>
-<p>在kali里可通过exiftool 图片来查看图片的exif信息</p>
-<h3 id="信息收集–字典"><a href="#信息收集–字典" class="headerlink" title="信息收集–字典"></a>信息收集–字典</h3><p><img src="/%7B9E187E01-700D-4056-B3F3-380C050577E4%7D.png" alt="3"></p>
-<p>字典爆破与生成有着多款工具可以使用，其中kali自带Hydra爆破工具。pydictor可以基于网页内容自定义密码，同时支持增插删改自定义密码内容。而Hascat支持MD5等多种hash算法可用于rar,pdf,office,windows账户进行破解。</p>
-<h3 id="搜索引擎"><a href="#搜索引擎" class="headerlink" title="搜索引擎"></a>搜索引擎</h3><p>常用的有ZooEye ,fofa,360quark等，每种产品功能基本相同，多用于搜索指定网站，CMS等。尤其是在SRC挖掘，攻防演练中。</p>
-<p><img src="/%7B9E3C8FFA-0CBB-4a19-A31A-0EB159157AD4%7D.png" alt="4"></p>
-<details>  <summary>网络安全搜索引擎相关语法</summary> 
-= ：匹配，=""时，可查询不存在字段或者值为空的情况。</p>
-== ：完全匹配，==""时，可查询存在且值为空的情况。</p>
-&& ：与</p>
-|| ：或者</p>
-!= ：不匹配，!=""时，可查询值为空的情况。</p>
-*= ：模糊匹配，使用*或者?进行搜索，比如banner*="mys??" (个人版及以上可用)。</p>
-() ：确认查询优先级，括号内容优先级最高。</p>
-app：组件名称  ver：组件版本 app:apache ver:2.4   搜索 apache 2.4</p>
-port：搜索端口号 port:22  搜索开放了SSH端口的主机</p>
-OS：搜索指定的操作系统 OS:linux</p>
-service：服务名称 Service:SSH   搜索SSH服务</p>
-country：国家名   city：城市名  country:China    city: Beijing</p>
-Device：搜索指定的设备类型，divice:router</p>
-ip:搜索特定的IP地址，ip:192.168.1.1</p>
-cidr：指定的CIDR网段   CIDR：192.168.158.12/24</p>
-Service：搜索指定的服务类型，service:http</p>
-Hostname：guet.edu.cn</p>
-icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
-</details>
-
-<h2 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h2><h3 id="•与ZoomEye功能类似的搜索引擎还有哪些？"><a href="#•与ZoomEye功能类似的搜索引擎还有哪些？" class="headerlink" title="•与ZoomEye功能类似的搜索引擎还有哪些？"></a>•与ZoomEye功能类似的搜索引擎还有哪些？</h3><p>相似的有很多，比如fofa,360quark，鹰眼等</p>
-<p><img src="/%7BBA3C6A68-F555-47b6-AB1D-7EF087D3EABB%7D.png" alt="5"></p>
-<p>每种引擎功能大多相似。用于对企业所有暴露在公网的暴露面进行梳理,迅速进行网站资产匹配，加快后续工作进程，如漏洞影响范围分析，应用分布统计等，帮助企业最大程度上保护自己的互联网资产。</p>
-<h3 id="利用ZoomEye进行相关搜索，截图"><a href="#利用ZoomEye进行相关搜索，截图" class="headerlink" title="利用ZoomEye进行相关搜索，截图"></a>利用ZoomEye进行相关搜索，截图</h3><p>例如搜索运行在中国的apahce服务：</p>
-<p>语法：app:apache &amp;&amp; country:china</p>
-<p><img src="/%7B0DBD880E-84E8-4948-9D43-9BF1B49BD19E%7D.png" alt="6"></p>
-<h3 id="子域名收集"><a href="#子域名收集" class="headerlink" title="子域名收集"></a>子域名收集</h3><p>这里利用layer子域名收集工具来完成。对guet.edu.cn进行暴力扫描（也可以用kali自带的TheHarvester）</p>
-<blockquote>
-<p>TheHarvester能够收集电子邮件账号、用户名、主机名和子域名等信息。它通过Google、Bing、LinkedIn、Baidu、Yandex、People123、Jigsaw、Shodan等公开资源整理收集这些信息。 </p>
-</blockquote>
-<p><img src="/%7BD7840373-E424-4037-85E1-C7AD3096E7C5%7D.png" alt="8"></p>
-<hr>
-<p>以外发现了学校网盘和超速管理界面。。。。</p>
-<h5 id="题外化"><a href="#题外化" class="headerlink" title="题外化"></a>题外化</h5><p>发现一处异常网址</p>
-<p><img src="/%7B47111BEB-01F6-4bac-B16B-5FE6D051B285%7D.png" alt="10"></p>
-<p>Apache Tomcat 是8.5.42版本，版本符合一个CVE。。。。。</p>
-<hr>
-<hr>
-<div style="width: 220%;">
-<iframe 
-  style="width:45%; transform: scale(0.9);" height="350"
-  src="https://fofa.info/" 
-  frameborder="3" 
-  allowfullscreen>
-</iframe>
-</div>
-
-
-]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,kali,网卡与路由</tag>
       </tags>
   </entry>
   <entry>
@@ -1371,7 +1367,7 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
 </li>
 </ul>
 <p>参考王轶骏，薛质，李建华的《<strong>基于TCP&#x2F;IP协议栈指纹辨识的远程操作系统探测</strong>》论文后可以得知：文章内容实现远程操作系统辨识的各种技术类型进行了概括（基于TCPP协议栈的指纹查询和辨识）</p>
-<img src="JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;" />
+<img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/JSJC200418002_11400 (1).jpg" alt="1" style="zoom: 67%;">
 
 <blockquote>
 <p>通过探测并仔细分析这些TCP&#x2F;IP协议栈指纹的细微差异，就能够精确地辨识出远程操作系统，这就是“栈指纹辨识”(Stack Fingerprinting)技术。最为经典的栈指纹辨识技术由Fydo提出，它通过构造并发送不同类型的数据包（既有正常的也有畸形的数据报）来收集并分析远端操作系统的响应，从而区别不同的TCPP协议栈。这一期间，还出现了基于初始序列号(ISN)采样的指纹辨识技术[)。这些技术都已在Nmp和Queso等经典的工具中得到了体现，在此就不再赘述。此后，真正在指纹辨识方法学上有所突破的则是以下两种：基于TO(重传超时时间)采样的辨识技术和基于引CMP响应的辨识技术。</p>
@@ -1386,7 +1382,7 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
 <p><img src="/2.png" alt="ping实验"></p>
 <p>可以看到win系统的TTL值为128，liunx（Ubuntu）系统的TTL值为：64.因为是本地主机并未经过路由，因此TTL并未减小。</p>
 <p>使用TCP&#x2F;UDP进行路由追踪可以看到（未经过其他路由转发）：</p>
-<img src="3.png" style="zoom:90%;" />
+<img src="/2023/12/04/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-5/3.png" style="zoom:90%;">
 
 <p>通过nmap扫描系统类型可以看到：</p>
 <p><img src="/4.png"></p>
@@ -1428,7 +1424,7 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站</p>
 <h4 id="生成主控端、被控端"><a href="#生成主控端、被控端" class="headerlink" title="生成主控端、被控端"></a>生成主控端、被控端</h4><p>这里使用MSFPC进行生成exe可执行程序进行控制</p>
 <p><img src="/%7B8FE1FCCB-22B3-4fa0-A131-775985D32D8E%7D.png" alt="使用步骤"></p>
 <p>将可执行脚本上传到windows上并等待执行,使用msf进行上传</p>
-<p><img src="C:/Users/a/AppData/Local/Temp/{42E5925B-E8B7-4ae2-AD0A-F1EF17536807}.png" alt="文件上传"></p>
+<p><img src="/2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/Users/a/AppData/Local/Temp/{42E5925B-E8B7-4ae2-AD0A-F1EF17536807}.png" alt="文件上传"></p>
 <p><img src="/%7B2FCAEAF1-7169-42e5-A7D9-2BD063DD6360%7D.png" alt="上传成功"></p>
 <p>kali进行监听443，windows进行执行，使用handler进行监听</p>
 <p><img src="/%7B394200B4-6B9C-40bd-A0E9-5CD2413FD29B%7D.png" alt="参数设置"></p>
