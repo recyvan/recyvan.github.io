@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>python之request库 | Recyvan</title><noscript>开启JavaScript才能访问本站哦~</noscript><link rel="icon" href="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><!-- index.css--><link rel="stylesheet" href="../../../../css/index.css?v=1.5.1"><!-- inject head--><link rel="stylesheet" href="https://cdn.cbd.int/solitude-source/icon/scoicon.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.css"><!-- aplayer--><link rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"><!-- swiper--><link rel="stylesheet" href="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.9/katex.min.css"><!-- Open Graph--><meta name="description" content="在复现一些web的CVE时，多会用到python脚本进行辅助攻击和利用，其中利用追到的无非就是requets库了。 requests库安装 使用pip install requests即可下载该库，使用import即可导入该库 在github上下载源码进行编译安装，执行以下命令： 1"><!-- pwa--><script>(win => {
+        win.saveToLocal = {
+            set: function setWithExpiry(key, value, ttl) {
+                if (ttl === 0)
+                    return
+                const now = new Date()
+                const expiryDay = ttl * 86400000
+                const item = {
+                    value: value,
+                    expiry: now.getTime() + expiryDay,
+                }
+                localStorage.setItem(key, JSON.stringify(item))
+            },
+
+            get: function getWithExpiry(key) {
+                const itemStr = localStorage.getItem(key)
+
+                if (!itemStr) {
+                    return undefined
+                }
+                const item = JSON.parse(itemStr)
+                const now = new Date()
+
+                if (now.getTime() > item.expiry) {
+                    localStorage.removeItem(key)
+                    return undefined
+                }
+                return item.value
+            }
+        }
+
+        const DarkModeStatus = localStorage.getItem('theme')
+        if (DarkModeStatus !== null) {
+            if (DarkModeStatus === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+            }
+        }
+
+        const asideStatus = saveToLocal.get('aside-status')
+        if (asideStatus !== undefined) {
+            if (asideStatus === 'hide') {
+                document.documentElement.classList.add('hide-aside')
+            } else {
+                document.documentElement.classList.remove('hide-aside')
+            }
+        }
+    }
+)(window)
+
+console.log(
+    "%c Program: Hexo %c Theme: Solitude %c Version: v1.5.1",
+    "border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#ff3842;",
+    "padding: 5px 10px;color:white;background:#3e9f50;",
+    "border-radius:0 5px 5px 0;padding: 5px 10px;background:#0084ff;color:white;"
+);</script><!-- global head--><script>const GLOBAL_CONFIG = {
+    root: '/',
+    algolia: undefined,
+    localsearch: {"preload":false,"path":"/search.xml"},
+    runtime: '2023-04-20 00:00:00',
+    lazyload: {
+        enable: false,
+        error: '/img/error_load.png'
+    },
+    hightlight: {
+        enable: false,
+        limit: 200,
+        expand: false,
+        copy: true,
+    },
+    randomlinks: false,
+    lang: {
+        theme: {
+            dark: '已切换至深色模式',
+            light: '已切换至浅色模式',
+        },
+        copy: {
+            success: '复制成功',
+            error: '复制失败',
+        },
+        backtop: '返回顶部',
+        time: {
+            recent: '最近',
+            yesterday: '昨天',
+            berforeyesterday: '前天',
+            daybefore: '天前',
+            runtime: '天',
+        },
+        search: {
+            empty: '找不到你查询的内容：${query}',
+            hit: '找到 ${hits} 条结果，用时 ${time} 毫秒',
+            placeholder: '输入关键词快速查找',
+        },
+        chs: {
+            chs_to_cht: '繁體中文',
+            cht_to_chs: '简体中文',
+        }
+    },
+    aside: {
+        sayhello: {
+            morning: '一日之计在于晨',
+            noon: '吃饱了才有力气干活',
+            afternoon: '集中精力，攻克难关',
+            night: '不要太劳累了，早睡更健康',
+            goodnight: '睡个好觉，保证精力充沛',
+        },
+        sayhello2: ["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多","🎮 电竞游戏爱好者"],
+    },
+    covercolor: {
+        enable: false
+    },
+    comment: {
+        enable: false,
+        type: '',
+        commentBarrage: false,
+        randomInfoStart: ["聪敏的","可爱的","美丽的"],
+        randomInfoEnd: ["白菜","小可爱","小仙女"],
+        twikoo: {
+            url: '',
+            accessToken: ''
+        },
+        waline: {
+            url: '',
+        }
+    },
+    lightbox: 'fancybox',
+    rightside: {
+        enable: false
+    },
+    ai: {
+        enable: false,
+        key: '',
+        talk: '我是王卓Sco开发的摘要生成助理ScoGPT，ScoGPT在静态部署时进行摘要的撰写，并且在访客访问时通过ScoCorrection转译后的文本摘要实现工具。我在这里只负责已经生成的摘要显示，你无法与我直接沟通，但我可以回答一些预设的问题。',
+        randomPost: false,
+    },
+    music: {
+        enable: true,
+    },
+    translate: undefined,
+};</script><meta name="generator" content="Hexo 7.1.1"></head><body id="body"><!-- universe--><canvas id="universe"></canvas><!-- loading--><!-- console--><div id="console"><div class="close-btn" onclick="sco.hideConsole()"><i class="scoicon sco-close-fill"></i></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="sco.switchDarkMode()" title="昼夜切换" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i></a></div><div class="console-btn-item" id="consoleHideAside"><a class="asideSwitch" onclick="sco.switchHideAside()" title="边栏显示控制" href="javascript:void(0);"><i class="scoicon sco-side-bar-fill"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="sco.musicToggle()"><a class="music-switch" title="音乐开关" href="javascript:void(0);"><i class="scoicon sco-disc-fill"></i></a></div></div><div class="console-mask" onclick="sco.hideConsole()"></div></div><!-- sidebar--><div id="sidebar" style="zoom: 1;"><div id="menu-mask" style="display: none;"></div><div id="sidebar-menus"><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" onclick="sco.switchDarkMode()" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../index.html"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="../../../../categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="../../../../tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../books/"><i class="scoicon  sco-gift-fill"></i><span>图书</span></a></li><li><a class="site-page child" href="../../../../tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="../../../../about/%20%7C%7C%20sco-contacts-fill"><span>关于本站</span></a></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-widget card-tags card-archives card-webinfo card-allinfo"><div class="card-tag-cloud"><a href="../../../../tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/">JAVA安全,序列化<sup>1</sup></a><a href="../../../../tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/">CVE,靶机,Metasploitable2<sup>1</sup></a><a href="../../../../tags/pico/">pico<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8Cicmp%E5%8D%8F%E8%AE%AE/">渗透测试，icmp协议<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/">渗透测试，路由<sup>2</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/">网络安全，python<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%85%8D%E6%9D%80/">渗透测试，免杀<sup>1</sup></a><a href="../../../../tags/ASP-NET/">ASP.NET<sup>1</sup></a><a href="../../../../tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/">php代码分析，webmin<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">网络渗透测试<sup>1</sup></a><a href="../../../../tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">C语言,数据结构,线性表<sup>1</sup></a><a href="../../../../tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/">信息搜集，渗透测试，网络安全，红蓝对抗<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/">网络渗透测试基础知识,kali,网卡与路由<sup>2</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-wireshark/">网络渗透测试基础知识,wireshark<sup>1</sup></a><a href="../../../../tags/easy-file-sharing-server/">easy file sharing server<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-DNS-ARP/">网络渗透测试基础知识,DNS,ARP<sup>1</sup></a></div></div></div></div><!-- keyboard--><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav class="show" id="nav"><div id="nav-group"><div id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon scoicon sco-more-fill"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div></div><a id="site-name" href="/" title="返回博客主页"><span class="title">recyvan</span></a></div><div id="page-name-mask"><div id="page-name"><a id="page-name-text" onclick="sco.toTop()">python之request库</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../index.html"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="../../../../categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="../../../../tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../books/"><i class="scoicon  sco-gift-fill"></i><span>图书</span></a></li><li><a class="site-page child" href="../../../../tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="../../../../about/%20%7C%7C%20sco-contacts-fill"><span>关于本站</span></a></div></div></div><div id="nav-left"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机一篇文章" href="javascript:void(0);"><i class="scoicon sco-signal-tower-fill"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索"><i class="scoicon sco-search-line"></i></a></div><div class="nav-button" id="nav-totop" onclick="sco.toTop()"><a class="totopbtn"><i class="scoicon sco-arrow-up-line"></i><span id="percent">0</span></a></div><div id="toggle-menu"><a class="site-page"><i class="scoicon sco-menu-line"></i></a></div></div></div></nav><div class="coverdiv" id="coverdiv"><img class="nolazyload" id="post-cover" src="../../../../img/feet.jpg" alt="python之request库"></div><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original" title="该文章为原创文章，注意版权协议">原创</a><span class="post-meta-categories"><a class="post-meta-categories" href="/categories/python/">python</a></span><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/"><span class="tags-name tags-punctuation">网络安全，python</span></a></div></div></div></div><h1 class="post-title">python之request库</h1><div id="post-meta"><div class="meta-secondline"><span class="post-meta-wordcount"><span class="post-meta-separator"></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><hr>
+<hr>
+<p>在复现一些web的CVE时，多会用到python脚本进行辅助攻击和利用，其中利用追到的无非就是requets库了。</p>
+<hr>
+<h3 id="requests库"><a href="#requests库" class="headerlink" title="requests库"></a>requests库</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li><p>使用pip install requests即可下载该库，使用import即可导入该库</p>
+<p><img src="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/%7B5AC7B09C-6A33-47ca-A7CA-7ED7FD3C437D%7D.png" alt="安装requets库"></p>
+</li>
+<li><p>在github上下载源码进行编译安装，执行以下命令：</p>
+</li>
+</ul>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone git://github.com/kennethreitz/requests.git</span><br><span class="line">python setup.py install</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="单一命令使用"><a href="#单一命令使用" class="headerlink" title="单一命令使用"></a>单一命令使用</h4><p>现在使用易优CMS进行演示</p>
+<p>requests.get函数可以用来发送来发送http请求，并返回得到的数据包（默认保存在text文件中）。</p>
+<p><img src="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/%7B564A2C10-43D8-41dd-A44E-2963AE3415E9%7D.png" alt="相关安装"></p>
+<p>当然上述命令用于发送get请求，参数可以直接拼接到url中，但如果post请求，则因该使用<code>request.post</code> 函数</p>
+<p>在网站的后台登录出有post传参用户名和密码：</p>
+<p><img src="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/%7B4C0D96C9-5CB1-4e89-A360-8983FA36E0E4%7D.png" alt="后台登录"></p>
+<p>一般大多情况下post传参使用application&#x2F;x-www-form-urlencoded格式，在requests中使用字典的格式被requests模块并传参。</p>
+<p><img src="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/%7B013A0C66-5F41-4ed2-8574-0F03FEC04B27%7D.png" alt="post传参登录"></p>
+<p>当然reuquests还有PUT、DELETE等传参方式。</p>
+<h3 id="返回参数的利用"><a href="#返回参数的利用" class="headerlink" title="返回参数的利用"></a>返回参数的利用</h3><p>调用 requests 请求之后，会返回一个 response 对象，该对象包含了具体的响应信息，如状态码、响应头、响应内容等。</p>
+<table>
+<thead>
+<tr>
+<th>返回类型</th>
+<th>解释（具体含义）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r.status_code</td>
+<td>获得http中返回的状态码，可用于编写一些网页状态的脚本（如文件上传-条件竞争）</td>
+</tr>
+<tr>
+<td>r.url</td>
+<td>请求的最终地址（应是多见于30x的跳转</td>
+</tr>
+<tr>
+<td>r.encoding</td>
+<td>对于request返回的text文件的编码格式</td>
+</tr>
+<tr>
+<td>r.reason</td>
+<td>状态码的描述，例如404的Not Found 同r.status_code</td>
+</tr>
+<tr>
+<td>r.content</td>
+<td>返回的相应内容，且为byte类型</td>
+</tr>
+<tr>
+<td>r.text</td>
+<td>对于request返回的text文件</td>
+</tr>
+<tr>
+<td>r.json</td>
+<td>内置得JSON解码器</td>
+</tr>
+<tr>
+<td>r.cookie</td>
+<td>返回得cookie值</td>
+</tr>
+</tbody></table>
+<h3 id="ip伪造head头部伪造"><a href="#ip伪造head头部伪造" class="headerlink" title="ip伪造head头部伪造"></a>ip伪造head头部伪造</h3><p>当然一个网站有时会对请求会检测请求的浏览器类型，ip地址等，这是会涉及到head头部伪造</p>
+<h4 id="使用IP代理池伪装IP"><a href="#使用IP代理池伪装IP" class="headerlink" title="使用IP代理池伪装IP"></a>使用IP代理池伪装IP</h4><p>利于python中定义自己想要设置得ip地址：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">proxies = &#123;    <span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;http://xxx.xx.xx.xxx:xxx&#x27;</span>,    </span><br><span class="line">				.... </span><br><span class="line">			   <span class="string">&#x27;http&#x27;</span>:<span class="string">&#x27;http://xx.xxx.xxx.xxx:xxxx&#x27;</span>,</span><br><span class="line">		  &#125;</span><br><span class="line">response = requests.get(url,proxies=proxies)</span><br></pre></td></tr></table></figure>
+<p>对于代理ip的获取，可以使用python爬取免费的且可爬取的代理ip例如在github上一个开源的代理IP地址**<a target="_blank" rel="noopener" href="https://github.com/Python3WebSpider/ProxyPool">ProxyPool</a>** ，通过如下代码获取代理IP</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">proxy_pool_url = <span class="string">&#x27;http://localhost:5555/random&#x27;</span> <span class="comment">#项目获取代理代理IP的本地网址</span></span><br><span class="line"><span class="comment"># 获取代理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_proxy</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(proxy_pool_url)</span><br><span class="line">        <span class="keyword">if</span> response.status_code == <span class="number">200</span>: </span><br><span class="line">            <span class="keyword">return</span> response.text <span class="comment"># 返回的内容为代理IP</span></span><br><span class="line">    <span class="keyword">except</span> ConnectionError:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">real_proxy = <span class="string">&#x27;http://&#x27;</span> + get_proxy()</span><br></pre></td></tr></table></figure>
+
+<h5 id="浏览器伪装"><a href="#浏览器伪装" class="headerlink" title="浏览器伪装"></a>浏览器伪装</h5><p>大多User-Agent值可以通过开发者工具（F12）获取到比如常见的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests   </span><br><span class="line">headers=&#123;<span class="string">&#x27;User-Agent&#x27;</span>:<span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36</span></span><br><span class="line"><span class="string">&#x27;</span>&#125;  <span class="comment">#模拟Chrome浏览器  </span></span><br><span class="line">response = requests.get(<span class="string">&quot;http://www.baidu.com&quot;</span>,headers=headers) </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/12/24/python%E4%B9%8Brequest%E5%BA%93/%7BC9F2A256-A796-4f96-A6B2-F368BBE048BE%7D.png" alt="user-Agent模拟"></p>
+<blockquote>
+<p>对于一些网站对于访问速率(频次)的限制，可以使用一个time库中的sleep进行延迟发送，当然更加逼真的话可以使用random库中的random()函数来生成随机数进行变频访问</p>
+</blockquote>
+<h3 id="会话保持"><a href="#会话保持" class="headerlink" title="会话保持"></a>会话保持</h3><p>大多数网站是通过session对象跨请求保持某些参数，即保持登陆状态，官方的说就是你使用requests尝试登录并且验证成功，服务端会返回一些Cookie，这些Cookie可以使你的下次请求不需要验证，而Session对象能保持这些Cookie，而不用你每次提交请求时构建一个新的Cookie。</p>
+<p>例如使用<code>rs = requests.Session()</code> 来打开会话，在获取返回结果时用<code>restult = session.post/get()</code>。利用在登录一个post传参的网站时，可以使用如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">rs = requests.session() <span class="comment">#建立会话</span></span><br><span class="line">data =&#123;</span><br><span class="line">   <span class="string">&#x27;usename&#x27;</span>: <span class="string">&#x27;xxxxxx&#x27;</span>, </span><br><span class="line">   <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;xxxxx&#x27;</span>   </span><br><span class="line">&#125;</span><br><span class="line">url =<span class="string">&quot;https://passport.xx.com/user/login&quot;</span> <span class="comment"># 登录url地址</span></span><br><span class="line">restult = session.post(url,data=data) <span class="comment">#不再使用request而是session</span></span><br><span class="line"></span><br><span class="line">url2 = <span class="string">&quot;https://xx.com/ck/shopping/id/235667&quot;</span><span class="comment"># 再次请求 登录后的网站获取数据</span></span><br><span class="line">result_data =  session.get(url2)</span><br><span class="line"><span class="built_in">print</span>(result_data.json()[<span class="string">&#x27;data&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件上传和下载"><a href="#文件上传和下载" class="headerlink" title="文件上传和下载"></a>文件上传和下载</h3><p>对于一些CVE脚本会进行一些文件上传的操作(如上传一句木马)，但这是并不是htnl代码般浏览器访问选择文件然后上传。以post方式（表单）上传多是先将二进制文件读取到内存中，再将内存中的文件发送到服务器保存。</p>
+<h4 id="单文件上传"><a href="#单文件上传" class="headerlink" title="单文件上传"></a>单文件上传</h4><p>例如下列代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">fo = <span class="built_in">open</span>(<span class="string">&quot;shell.php&quot;</span>, <span class="string">&quot;w&quot;</span>) <span class="comment"># 打开一个文件,其中‘w’为创建或覆盖文件，‘a’用于追写文件内容，‘xb’为以二进制方式打开，x为读写模式，‘r’为只读该文件 </span></span><br><span class="line">fo.write( <span class="string">&quot;&lt;?php phpinfo(); ?&gt;&quot;</span>) <span class="comment"># 关闭打开的文件</span></span><br><span class="line">fo.close()</span><br><span class="line"></span><br><span class="line">files &#123;<span class="string">&#x27;file1&#x27;</span>:<span class="built_in">open</span>(<span class="string">&#x27;shell.php&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="string">&#x27;image/png&#x27;</span>&#125; <span class="comment">#上传文件以二进制方式上传.&#x27;image/png&#x27;为上传类型，可以不指定</span></span><br><span class="line">response requests.post(<span class="string">&#x27;http://www.hackxxx.com/upload.php&#x27;</span>,files=files)</span><br><span class="line"><span class="built_in">print</span>(response.text)</span><br></pre></td></tr></table></figure>
+
+<h4 id="多文件上传"><a href="#多文件上传" class="headerlink" title="多文件上传"></a>多文件上传</h4><p>多文件上传同于单文件上传，只需修改一下file参数即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">files &#123;(<span class="string">&#x27;file1&#x27;</span>,(<span class="string">&#x27;shell1.php&#x27;</span><span class="built_in">open</span>(<span class="string">&#x27;shell1.php&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>),<span class="string">&#x27;image/png&#x27;</span>))</span><br><span class="line">       (<span class="string">&#x27;file2&#x27;</span>,(<span class="string">&#x27;shell2.php&#x27;</span><span class="built_in">open</span>(<span class="string">&#x27;shell2.php&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>),<span class="string">&#x27;image/jpeg&#x27;</span>))</span><br><span class="line">       (<span class="string">&#x27;file3&#x27;</span>,(<span class="string">&#x27;shell3.php&#x27;</span><span class="built_in">open</span>(<span class="string">&#x27;shell3.php&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>),<span class="string">&#x27;image/png&#x27;</span>))</span><br><span class="line">      &#125;  <span class="comment">#这里同样可以指定或不指定文件名称和文件类型，不指定文件名称应该是以打开文件名称作为文件名</span></span><br></pre></td></tr></table></figure>
+
+<p>其实还有以流的方式上传和监听时上传(requests-toolbet),但还未学习。</p>
+<h4 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h4><p>对于较小文件可以直接利用写的操作完成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">req = requests.get(<span class="string">&quot;http://www.hackxxx.com//shell.jpg&quot;</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">r&quot;c:\shell.jpg&quot;</span>, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f: <span class="comment">#以二进制方式打开</span></span><br><span class="line">    f.write(req.content)</span><br></pre></td></tr></table></figure>
+
+<p>当 Python 写入文件时，会将数据暂存在内存中，直至缓存存满后才真正写入文件。如果需要写入的数据很大，可能会导致内存不足。因此对于大文件的下载，可以采取分块读写的方法，每次只读写一小块。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">req = requests.get(<span class="string">&quot;http://www.hackxxx.com//shell.jpg&quot;</span>, stream=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">r&quot;c:\shell.jpg&quot;</span>, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> chunk <span class="keyword">in</span> req.iter_content(chunk_size=<span class="number">1024</span>):  <span class="comment"># 每次加载1024字节</span></span><br><span class="line">        f.write(chunk)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里with会自动判断是否关闭文件，所以不用在写<code>f.close()</code> 函数了。但浏览一些网上文章显示后讲到会遇到文件关闭后在一直占用进程，可能与部署的应用和版本有关吧？</li>
+</ul>
+<h3 id="命令行传参"><a href="#命令行传参" class="headerlink" title="命令行传参"></a>命令行传参</h3><p>大多脚本都时在cmd&#x2F;bash下进行命令行传参，这样方便管理和使用。在传参是多会用到<code>if __name__ == &quot;__main__&quot;:</code>函数</p>
+<p>python属于脚本语言，同于php语言，对代码是逐句解释运行，一直从首行运行到尾行，这样会出现一些函数需要在特定条件下执行而无法被提前或滞后执行。而<code>if __name__ == &quot;__main__&quot;:</code>可以作为程序入口进行选择性执行一些函数。但它与C语言中的mian()不同的是可以多个文件中出现。</p>
+<p>对于cmd中的参数，会使用到sys库中的argv，但要注意到是argv本身为一个数组，接受的一个了参数（argv[0]）是文件本身的名称，因此cmd下执行时第一个参数接受代码应为：<code>sys.argv[1]</code></p>
+<p>例如以前的在upload-lab中条件竞争模块使用的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## shell.py</span></span><br><span class="line"><span class="comment">## @Author : recyvan</span></span><br><span class="line"><span class="comment">## @Time : 2023-12-22</span></span><br><span class="line"><span class="comment">## #Description : upload-lab pass-17.</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">re</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        req=requests.get(url)</span><br><span class="line">        headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36&#x27;</span>,</span><br><span class="line">                   <span class="string">&#x27;Cookie&#x27;</span>: <span class="string">&#x27;session=eyJsb2dnZWRfaW4iOnRydWUsInVzZXJuYW1lIjoiYWRtaW4ifQ.ZYY6_w.x_AGwnOGnXqmNAIWoT4Mi4Q68HU&#x27;</span>&#125;</span><br><span class="line">        reqcode=req.status_code</span><br><span class="line">        <span class="keyword">if</span> reqcode == <span class="number">200</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;uopload success！&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(reqcode)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    url=sys.argv[<span class="number">1</span>] </span><br><span class="line">    re(url)</span><br></pre></td></tr></table></figure>
+
+<p>例如执行python shell.py -u <a target="_blank" rel="noopener" href="http://127.0.0.1/xxx/shell.php">http://127.0.0.1/xxx/shell.php</a> 执行后 url等于“ <a target="_blank" rel="noopener" href="http://127.0.0.1/xxx/shell.php%E2%80%9D%E3%80%82">http://127.0.0.1/xxx/shell.php”。</a></p>
+<hr>
+<p>关于其他脚本的学习（类，函数定义，列表，库等）学习后单独更新。</p>
+</article><div class="post-copyright"><div class="post-copyright__author_group"><a class="post-copyright__author_img" href="/about/"><img class="post-copyright__author_img_front" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"></a><div class="post-copyright__author_name">Recyvan</div><div class="post-copyright__author_desc">~blog~</div></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div id="quit-box" onclick="RemoveRewardMask()"></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本文是原创文章，采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>协议，完整转载请注明来自<a href="/">Recyvan</a></span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/"><span class="tags-punctuation"></span>网络安全，python<span class="tagsPageCount">1</span></a></div></div></div><nav class="needEndHide pagination-post" id="pagination"><div class="prev-post pull-left"><a href="../../27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">关于aspx文件和dll文件的关系的学习</div></div></a></div><div class="next-post pull-right"><a href="../../21/windows%E5%9F%9F%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AD%96%E7%95%A5/"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">windows域与用户组策略笔记(废弃)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><div class="author-info__top-group"><div class="author-info__sayhi" id="author-info__sayhi" onclick="sco.changeSayHelloText()">sayhello.morning</div></div></div><div class="avatar-img-group"><img class="avatar-img" alt="头像" src="/img/auto.jpg"><div class="avatar-sticker"><img class="avatar-sticker-img" src="https://bu.dusays.com/2023/12/30/659011053e246.png" alt="心情贴纸"></div></div><div class="author-info__description_group"><div class="author-info__description">分享自己对编程的<b>热爱</b>，对美好生活的<b>向往</b>，对知识海洋<b>探索历程</b>。</div><div class="author-info__description2">相信你可以在这里找到对你有用的知识和教程。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="../../../../about/"><div class="author-info__name">Recyvan</div><div class="author-info__desc">~blog~</div></a><div class="card-info-social-icons is-center"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="scoicon sco-menu-line"></i><span>文章目录</span></div><div class="toc-content" id="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#requests%E5%BA%93"><span class="toc-text">requests库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E4%B8%80%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8"><span class="toc-text">单一命令使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%8F%82%E6%95%B0%E7%9A%84%E5%88%A9%E7%94%A8"><span class="toc-text">返回参数的利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ip%E4%BC%AA%E9%80%A0head%E5%A4%B4%E9%83%A8%E4%BC%AA%E9%80%A0"><span class="toc-text">ip伪造head头部伪造</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8IP%E4%BB%A3%E7%90%86%E6%B1%A0%E4%BC%AA%E8%A3%85IP"><span class="toc-text">使用IP代理池伪装IP</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%AA%E8%A3%85"><span class="toc-text">浏览器伪装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9D%E4%BF%9D%E6%8C%81"><span class="toc-text">会话保持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%92%8C%E4%B8%8B%E8%BD%BD"><span class="toc-text">文件上传和下载</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-text">单文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="toc-text">多文件上传</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="toc-text">文件下载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%BC%A0%E5%8F%82"><span class="toc-text">命令行传参</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="scoicon sco-map-line"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="../../../../2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习"><img alt="KSA软件应用及学习" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../../../2024/03/13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习">KSA软件应用及学习</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../../../2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb"><img alt="Raspberry-pico-W制作badusb" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../../../2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/" title="Raspberry-pico-W制作badusb">Raspberry-pico-W制作badusb</a><a class="article-recent_post_categories" href="../../../../2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/">hack硬件</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现"><img alt="网络测试-efssetup_20181复现" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现">网络测试-efssetup_20181复现</a><a class="article-recent_post_categories" href="../../29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/">网络渗透测试</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习"><img alt="关于aspx文件和dll文件的关系的学习" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习">关于aspx文件和dll文件的关系的学习</a><a class="article-recent_post_categories" href="../../27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/">windows</a></div></div><div class="aside-list-item"><a class="thumbnail" href="" title="python之request库"><img alt="python之request库" src="/img/feet.jpg"></a><div class="content"><a class="title" href="" title="python之request库">python之request库</a><a class="article-recent_post_categories" href="">python</a></div></div></div></div></div></div></main><footer id="footer"><div id="sco-footer-bar"><div class="footer-logo"><span class="scoicon">recyvan</span></div><div class="footer-bar-description">来自Recyvan - ~blog~的文章</div><a class="footer-bar-link" href="/">了解更多</a></div><div id="footer_deal"><a class="deal_link" href="https://recyvan.github.io" title="Github"><i class="scoicon  sco-github-line"></i></a><div class="footer_mini_logo" id="footer_mini_logo" title="返回顶部" onclick="sco.toTop()"><img src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg" alt="返回顶部"></div><a class="deal_link" target="_blank" rel="noopener" href="https://space.bilibili.com/399156594" title="Bilibili"><i class="scoicon  sco-bilibili-line"></i></a></div><div id="sco-footer"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div class="copyright">© 2023 - 2024 By&nbsp;<a class="footer-bar-link" href="/">Recyvan</a></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/wleelw/hexo-theme-solitude" title="主题">主题</a><a class="footer-bar-link cc"><i class="scoicon sco-copyright-line"></i><i class="scoicon sco-creative-commons-by-line"></i><i class="scoicon sco-creative-commons-nc-line"></i><i class="scoicon sco-creative-commons-nd-line"></i></a></div></div></div></footer></div><!-- inject body--><div><script src="../../../../js/main.js?v=1.5.1"></script><script src="../../../../js/utils.js?v=1.5.1"></script><script src="https://cdn.cbd.int/solitude-source/js/universe.min.js"></script><script>dark()
+</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.js"></script><script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js"></script><script>const meting_api = 'https://api.injahow.cn/meting/';
+</script><script src="https://cdn.cbd.int/solitude-source/js/waterfall.min.js"></script><script src="../../../../js/music.js?v=1.5.1"></script><script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script><script src="https://cdn.staticfile.org/lunr.js/2.3.9/lunr.min.js"></script></div><div id="js-pjax"><script async src="https://cdn.staticfile.org/busuanzi/2.3.0/bsz.pure.mini.min.js"></script><script id="config-diff">var PAGE_CONFIG = {
+    is_post: true,
+    is_page: false,
+    is_home: false,
+    page: 'post',
+    toc: true,
+    comment: false,
+}
+</script></div><!-- newest comment--><!-- pjax--><script>let pjaxSelectors = [
+    'title',
+    '#body-wrap',
+    '#site-config',
+    'meta[name="description"]',
+    '#js-pjax',
+    'meta[property^="og:"]',
+]
+
+const pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+})
+
+document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+})
+
+document.addEventListener('pjax:complete', () => {
+    window.refreshFn()
+})
+
+document.addEventListener('pjax:error', (e) => {
+    if (e.request.status === 404) {
+        pjax.loadUrl('/404.html')
+    }
+})</script><!-- theme--><script>initTheme = () => {
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const cachedMode = saveToLocal.get('theme');
+    if (cachedMode === undefined) {
+        const nowMode =
+            isDarkMode ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', nowMode);
+    } else {
+        document.documentElement.setAttribute('data-theme', cachedMode);
+    }
+}
+initTheme()</script><!-- google adsense--><!-- search--><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="scoicon sco-close-fill"></i></button></nav><div class="search-wrap"><div class="search-box"><input class="search-box-input" id="search-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="输入关键词快速查找"></div><div id="search-results"><div id="search-hits"><a class="tag-list" href="javascript:void(0);" onclick="pjax.loadUrl('/tags/Hexo/')">Hexo</a></div></div><div id="search-pagination"></div><div id="search-tips"></div></div></div><div id="search-mask"></div></div><script src="../../../../js/search/local.js?v=1.5.1"></script><!-- music--><div class="needEndHide" id="nav-music" onclick="sco.musicToggle()"><div id="nav-music-hoverTips">音乐已暂停</div><meting-js id="8407304077" server="netease" type="playlist" mutex="true" preload="none" data-lrctype="0" order="random" theme="var(--sco-main)"></meting-js></div></body></html><script>const posts=["2024/03/13/KSA软件应用及学习/","2024/03/03/Raspberry-pico-W制作badusb/","2023/12/29/网络测试-efssetup-20181复现/","2023/12/27/关于aspx文件和dll文件的关系的学习/","2023/12/24/python之request库/","2023/12/21/windows域与用户组策略/","2023/12/15/免杀基础了解笔记/","2023/12/14/pingtunnel与icmp隧道绕过/","2023/12/13/frp内网穿透/","2023/12/10/内网穿透/","2023/12/07/实验一网络扫描与网络侦察/","2023/12/04/网络安全测试课程-作业-5/","2023/11/27/网络安全测试课程-作业-4/","2023/11/20/网络安全测试课程-作业-3/","2023/11/14/网络安全测试课程-作业-2/","2023/11/12/JAVA安全入门学习一/","2023/11/08/网络安全测试课程-作业-1/","2023/11/04/Metasploitable2靶机本地练习记录/","2023/11/01/红蓝对抗-信息搜集-1/","2023/11/01/线性结构总结/","2023/09/20/关于webmin-CVE-2019-15107的注入点代码分析/"];function toRandomPost(){ pjax.loadUrl('/'+posts[Math.floor(Math.random()*posts.length)]); };</script>

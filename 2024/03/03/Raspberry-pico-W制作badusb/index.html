@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Raspberry-pico-W制作badusb | Recyvan</title><noscript>开启JavaScript才能访问本站哦~</noscript><link rel="icon" href="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><!-- index.css--><link rel="stylesheet" href="../../../../css/index.css?v=1.5.1"><!-- inject head--><link rel="stylesheet" href="https://cdn.cbd.int/solitude-source/icon/scoicon.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.css"><!-- aplayer--><link rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css"><!-- swiper--><link rel="stylesheet" href="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.min.css"><link rel="stylesheet" href="https://cdn.staticfile.org/KaTeX/0.16.9/katex.min.css"><!-- Open Graph--><meta name="description" content="BadUsb与HID攻击BadUsb BadUSB 是一种利用 USB 固件固有漏洞的攻击。此类攻击会对 USB 设备进行重新编程，使其充当人机接口设备；一旦经过重新设计，USB 设备就会被用来在受害者的计算机上谨慎地执行命令或运行恶意程序。 ​"><!-- pwa--><script>(win => {
+        win.saveToLocal = {
+            set: function setWithExpiry(key, value, ttl) {
+                if (ttl === 0)
+                    return
+                const now = new Date()
+                const expiryDay = ttl * 86400000
+                const item = {
+                    value: value,
+                    expiry: now.getTime() + expiryDay,
+                }
+                localStorage.setItem(key, JSON.stringify(item))
+            },
+
+            get: function getWithExpiry(key) {
+                const itemStr = localStorage.getItem(key)
+
+                if (!itemStr) {
+                    return undefined
+                }
+                const item = JSON.parse(itemStr)
+                const now = new Date()
+
+                if (now.getTime() > item.expiry) {
+                    localStorage.removeItem(key)
+                    return undefined
+                }
+                return item.value
+            }
+        }
+
+        const DarkModeStatus = localStorage.getItem('theme')
+        if (DarkModeStatus !== null) {
+            if (DarkModeStatus === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark')
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light')
+            }
+        }
+
+        const asideStatus = saveToLocal.get('aside-status')
+        if (asideStatus !== undefined) {
+            if (asideStatus === 'hide') {
+                document.documentElement.classList.add('hide-aside')
+            } else {
+                document.documentElement.classList.remove('hide-aside')
+            }
+        }
+    }
+)(window)
+
+console.log(
+    "%c Program: Hexo %c Theme: Solitude %c Version: v1.5.1",
+    "border-radius:5px 0 0 5px;padding: 5px 10px;color:white;background:#ff3842;",
+    "padding: 5px 10px;color:white;background:#3e9f50;",
+    "border-radius:0 5px 5px 0;padding: 5px 10px;background:#0084ff;color:white;"
+);</script><!-- global head--><script>const GLOBAL_CONFIG = {
+    root: '/',
+    algolia: undefined,
+    localsearch: {"preload":false,"path":"/search.xml"},
+    runtime: '2023-04-20 00:00:00',
+    lazyload: {
+        enable: false,
+        error: '/img/error_load.png'
+    },
+    hightlight: {
+        enable: false,
+        limit: 200,
+        expand: false,
+        copy: true,
+    },
+    randomlinks: false,
+    lang: {
+        theme: {
+            dark: '已切换至深色模式',
+            light: '已切换至浅色模式',
+        },
+        copy: {
+            success: '复制成功',
+            error: '复制失败',
+        },
+        backtop: '返回顶部',
+        time: {
+            recent: '最近',
+            yesterday: '昨天',
+            berforeyesterday: '前天',
+            daybefore: '天前',
+            runtime: '天',
+        },
+        search: {
+            empty: '找不到你查询的内容：${query}',
+            hit: '找到 ${hits} 条结果，用时 ${time} 毫秒',
+            placeholder: '输入关键词快速查找',
+        },
+        chs: {
+            chs_to_cht: '繁體中文',
+            cht_to_chs: '简体中文',
+        }
+    },
+    aside: {
+        sayhello: {
+            morning: '一日之计在于晨',
+            noon: '吃饱了才有力气干活',
+            afternoon: '集中精力，攻克难关',
+            night: '不要太劳累了，早睡更健康',
+            goodnight: '睡个好觉，保证精力充沛',
+        },
+        sayhello2: ["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多","🎮 电竞游戏爱好者"],
+    },
+    covercolor: {
+        enable: false
+    },
+    comment: {
+        enable: false,
+        type: '',
+        commentBarrage: false,
+        randomInfoStart: ["聪敏的","可爱的","美丽的"],
+        randomInfoEnd: ["白菜","小可爱","小仙女"],
+        twikoo: {
+            url: '',
+            accessToken: ''
+        },
+        waline: {
+            url: '',
+        }
+    },
+    lightbox: 'fancybox',
+    rightside: {
+        enable: false
+    },
+    ai: {
+        enable: false,
+        key: '',
+        talk: '我是王卓Sco开发的摘要生成助理ScoGPT，ScoGPT在静态部署时进行摘要的撰写，并且在访客访问时通过ScoCorrection转译后的文本摘要实现工具。我在这里只负责已经生成的摘要显示，你无法与我直接沟通，但我可以回答一些预设的问题。',
+        randomPost: false,
+    },
+    music: {
+        enable: true,
+    },
+    translate: undefined,
+};</script><meta name="generator" content="Hexo 7.1.1"></head><body id="body"><!-- universe--><canvas id="universe"></canvas><!-- loading--><!-- console--><div id="console"><div class="close-btn" onclick="sco.hideConsole()"><i class="scoicon sco-close-fill"></i></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="sco.switchDarkMode()" title="昼夜切换" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i></a></div><div class="console-btn-item" id="consoleHideAside"><a class="asideSwitch" onclick="sco.switchHideAside()" title="边栏显示控制" href="javascript:void(0);"><i class="scoicon sco-side-bar-fill"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="sco.musicToggle()"><a class="music-switch" title="音乐开关" href="javascript:void(0);"><i class="scoicon sco-disc-fill"></i></a></div></div><div class="console-mask" onclick="sco.hideConsole()"></div></div><!-- sidebar--><div id="sidebar" style="zoom: 1;"><div id="menu-mask" style="display: none;"></div><div id="sidebar-menus"><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" onclick="sco.switchDarkMode()" href="javascript:void(0);"><i class="scoicon sco-moon-clear-fill"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../index.html"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="../../../../categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="../../../../tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../books/"><i class="scoicon  sco-gift-fill"></i><span>图书</span></a></li><li><a class="site-page child" href="../../../../tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="../../../../about/%20%7C%7C%20sco-contacts-fill"><span>关于本站</span></a></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-widget card-tags card-archives card-webinfo card-allinfo"><div class="card-tag-cloud"><a href="../../../../tags/JAVA%E5%AE%89%E5%85%A8-%E5%BA%8F%E5%88%97%E5%8C%96/">JAVA安全,序列化<sup>1</sup></a><a href="../../../../tags/CVE-%E9%9D%B6%E6%9C%BA-Metasploitable2/">CVE,靶机,Metasploitable2<sup>1</sup></a><a href="../../../../tags/pico/">pico<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8Cicmp%E5%8D%8F%E8%AE%AE/">渗透测试，icmp协议<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E8%B7%AF%E7%94%B1/">渗透测试，路由<sup>2</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8Cpython/">网络安全，python<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全<sup>1</sup></a><a href="../../../../tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%85%8D%E6%9D%80/">渗透测试，免杀<sup>1</sup></a><a href="../../../../tags/ASP-NET/">ASP.NET<sup>1</sup></a><a href="../../../../tags/php%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90%EF%BC%8Cwebmin/">php代码分析，webmin<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">网络渗透测试<sup>1</sup></a><a href="../../../../tags/C%E8%AF%AD%E8%A8%80-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E7%BA%BF%E6%80%A7%E8%A1%A8/">C语言,数据结构,线性表<sup>1</sup></a><a href="../../../../tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%EF%BC%8C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%EF%BC%8C%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/">信息搜集，渗透测试，网络安全，红蓝对抗<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-kali-%E7%BD%91%E5%8D%A1%E4%B8%8E%E8%B7%AF%E7%94%B1/">网络渗透测试基础知识,kali,网卡与路由<sup>2</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-wireshark/">网络渗透测试基础知识,wireshark<sup>1</sup></a><a href="../../../../tags/easy-file-sharing-server/">easy file sharing server<sup>1</sup></a><a href="../../../../tags/%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86-DNS-ARP/">网络渗透测试基础知识,DNS,ARP<sup>1</sup></a></div></div></div></div><!-- keyboard--><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav class="show" id="nav"><div id="nav-group"><div id="blog_name"><div class="back-home-button" tabindex="-1"><i class="back-home-button-icon scoicon sco-more-fill"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" href="https://recyvan.github.io"><img class="back-menu-item-icon" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"><span class="back-menu-item-text">Solitude</span></a></div></div></div></div><a id="site-name" href="/" title="返回博客主页"><span class="title">recyvan</span></a></div><div id="page-name-mask"><div id="page-name"><a id="page-name-text" onclick="sco.toTop()">Raspberry-pico-W制作badusb</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="../../../../index.html"><span>首页</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>文库</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../archives/"><i class="scoicon  sco-folder-fill"></i><span>文章列表</span></a></li><li><a class="site-page child" href="../../../../categories/"><i class="scoicon  sco-checkbox-multiple-blank-fill"></i><span>全部分类</span></a></li><li><a class="site-page child" href="../../../../tags/"><i class="scoicon  sco-price-tag-fill"></i><span>全部标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>友链</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../links/"><i class="scoicon  sco-group-fill"></i><span>友情链接</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span>我的</span></a><ul class="menus_item_child"><li><a class="site-page child" href="../../../../books/"><i class="scoicon  sco-gift-fill"></i><span>图书</span></a></li><li><a class="site-page child" href="../../../../tlink/"><i class="scoicon  sco-tools-fill"></i><span>工具箱</span></a></li><li><a class="site-page child" href="../../../../music/"><i class="scoicon  sco-disc-fill"></i><span>音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="../../../../about/%20%7C%7C%20sco-contacts-fill"><span>关于本站</span></a></div></div></div><div id="nav-left"></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机一篇文章" href="javascript:void(0);"><i class="scoicon sco-signal-tower-fill"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索"><i class="scoicon sco-search-line"></i></a></div><div class="nav-button" id="nav-totop" onclick="sco.toTop()"><a class="totopbtn"><i class="scoicon sco-arrow-up-line"></i><span id="percent">0</span></a></div><div id="toggle-menu"><a class="site-page"><i class="scoicon sco-menu-line"></i></a></div></div></div></nav><div class="coverdiv" id="coverdiv"><img class="nolazyload" id="post-cover" src="../../../../img/feet.jpg" alt="Raspberry-pico-W制作badusb"></div><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original" title="该文章为原创文章，注意版权协议">原创</a><span class="post-meta-categories"><a class="post-meta-categories" href="/categories/hack硬件/">hack硬件</a></span><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/pico/"><span class="tags-name tags-punctuation">pico</span></a></div></div></div></div><h1 class="post-title">Raspberry-pico-W制作badusb</h1><div id="post-meta"><div class="meta-secondline"><span class="post-meta-wordcount"><span class="post-meta-separator"></span></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="BadUsb与HID攻击"><a href="#BadUsb与HID攻击" class="headerlink" title="BadUsb与HID攻击"></a>BadUsb与HID攻击</h3><h4 id="BadUsb"><a href="#BadUsb" class="headerlink" title="BadUsb"></a>BadUsb</h4><blockquote>
+<p>BadUSB 是一种利用 USB 固件固有漏洞的攻击。此类攻击会对 USB 设备进行重新编程，使其充当人机接口设备；一旦经过重新设计，USB 设备就会被用来在受害者的计算机上谨慎地执行命令或运行恶意程序。</p>
+<p>​														                                                                            ——<a target="_blank" rel="noopener" href="https://www.manageengine.com/">BADUSB</a></p>
+</blockquote>
+<p>其是带有嵌入式固件的闪存驱动器，可用于重新编程设备并允许它充当人机界面小工具，例如键盘、鼠标或耳机。它们用于通过有效地伪装成人机接口设备 （HID） 在计算机上执行各种操作。BadUSB可以预先编程以在计算机上键入字符(无需物理操作)。插入后就可以直接开始工作，甚至执行需要同时使用两个或多个键的复杂击键。</p>
+<h4 id="HID攻击"><a href="#HID攻击" class="headerlink" title="HID攻击"></a>HID攻击</h4><p>HID（Human InterfaceDevice），是指计算机直接与人交互的设备，例如键盘、鼠标等。BadUsb攻击便属于其中一种。攻击者通过将USB设备模拟成为键盘，让电脑识别成为键盘，然后进行脚本模拟按键进行攻击。</p>
+<p>pc端上的HID一般指的是USB-HID标准，大多是指微软在USB委员会上提议创建的一个人体学输入设备工作组。</p>
+<h3 id="Raspberry-pico-W"><a href="#Raspberry-pico-W" class="headerlink" title="Raspberry pico W"></a>Raspberry pico W</h3><p>Raspberry Pi Pico 是一款搭载了 RP 2040 芯片的微处理器开发板。对于 Pico 的编程开发，官方开发了 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_c_sdk.pdf">Pico C&#x2F;C++ SDK</a> 和 <a href="https://sspai.com/link?target=https://datasheets.raspberrypi.org/pico/sdk/pico_python_sdk.pdf">Pico Python SDK</a> 软件开发工具包，用户可以选择 C&#x2F;C++ 或者 Python 对 Pico 进行开发。</p>
+<p><img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/4cbf7fedd48fc86177e461582368fae2.jpg"></p>
+<p>其规格参数如下：</p>
+<img src="/2024/03/03/Raspberry-pico-W制作badusb/undefined" alt="1709462560513" style="zoom: 50%;">
+
+<h3 id="Python-SDK-开发制作badusb"><a href="#Python-SDK-开发制作badusb" class="headerlink" title="Python SDK 开发制作badusb"></a>Python SDK 开发制作badusb</h3><p> Python SDK 开发 Pico 的思路是，将 MicroPython（微处理器上运行的 Python 固件）拖拽到 Pico 中，然后将计算机上的 Python (3)代码传给 Pico 运行。树莓派官网提供了MicroPython固件，只需要将其烧录进去即可。已经编译好的固件：<a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/rp2040/getting-started/">getting-started</a>这里可以下载到</p>
+<p>首先按住BOOTSET选项并链接USB接口到计算机上，其将显示为名为 RPI-RP2 的可移动媒体设备（但注意是识别出来容量可能有误，具体按照产品参数为准）并生成INDEX.HTM和INFO_UF2.TXT文件</p>
+<img src="/2024/03/03/Raspberry-pico-W制作badusb/undefined" alt="{F9519DD5-C17F-4728-9D05-168685C8900B}" style="zoom:80%;">
+
+<p>下载<a target="_blank" rel="noopener" href="https://downloads.circuitpython.org/bin/raspberry_pi_pico_w/en_US/adafruit-circuitpython-raspberry_pi_pico_w-en_US-8.2.10.uf2">adafruit-circuitpython-raspberry_pi_pico-en_US-8.2.10.uf2</a> 到设备的根目录下，大约3秒后设备将会自动重启，并命名为CIRCUITPY设备并重新连接。生成以下文件：</p>
+<p><img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/%7B40AE3F73-9CBF-4337-9ACC-262E25518D0B%7D.png" alt="{40AE3F73-9CBF-4337-9ACC-262E25518D0B}"></p>
+<p>下载<a target="_blank" rel="noopener" href="https://github.com/dbisu/pico-ducky/releases">安装包</a> 并将lib下的这些文件(夹)放入到设备的lib目录下：</p>
+<p><img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/%7B57EC5B07-65DE-42b9-A956-DAC52FBC70B0%7D.png"></p>
+<p>将下载文件中的下列文件移动到设备根目录下：</p>
+<p><img src="/2024/03/03/Raspberry-pico-W%E5%88%B6%E4%BD%9Cbadusb/67DC1DC4.png"></p>
+<p>完成后电脑会自动打开cmd执行helloword代码。其中payload.dd装载的是执行的脚本</p>
+<h3 id="USB-启用-禁用模式"><a href="#USB-启用-禁用模式" class="headerlink" title="USB 启用&#x2F;禁用模式"></a>USB 启用&#x2F;禁用模式</h3><p>对于攻击或测试时，可能并不想要显示出或被是辨别成大容量储存设备</p>
+<ul>
+<li>进入设置模式。</li>
+<li>将您的有效负载脚本复制到 pico-ducky。</li>
+<li>断开 pico 与主机的连接。</li>
+<li><code>GND</code>在引脚 18 ( ) 和引脚 20 ( )之间连接跳线<code>GPIO15</code>。这将防止 pico-ducky 在插入目标计算机时显示为 USB 驱动器。</li>
+<li>取下跳线并重新连接到您的电脑以重新编程。</li>
+</ul>
+<blockquote>
+<p>pico上同时可以储存多个有效载荷，其与引脚的关系为：	</p>
+<p>GP4 - payload.dd 	GP5 - payload2.dGP10 -  payload3.dd 	GP11 -  payload4.dd</p>
+</blockquote>
+<h3 id="pico的重置"><a href="#pico的重置" class="headerlink" title="pico的重置"></a>pico的重置</h3><p>在使用时经常会使用到重置功能来完成特定功能和解决一些问题，具体操作如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://datasheets.raspberrypi.com/soft/flash_nuke.uf2">从flash_nuke.uf2</a>下载重置固件</li>
+<li>按住 Pico 上的 BOOTSEL 按钮，将 USB 电缆插入计算机（该步骤会删除掉设备的所有内容）。</li>
+<li>当 设备 RPI-RP2被计算机识别时，将 flash_nuke.uf2 文件复制到 设备</li>
+</ul>
+<h3 id="BadUsb—-payload-dd编辑"><a href="#BadUsb—-payload-dd编辑" class="headerlink" title="BadUsb—-payload.dd编辑"></a>BadUsb—-payload.dd编辑</h3><p>如果想实现自定义的脚本命令攻击，其主要更改的便是payload.dd文件</p>
+<p>首先要理解payload.dd文件是以什么方式(语言)编写的。这里参考“官方的解释”<a target="_blank" rel="noopener" href="https://docs.hak5.org/hak5-usb-rubber-ducky/duckyscript-tm-quick-reference">《DuckyScript™ 快速参考》</a></p>
+<ul>
+<li><p>REM:	命令不执行任何击键注入功能。<code>REM</code>它的名字来源于单词“remark”。虽然<code>REM</code>空行可用于在有效负载内添加垂直间距，但空行也是可接受的，并且不会被编译器处理。</p>
+</li>
+<li><p>STRING:   命令<code>STRING</code>击键注入（类型）一系列击键。必要时<code>STRING</code>按住修饰键将自动解释大写字母。<code>SHIFT</code>该<code>STRING</code>命令还将自动按 SPACE 光标键，但尾随空格将被省略。</p>
+</li>
+<li><p>STRINGLN:   命令（如<code>STRING</code>）将注入一系列击键，然后以回车符 ( <code>ENTER</code>) 终止。</p>
+</li>
+<li><p>光标键：用于将光标导航到屏幕上的不同位置，主要有：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">UP DOWN LEFT RIGHT</span><br><span class="line">UPARROW DOWNARROW LEFTARROW RIGHTARROW</span><br><span class="line">PAGEUP PAGEDOWN HOME END</span><br><span class="line">INSERT DELETE DEL BACKSPACE</span><br><span class="line">TAB</span><br><span class="line">SPACE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基本修饰键：与另一个键组合使用以执行特殊功能。PC 的常见键盘组合包括熟悉的<code>CTRL c</code>复制、<code>CTRL x</code>剪切和<code>CTRL v</code>粘贴键盘组合。注意的时windows键命令为GUI</p>
+</li>
+<li><p>DELAY:  命令指示 USB Rubber Ducky 暂时暂停有效负载的执行。当部署必须“等待”元素（例如窗口）加载的有效负载时，这非常有用。该<code>DELAY</code>命令接受以毫秒为单位的时间参数。<strong>注意最小延迟值为 20</strong></p>
+</li>
+<li><p>比较和逻辑运算：该脚本语言同样支持数学比较逻辑符号和逻辑运算符 。</p>
+</li>
+<li><p>WHILE :  支持WHILE的循环语句。：</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">VAR <span class="variable">$FOO</span> = 42   //<span class="variable">$FOO</span>自定义变量</span><br><span class="line">WHILE ( <span class="variable">$FOO</span> &gt; 0 ) </span><br><span class="line">    STRINGLN This message will repeat 42 <span class="built_in">times</span>.</span><br><span class="line"></span><br><span class="line">    <span class="variable">$FOO</span> = ( <span class="variable">$FOO</span> - 1 )</span><br><span class="line"></span><br><span class="line">END_WHILE //结束标识</span><br></pre></td></tr></table></figure>
+
+<p>该脚本还支持其实还有诸如自定义函数，载荷隐藏，抖动，随机化等更为复杂的命令和功能。</p>
+</li>
+</ul>
+<h3 id="pico-W的ap网络功能"><a href="#pico-W的ap网络功能" class="headerlink" title="pico W的ap网络功能"></a>pico W的ap网络功能</h3><p>待更新&gt;&gt;&gt;&gt;……….(提醒：实用软件：<strong>Thonny</strong> )</p>
+</article><div class="post-copyright"><div class="post-copyright__author_group"><a class="post-copyright__author_img" href="/about/"><img class="post-copyright__author_img_front" src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg"></a><div class="post-copyright__author_name">Recyvan</div><div class="post-copyright__author_desc">~blog~</div></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div id="quit-box" onclick="RemoveRewardMask()"></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本文是原创文章，采用<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a>协议，完整转载请注明来自<a href="/">Recyvan</a></span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="../../../../tags/pico/"><span class="tags-punctuation"></span>pico<span class="tagsPageCount">1</span></a></div></div></div><nav class="needEndHide pagination-post" id="pagination"><div class="prev-post pull-left"><a href="../../13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">KSA软件应用及学习</div></div></a></div><div class="next-post pull-right"><a href="../../../../2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">网络测试-efssetup_20181复现</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><div class="author-info__top-group"><div class="author-info__sayhi" id="author-info__sayhi" onclick="sco.changeSayHelloText()">sayhello.morning</div></div></div><div class="avatar-img-group"><img class="avatar-img" alt="头像" src="/img/auto.jpg"><div class="avatar-sticker"><img class="avatar-sticker-img" src="https://bu.dusays.com/2023/12/30/659011053e246.png" alt="心情贴纸"></div></div><div class="author-info__description_group"><div class="author-info__description">分享自己对编程的<b>热爱</b>，对美好生活的<b>向往</b>，对知识海洋<b>探索历程</b>。</div><div class="author-info__description2">相信你可以在这里找到对你有用的知识和教程。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="../../../../about/"><div class="author-info__name">Recyvan</div><div class="author-info__desc">~blog~</div></a><div class="card-info-social-icons is-center"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="scoicon sco-menu-line"></i><span>文章目录</span></div><div class="toc-content" id="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#BadUsb%E4%B8%8EHID%E6%94%BB%E5%87%BB"><span class="toc-text">BadUsb与HID攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BadUsb"><span class="toc-text">BadUsb</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HID%E6%94%BB%E5%87%BB"><span class="toc-text">HID攻击</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Raspberry-pico-W"><span class="toc-text">Raspberry pico W</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python-SDK-%E5%BC%80%E5%8F%91%E5%88%B6%E4%BD%9Cbadusb"><span class="toc-text">Python SDK 开发制作badusb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USB-%E5%90%AF%E7%94%A8-%E7%A6%81%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">USB 启用&#x2F;禁用模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pico%E7%9A%84%E9%87%8D%E7%BD%AE"><span class="toc-text">pico的重置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BadUsb%E2%80%94-payload-dd%E7%BC%96%E8%BE%91"><span class="toc-text">BadUsb—-payload.dd编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pico-W%E7%9A%84ap%E7%BD%91%E7%BB%9C%E5%8A%9F%E8%83%BD"><span class="toc-text">pico W的ap网络功能</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="scoicon sco-map-line"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="../../13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习"><img alt="KSA软件应用及学习" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../13/KSA%E8%BD%AF%E4%BB%B6%E5%BA%94%E7%94%A8%E5%8F%8A%E5%AD%A6%E4%B9%A0/" title="KSA软件应用及学习">KSA软件应用及学习</a></div></div><div class="aside-list-item"><a class="thumbnail" href="" title="Raspberry-pico-W制作badusb"><img alt="Raspberry-pico-W制作badusb" src="/img/feet.jpg"></a><div class="content"><a class="title" href="" title="Raspberry-pico-W制作badusb">Raspberry-pico-W制作badusb</a><a class="article-recent_post_categories" href="">hack硬件</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../../../2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现"><img alt="网络测试-efssetup_20181复现" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../../../2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/" title="网络测试-efssetup_20181复现">网络测试-efssetup_20181复现</a><a class="article-recent_post_categories" href="../../../../2023/12/29/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95-efssetup-20181%E5%A4%8D%E7%8E%B0/">网络渗透测试</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../../../2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习"><img alt="关于aspx文件和dll文件的关系的学习" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../../../2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/" title="关于aspx文件和dll文件的关系的学习">关于aspx文件和dll文件的关系的学习</a><a class="article-recent_post_categories" href="../../../../2023/12/27/%E5%85%B3%E4%BA%8Easpx%E6%96%87%E4%BB%B6%E5%92%8Cdll%E6%96%87%E4%BB%B6%E7%9A%84%E5%85%B3%E7%B3%BB%E7%9A%84%E5%AD%A6%E4%B9%A0/">windows</a></div></div><div class="aside-list-item"><a class="thumbnail" href="../../../../2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库"><img alt="python之request库" src="/img/feet.jpg"></a><div class="content"><a class="title" href="../../../../2023/12/24/python%E4%B9%8Brequest%E5%BA%93/" title="python之request库">python之request库</a><a class="article-recent_post_categories" href="../../../../2023/12/24/python%E4%B9%8Brequest%E5%BA%93/">python</a></div></div></div></div></div></div></main><footer id="footer"><div id="sco-footer-bar"><div class="footer-logo"><span class="scoicon">recyvan</span></div><div class="footer-bar-description">来自Recyvan - ~blog~的文章</div><a class="footer-bar-link" href="/">了解更多</a></div><div id="footer_deal"><a class="deal_link" href="https://recyvan.github.io" title="Github"><i class="scoicon  sco-github-line"></i></a><div class="footer_mini_logo" id="footer_mini_logo" title="返回顶部" onclick="sco.toTop()"><img src="https://pic.imgdb.cn/item/64a69a371ddac507cc2a1ed8.jpg" alt="返回顶部"></div><a class="deal_link" target="_blank" rel="noopener" href="https://space.bilibili.com/399156594" title="Bilibili"><i class="scoicon  sco-bilibili-line"></i></a></div><div id="sco-footer"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div class="copyright">© 2023 - 2024 By&nbsp;<a class="footer-bar-link" href="/">Recyvan</a></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/wleelw/hexo-theme-solitude" title="主题">主题</a><a class="footer-bar-link cc"><i class="scoicon sco-copyright-line"></i><i class="scoicon sco-creative-commons-by-line"></i><i class="scoicon sco-creative-commons-nc-line"></i><i class="scoicon sco-creative-commons-nd-line"></i></a></div></div></div></footer></div><!-- inject body--><div><script src="../../../../js/main.js?v=1.5.1"></script><script src="../../../../js/utils.js?v=1.5.1"></script><script src="https://cdn.cbd.int/solitude-source/js/universe.min.js"></script><script>dark()
+</script><script src="https://cdn.staticfile.org/pjax/0.2.8/pjax.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.16/snackbar.min.js"></script><script src="https://cdn.staticfile.org/fancyapps-ui/5.0.33/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.staticfile.org/Swiper/11.0.5/swiper-bundle.min.js"></script><script src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js"></script><script src="https://cdn.staticfile.org/meting/2.0.1/Meting.min.js"></script><script>const meting_api = 'https://api.injahow.cn/meting/';
+</script><script src="https://cdn.cbd.int/solitude-source/js/waterfall.min.js"></script><script src="../../../../js/music.js?v=1.5.1"></script><script src="https://cdn.staticfile.org/pace/1.2.4/pace.min.js"></script><script src="https://cdn.staticfile.org/lunr.js/2.3.9/lunr.min.js"></script></div><div id="js-pjax"><script async src="https://cdn.staticfile.org/busuanzi/2.3.0/bsz.pure.mini.min.js"></script><script id="config-diff">var PAGE_CONFIG = {
+    is_post: true,
+    is_page: false,
+    is_home: false,
+    page: 'post',
+    toc: true,
+    comment: false,
+}
+</script></div><!-- newest comment--><!-- pjax--><script>let pjaxSelectors = [
+    'title',
+    '#body-wrap',
+    '#site-config',
+    'meta[name="description"]',
+    '#js-pjax',
+    'meta[property^="og:"]',
+]
+
+const pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+})
+
+document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+})
+
+document.addEventListener('pjax:complete', () => {
+    window.refreshFn()
+})
+
+document.addEventListener('pjax:error', (e) => {
+    if (e.request.status === 404) {
+        pjax.loadUrl('/404.html')
+    }
+})</script><!-- theme--><script>initTheme = () => {
+    let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const cachedMode = saveToLocal.get('theme');
+    if (cachedMode === undefined) {
+        const nowMode =
+            isDarkMode ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', nowMode);
+    } else {
+        document.documentElement.setAttribute('data-theme', cachedMode);
+    }
+}
+initTheme()</script><!-- google adsense--><!-- search--><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="scoicon sco-close-fill"></i></button></nav><div class="search-wrap"><div class="search-box"><input class="search-box-input" id="search-input" type="text" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="输入关键词快速查找"></div><div id="search-results"><div id="search-hits"><a class="tag-list" href="javascript:void(0);" onclick="pjax.loadUrl('/tags/Hexo/')">Hexo</a></div></div><div id="search-pagination"></div><div id="search-tips"></div></div></div><div id="search-mask"></div></div><script src="../../../../js/search/local.js?v=1.5.1"></script><!-- music--><div class="needEndHide" id="nav-music" onclick="sco.musicToggle()"><div id="nav-music-hoverTips">音乐已暂停</div><meting-js id="8407304077" server="netease" type="playlist" mutex="true" preload="none" data-lrctype="0" order="random" theme="var(--sco-main)"></meting-js></div></body></html><script>const posts=["2024/03/13/KSA软件应用及学习/","2024/03/03/Raspberry-pico-W制作badusb/","2023/12/29/网络测试-efssetup-20181复现/","2023/12/27/关于aspx文件和dll文件的关系的学习/","2023/12/24/python之request库/","2023/12/21/windows域与用户组策略/","2023/12/15/免杀基础了解笔记/","2023/12/14/pingtunnel与icmp隧道绕过/","2023/12/13/frp内网穿透/","2023/12/10/内网穿透/","2023/12/07/实验一网络扫描与网络侦察/","2023/12/04/网络安全测试课程-作业-5/","2023/11/27/网络安全测试课程-作业-4/","2023/11/20/网络安全测试课程-作业-3/","2023/11/14/网络安全测试课程-作业-2/","2023/11/12/JAVA安全入门学习一/","2023/11/08/网络安全测试课程-作业-1/","2023/11/04/Metasploitable2靶机本地练习记录/","2023/11/01/红蓝对抗-信息搜集-1/","2023/11/01/线性结构总结/","2023/09/20/关于webmin-CVE-2019-15107的注入点代码分析/"];function toRandomPost(){ pjax.loadUrl('/'+posts[Math.floor(Math.random()*posts.length)]); };</script>
