@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>GZCTF安装时数据库报错解决</title>
+    <url>/2024/03/23/GZCTF%E5%AE%89%E8%A3%85%E6%97%B6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<h2 id="GZCTF安装时数据库报错解决"><a href="#GZCTF安装时数据库报错解决" class="headerlink" title="GZCTF安装时数据库报错解决"></a>GZCTF安装时数据库报错解决</h2><p>GZCTF 通过 Docker 镜像的方式提供，你可以通过 docker-compose 的方式快速部署一个功能完善的 CTF 平台。我们在安装时，尤其是在一些版本下的系统会存在数据库配置问题。</p>
+<p>:one:  这个主要是在<strong>docker-compose up -d</strong>时，GZCTF会将一部分数据(账户信息，题目信息)储存在本地，用永久化存储，而在其中psqlsql的容器中会将sql的配置信息(<strong>postgresql.conf</strong>)挂在到本地。</p>
+<p>:two:而一些版本下的系统或者psqsql(高版本)启用 SCRAM-SHA-256 密码身份验证来来确保安全性，但是GZCTF的两个容器通信使用的<strong>md5</strong>的加密方式，导致密码传入psqsql容器后校验失败。</p>
+<p>:three:因此需要修改本地和容器内的加密方式为md5加密即可。</p>
+<p>:four:进入容器修改会遇到sudo命令等不存在问题，下更新源<strong>apt-get update</strong>即可。</p>
+<ul>
+<li>修改postgresql.conf参数文件：password_encryption &#x3D; md5</li>
+<li>重新载入配置文件：pg_ctl reload -D $PGDATA 或SELECT pg_reload_conf();</li>
+<li>查看参数配置是否修改成功：SHOW password_encryption;</li>
+<li>重置用户密码：\password user_name</li>
+<li>修改pg_hba.conf验证方法，然后reload即可：host  all  all  0.0.0.0&#x2F;0 scram-sha-256改为host  all  all  0.0.0.0&#x2F;0 md5 ##这里host 后面不一定是all all</li>
+<li>同理本地修改即可</li>
+</ul>
+<p><strong>如果遇到docker容器内无法使用sudo命令</strong></p>
+<ul>
+<li>尝试以管理员方式进入：docker exec -u root -t -i id &#x2F;bin&#x2F;bash               </li>
+<li>使用–privileged&#x3D;true进行赋权：docker run -it –privileged&#x3D;true -u&#x3D;root id &#x2F;bin&#x2F;bash</li>
+</ul>
+]]></content>
+      <categories>
+        <category>GZCTF</category>
+      </categories>
+      <tags>
+        <tag>psqsql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JAVA安全入门学习一</title>
     <url>/2023/11/12/JAVA%E5%AE%89%E5%85%A8%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E4%B8%80/</url>
     <content><![CDATA[<hr>
@@ -111,7 +140,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#x73;&#102;&#x61;&#x64;&#x6d;&#105;&#110;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#54;&#56;&#46;&#56;&#x30;&#46;&#49;&#x32;&#x39;">&#x6d;&#x73;&#102;&#x61;&#x64;&#x6d;&#105;&#110;&#x40;&#49;&#x39;&#x32;&#x2e;&#x31;&#54;&#56;&#46;&#56;&#x30;&#46;&#49;&#x32;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#x66;&#97;&#100;&#109;&#x69;&#110;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#54;&#56;&#46;&#56;&#x30;&#x2e;&#x31;&#50;&#x39;">&#x6d;&#115;&#x66;&#97;&#100;&#109;&#x69;&#110;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#54;&#56;&#46;&#56;&#x30;&#x2e;&#x31;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -449,6 +478,17 @@
 <hr>
 <p>关于其他脚本的学习（类，函数定义，列表，库等）学习后单独更新。</p>
 ]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>网络安全，python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python加载yml实现特定功能</title>
+    <url>/2024/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[]]></content>
       <categories>
         <category>python</category>
       </categories>
@@ -1449,40 +1489,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </categories>
       <tags>
         <tag>easy file sharing server</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pagg</title>
-    <url>/2024/03/23/pagg/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>GZCTF安装时数据库报错解决</title>
-    <url>/2024/03/23/GZCTF%E5%AE%89%E8%A3%85%E6%97%B6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<h2 id="GZCTF安装时数据库报错解决"><a href="#GZCTF安装时数据库报错解决" class="headerlink" title="GZCTF安装时数据库报错解决"></a>GZCTF安装时数据库报错解决</h2><p>GZCTF 通过 Docker 镜像的方式提供，你可以通过 docker-compose 的方式快速部署一个功能完善的 CTF 平台。我们在安装时，尤其是在一些版本下的系统会存在数据库配置问题。</p>
-<p>:one:  这个主要是在<strong>docker-compose up -d</strong>时，GZCTF会将一部分数据(账户信息，题目信息)储存在本地，用永久化存储，而在其中psqlsql的容器中会将sql的配置信息(<strong>postgresql.conf</strong>)挂在到本地。</p>
-<p>:two:而一些版本下的系统或者psqsql(高版本)启用 SCRAM-SHA-256 密码身份验证来来确保安全性，但是GZCTF的两个容器通信使用的<strong>md5</strong>的加密方式，导致密码传入psqsql容器后校验失败。</p>
-<p>:three:因此需要修改本地和容器内的加密方式为md5加密即可。</p>
-<p>:four:进入容器修改会遇到sudo命令等不存在问题，下更新源<strong>apt-get update</strong>即可。</p>
-<ul>
-<li>修改postgresql.conf参数文件：password_encryption &#x3D; md5</li>
-<li>重新载入配置文件：pg_ctl reload -D $PGDATA 或SELECT pg_reload_conf();</li>
-<li>查看参数配置是否修改成功：SHOW password_encryption;</li>
-<li>重置用户密码：\password user_name</li>
-<li>修改pg_hba.conf验证方法，然后reload即可：host  all  all  0.0.0.0&#x2F;0 scram-sha-256改为host  all  all  0.0.0.0&#x2F;0 md5 ##这里host 后面不一定是all all</li>
-<li>同理本地修改即可</li>
-</ul>
-<p><strong>如果遇到docker容器内无法使用sudo命令</strong></p>
-<ul>
-<li>尝试以管理员方式进入：docker exec -u root -t -i id &#x2F;bin&#x2F;bash               </li>
-<li>使用–privileged&#x3D;true进行赋权：docker run -it –privileged&#x3D;true -u&#x3D;root id &#x2F;bin&#x2F;bash</li>
-</ul>
-]]></content>
-      <categories>
-        <category>GZCTF</category>
-      </categories>
-      <tags>
-        <tag>psqsql</tag>
       </tags>
   </entry>
 </search>
