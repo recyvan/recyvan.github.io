@@ -488,7 +488,43 @@
   <entry>
     <title>python加载yml实现特定功能</title>
     <url>/2024/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>在一些python脚本常常会用到yml(yaml)文件去加载相关配置，那么我们也可以用yml文件储存可变的参数信息进而可拓展的动态加载可执行内容。这样可以大大增加可拓展型和维护性。</p>
+<hr>
+<h3 id="yaml文件"><a href="#yaml文件" class="headerlink" title="yaml文件"></a>yaml文件</h3><p>yaml是一种标记语言，其语法和其他高级语言类似，并且可以简单表达清单、散列表，标量等数据形态。它使用空白符号缩进和大量依赖外观的特色，特别适合用来表达或编辑数据结构、各种配置文件、倾印调试内容、文件大纲（例如：许多电子邮件标题格式和YAML非常接近）。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><ul>
+<li>大小写敏感</li>
+<li>使用缩进表示层级关系</li>
+<li>缩进不允许使用tab，只允许空格</li>
+<li>缩进的空格数不重要，只要相同层级的元素左对齐即可</li>
+<li>‘#’表示注释</li>
+<li>以 <strong>-</strong> 开头的行表示构成一个数组，取消 <strong>-</strong> 表示构成一个字典</li>
+</ul>
+<p>yaml的对象对象键值对使用冒号结构表示 <strong>key: value</strong>，冒号后面要加一个空格。也可以使用 **key:{key1: value1, key2: value2, …}**。但更为常用的是使用缩进表示层级关系。</p>
+<p>例如一下例子：<strong>要严格注意缩进</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># @name: exmple.yaml</span></span><br><span class="line"><span class="comment"># @Author: recyvan</span></span><br><span class="line"><span class="comment"># @Date: 2024-4-1</span></span><br><span class="line"><span class="comment"># @information: exmple</span></span><br><span class="line"><span class="attr">libray:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">num1:</span> <span class="string">fire</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">num2:</span> <span class="string">requests</span></span><br><span class="line"><span class="attr">url:</span></span><br><span class="line">  <span class="attr">headers:</span> <span class="string">&quot;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36&quot;</span></span><br><span class="line"><span class="attr">meth:</span></span><br><span class="line">  <span class="attr">menthod:</span> <span class="string">GET</span></span><br><span class="line"><span class="attr">params:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">key1:</span> <span class="string">a=index.html</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">key2:</span> <span class="string">b=index.py</span></span><br><span class="line"><span class="attr">cmd:</span></span><br><span class="line"> <span class="attr">com:</span> <span class="string">dir</span></span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过上述yaml文件可以了解到该文件的创建作者，时间，对象信息，参数，子参数等内容。</p>
+<h3 id="python库-yaml"><a href="#python库-yaml" class="headerlink" title="python库-yaml"></a>python库-yaml</h3><p>那么创建好了简单的yaml文件，如何用python动态加载呢？这里使用到了python的一个库–yaml库来解析文件。安装方式： pip install PyYaml。</p>
+<h4 id="读取yaml文件数据"><a href="#读取yaml文件数据" class="headerlink" title="读取yaml文件数据"></a>读取yaml文件数据</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">file_yml = <span class="string">&quot;./exmple.yaml&quot;</span></span><br><span class="line">fp=<span class="built_in">open</span>(file_yml,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">rf=fp.read()</span><br><span class="line">fp.close()</span><br><span class="line"> <span class="comment">#tream=rf表示要加载的YAML文件的流（stream）,Loader=yaml.FullLoader指定了YAML文件的加载器（loader）</span></span><br><span class="line">ymlone = yaml.load(stream=rf,Loader=yaml.FullLoader)</span><br><span class="line"><span class="built_in">print</span>(ymlone)</span><br></pre></td></tr></table></figure>
+
+<p>内容将以字典的方式返回：</p>
+<img src="/2024/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/%7BD601CCC8-62D0-4eb2-8E18-0FB1130A945F%7D.png" class title="样例一">
+
+<h4 id="读取yml指定参数"><a href="#读取yml指定参数" class="headerlink" title="读取yml指定参数"></a>读取yml指定参数</h4><p>在这个示例中，我们首先使用<code>yaml.load()</code>函数加载YAML文件，并将其解析为Python对象。然后，我们使用<code>data.get(&#39;param_name&#39;)</code>来获取特定参数的值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">file_yml = <span class="string">&quot;./exmple.yaml&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(file_yml,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    data = yaml.load(fp, Loader=yaml.FullLoader)</span><br><span class="line"><span class="comment"># 获取特定参数的值</span></span><br><span class="line">param_value = data.get(<span class="string">&#x27;cmd&#x27;</span>) </span><br><span class="line"><span class="comment"># 打印参数值</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;参数值:&quot;</span>, param_value)</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<img src="/2024/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/03/31/python%E5%8A%A0%E8%BD%BDyml%E5%AE%9E%E7%8E%B0%E7%89%B9%E5%AE%9A%E5%8A%9F%E8%83%BD/%7B895397D6-80CD-4a2e-AB23-78897C6ED8BC%7D.png" class title="样例二">
+
+<p>那如果是yml中的字典和列表呢？其实可以指定其参数进行获取：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">file_yml = <span class="string">&quot;./exmple.yaml&quot;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(file_yml,<span class="string">&#x27;r&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    data = yaml.load(fp, Loader=yaml.FullLoader)</span><br><span class="line"><span class="comment"># 获取字典中的特定值</span></span><br><span class="line">desired_value = data.get(<span class="string">&#x27;param_dict&#x27;</span>).get(<span class="string">&#x27;key2&#x27;</span>)</span><br><span class="line"><span class="comment"># 获取列表中的特定值</span></span><br><span class="line">desired_value = data.get(<span class="string">&#x27;param_list&#x27;</span>)[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过keys关键字获取所有键的列表：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解析yaml文件</span></span><br><span class="line">data = yaml.safe-load(data)</span><br><span class="line"><span class="comment"># 获取所有键</span></span><br><span class="line">desired_value = data[<span class="string">&#x27;param_dict&#x27;</span>].keys()</span><br><span class="line"><span class="comment">#获取键的数量</span></span><br><span class="line">num_keys = <span class="built_in">len</span>(desired_value)</span><br><span class="line"><span class="comment">#遍历键的列表</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> desired_value:</span><br><span class="line">    value = data[<span class="string">&#x27;param_dict&#x27;</span>][key]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;键: <span class="subst">&#123;key&#125;</span>,值: <span class="subst">&#123;value&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
       <categories>
         <category>python</category>
       </categories>
