@@ -11150,16 +11150,16 @@ figure.highlight table {
   scrollbar-color: var(--hlscrollbar-bg) transparent;
 }
 figure.highlight pre .deletion {
-  color: #bf42bf;
+  color: #f55;
 }
 figure.highlight pre .addition {
-  color: #105ede;
+  color: #50fa7b;
 }
 figure.highlight pre .meta {
-  color: #c792ea;
+  color: #ff79c6;
 }
 figure.highlight pre .comment {
-  color: #969896;
+  color: #6272a4;
 }
 figure.highlight pre .variable,
 figure.highlight pre .attribute,
@@ -11173,10 +11173,10 @@ figure.highlight pre .css .id,
 figure.highlight pre .tag .name,
 figure.highlight pre .css .class,
 figure.highlight pre .css .pseudo {
-  color: #ff5370;
+  color: #f55;
 }
 figure.highlight pre .tag {
-  color: #89ddff;
+  color: #8be9fd;
 }
 figure.highlight pre .number,
 figure.highlight pre .preprocessor,
@@ -11184,10 +11184,10 @@ figure.highlight pre .literal,
 figure.highlight pre .params,
 figure.highlight pre .constant,
 figure.highlight pre .command {
-  color: #f78c6c;
+  color: #ffb86c;
 }
 figure.highlight pre .built_in {
-  color: #ffcb6b;
+  color: #f1fa8c;
 }
 figure.highlight pre .ruby .class .title,
 figure.highlight pre .css .rules .attribute,
@@ -11200,12 +11200,12 @@ figure.highlight pre .xml .cdata,
 figure.highlight pre .special,
 figure.highlight pre .number,
 figure.highlight pre .formula {
-  color: #c3e88d;
+  color: #50fa7b;
 }
 figure.highlight pre .keyword,
 figure.highlight pre .title,
 figure.highlight pre .css .hexcolor {
-  color: #89ddff;
+  color: #8be9fd;
 }
 figure.highlight pre .function,
 figure.highlight pre .python .decorator,
@@ -11215,11 +11215,11 @@ figure.highlight pre .ruby .title .keyword,
 figure.highlight pre .perl .sub,
 figure.highlight pre .javascript .title,
 figure.highlight pre .coffeescript .title {
-  color: #82aaff;
+  color: #bd93f9;
 }
 figure.highlight pre .tag .attr,
 figure.highlight pre .javascript .function {
-  color: #c792ea;
+  color: #ff79c6;
 }
 figure.highlight .highlight-tools .sco-copy-fill {
   right: 0.7rem;
