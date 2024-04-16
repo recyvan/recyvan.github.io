@@ -1534,6 +1534,14 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
 <p>2024.4.10 ，java课程学习到了多态，抽象，接口 p87课时</p>
 <p>2024.4.11，java课程学习回顾</p>
 <h2 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h2><h3 id="SpringBoot学习"><a href="#SpringBoot学习" class="headerlink" title="SpringBoot学习"></a>SpringBoot学习</h3><p>2024.4.12，学习创建项目，hello world网站开始搭建和配置文件application.properties的认识</p>
+<p>2024.4.14  学习了注解的用法</p>
+<h2 id="java反序列化–并行"><a href="#java反序列化–并行" class="headerlink" title="java反序列化–并行"></a>java反序列化–并行</h2><p>2024.4.16 学习了如何继承序列化接口-&gt;.ser文件，在反序列化中执行系统函数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Process</span> <span class="variable">process</span> <span class="operator">=</span> Runtime.getRuntime().exec(<span class="string">&quot;whoami&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用如下读取数据：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> process.getInputStream();</span><br><span class="line">   <span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(inputStream));</span><br><span class="line">   <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">   <span class="keyword">while</span> ((line = reader.readLine())!= <span class="literal">null</span>) &#123;</span><br><span class="line">       System.out.println(line);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>（@~@)Java读写内容好难受啊qwq!</p>
 ]]></content>
       <categories>
         <category>JAVA</category>
