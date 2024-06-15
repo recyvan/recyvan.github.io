@@ -174,7 +174,7 @@
 
 <svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
 
-<div id="beaudar" repo="blog_discuss" issue-term="title" theme="preferred-color-scheme" label="recyvan" input-position="bottom" comment-order="desc" keep-theme="true" loading="false" branch="main"></div>
+<div id="beaudar" repo="recyvan/blog_discuss" issue-term="title" theme="preferred-color-scheme" label="recyvan" input-position="bottom" comment-order="desc" keep-theme="true" loading="true" branch="main"></div>
 
     </section>
   </div>
@@ -516,7 +516,7 @@
 
   <script type="module">
   const el = document.querySelector('#comments #beaudar');
-  util.viewportLazyload(el, load_beaudar, true);
+  util.viewportLazyload(el, load_beaudar, false);
 
   function load_beaudar() {
     if (!el) return;
