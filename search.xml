@@ -177,7 +177,7 @@
 <h3 id="22端口攻击"><a href="#22端口攻击" class="headerlink" title="22端口攻击"></a>22端口攻击</h3><blockquote>
 <p>nmap下sV扫描版本信息为  OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)，msf直接搜索漏洞未果，那么有可能像ftp匿名登录或者弱口令，利用hydra直接爆破</p>
 <p>hydra 192.168.206.216 -L user字典 -P  passwd字典 -u IP ssh,由于没得字典，所以利用了其他工具得到账户msfdamin&#x2F;msfadmin ,但是没想到还扫出来多个弱口令，比如ftp的匿名登录</p>
-<p>kali下登录ssh <a href="mailto:&#x6d;&#x73;&#102;&#x61;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#56;&#48;&#x2e;&#49;&#50;&#x39;">&#x6d;&#x73;&#102;&#x61;&#x64;&#109;&#x69;&#110;&#64;&#x31;&#57;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#56;&#48;&#x2e;&#49;&#50;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
+<p>kali下登录ssh <a href="mailto:&#109;&#x73;&#x66;&#97;&#100;&#x6d;&#105;&#x6e;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#56;&#46;&#x38;&#48;&#46;&#x31;&#x32;&#x39;">&#109;&#x73;&#x66;&#97;&#100;&#x6d;&#105;&#x6e;&#64;&#x31;&#x39;&#50;&#x2e;&#x31;&#x36;&#56;&#46;&#x38;&#48;&#46;&#x31;&#x32;&#x39;</a> 连接成功后拿到shell,但不是root权限，后续步骤或拿去权限（其实sudo -i可root账户）</p>
 </blockquote>
 <p><img src="/2023/11/04/metasploitable2-ba-ji-ben-di-lian-xi-ji-lu/7.png" alt="7"></p>
 <h3 id="23端口攻击"><a href="#23端口攻击" class="headerlink" title="23端口攻击"></a>23端口攻击</h3><blockquote>
@@ -595,7 +595,7 @@
   <entry>
     <title>src清单</title>
     <url>/2024/04/22/src-qing-dan/</url>
-    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试." data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.">
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="密码请私信邮箱查看." data-whm="想看？不给！<<~_~>>">
   <script id="hbeData" type="hbeData" data-hmacdigest="41e7ffcc0c32a33101af6ae0ddf4a9dce700a57fbefea96e2ff290610895761a">0e9441d9e7a5d7a506bff3c52e525ad2678ba33a13d7e984e1e42069a593138ad5d1edc2c30dd716a2a6a74b47250fdcf9cb68321e3759960d488b0d8af1b7d4e1d20f9149b47e756838eaf213c8e3bb37b858fdecac3ec1303730120638993e22b01948f7e90753f93b6278b128eb7b2d955a7e1e4b994f2c4e5884533ed857406f86aea1dc83b04e608daa226845dfb5bf9162ad5491579ab7435144c4e2a656dba39092d73c49b143055096f9f2f0888333fffd454a3e01814369032adaeaf447f45cf1e99484a91a1aaad0462d7203c36a27cd526a82d6f25c0cca0d728cb764001062137e68d65dbc30bbde5a307e278017468eda704f9c4aaac43cbd5cbfccf8304df16f8e2b1b585469e7393d2f135e7f09fb0b04a4dc063c0d8caac900fa7407105797428fe4223956e354e56198253dc2924016ebdc40fc685d05d8afacd09d730ace56603061b62cbe469f7b4d083edc4529dc9b6225d4ff97731fdd46d722bbb2fe8edba855334cab9ee0bbda8bcf5fb77536fbe0b3de119aedd86d78320058a98efe3f8f65b523734470375d3297adde3fbad9a4da690903b75065aab857dd75c3faa46c863560bf842c8ab5db96306b60bb6a711ab3d9893c901fe96e6ef26d3eb0c10610c8422686a5c1d7857be0791bd5121e11a867bb6d3fc983c25e5c821b725bbbda7d71d34017ddbe19a1383613dbf6f35953df7577b405b1e225cf0577c17ba3b8336c74332e80c4995aeac55548ea1a2e94c026e8911c6a95af1a3f261ac4d7818b413241b55e1d36c6cea217c1a252e05d41f7d2fb3f6bdedd937b9b180b0ce41251ff605c6ce7a5388bfc85881879c90c650a28ebd0b8aa45fcdac103b45af47d449cbbf9d42bcede28dfa24d9b20418e1048546c14916247d4ea940f64f77b92378b7ffc678f00e11ffd00b3d12a0a6dc73fb256edf68d98192ca6e0cb9196a1c5b086b0f2ee0ef1e8287795b667b33fce6febbd8db7981aa9d2bfa07a1a08913d537dd70a67dfb2aafc53fa0b349fd75389751b14c3948ef7db43f3482f17f84d7587266a670dafbf9a958292afbc4a048c4429f52a0d9801ee4db85f9d48b53af0abb30eac5e1e51928537128cee498e7f60abe964fac2aa741db01531222127a6c12ecf8ef1b272d521046b37e076b55c4e14625988df779d7413eae9e0dbbd2b4a99450acbe9fab86bcc9cd9fa080b50756d0eee66d4dc5b9e166fd0572611f6a733a3f4a1eb975fba4d2b5c4731ce710b0a288042baf8bb8a48fb62f33b0fa8f75f32371d09570839c5560ef0d0831c4773f56da90cd275c0e0c3f0053fe6d608062072bd494e57feed7fcba337f08a104e8db467c12dbc1ec084878640a1a622e3c7f7ced8e534b87dc0e223e5b48ca2723bd8bd1e2d8f57af961a7165aa503a0a4ae032daf66b983c1c8688425548d2f575a96d9b1bc146f95f506788fa68b10b35cd0f1453741b48e8053e2bddb3de4a7cf05fe8b39b6d45720c431ff4ca6f7dc625eef42b1b8193be62087699125d0106cfe70a04cc3cc9353eca3a4f55f04f604eb11645911675398c5ad76a34bd075589f03e8e2010ef52b9a4e84b6719793072d2220651ed6072ecc2d9b6948f596826ee46a70817021eff2225f13b366250cc62cf17b0fd3aa1436983e4cfb9548fe5ac94d6a209ca7f56e6fbef1f8f01f17d47689b146f1efa33977d411b47efdaa73917d2b697dc3db38d5e0d802f5ee3d6aa659a7ba2b3e76fc78ed95d30a178f6fc296aef0154f498cc037cefda561d9eed2af36dcc9f98cf5d8ae47bccf17300b6ab4e4d594dd27da6ecf71354d465dc52e8190071e0326c1085ffc3f35ed9fb4c59caf5c013871a9fa085cf244c86b6985cc445c5b3b672aebf4c925368a801f0086121718798ffe93b7e0f90ffdebd4633c820f2d080f5f582cdad166695002b6ed6b49ef0d4d32335f9a7b337908da1c870bc206b05add21e61b0bd8768415079626f5eda198db19b8a2dbd750b0be321f4e709bc6928eb9738003ea29dd6ca08c73f7eb3ce1a68ae29929bf9334e790d49613cc9f4597a55492a6a0aa0322e09536284baf25f647a27e5491acbeb0b433297d9cbc1fd8f2e58799de00fcc2d5714379dd36a1171abb32653e23dbd6882c2ec76ba05711b1aea28fe41de3dea576dff628b7e04f8301f6703e006d98b3f66ebcbf4571bfd818ee6ea61e14d951e319b5a486a831535503efdc1a9239d679a8fcd9e963f20b4abff4ba28ee2fee970bb12c06e485711655f98cfda68b7b26e7da15cabab51fc83e1bd62ea761478ba5d9fb0450a023ca287d91d6185d7acf34bf8d0b0ce025c15c08fd3043b66d71798f6b4b2d2e5dee8653eb25f4b17d147eb8d366c8723ea5d36620754179cd0d938c1bac99aa1de49ee7894071b942db527812791cfa44ce4e223c58c635a49a53853bd38997585ff6e236eeebdf3951beb4d0da63ec618f5b32295843fb4093412571f01e558d5c305b1a6c88308f80ebb072b01605246ea0d5b9f4f226ca9734ab44dc3a5061919cc565073003a6b0ba3a04686f1db028de2665f4144bc4b87aba73bbcfcc3b0fdcdc00ee7c10d71dc75a800b8c88544960b95c2ed7743584d117a7edc0581f68ee0da12202541e55991902a754ec5443523ab8b702c8b81f73ece0f870818dab11f822eea6406231491325468767da974ff826dac582f538b066bd692af66f12b33f28e</script>
   <div class="hbe hbe-content">
     <div class="hbe hbe-input hbe-input-default">
@@ -612,6 +612,43 @@
       </categories>
       <tags>
         <tag>漏洞src</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>windows域与用户组策略笔记(废弃)</title>
+    <url>/2023/12/21/windows-yu-yu-yong-hu-zu-ce-lue/</url>
+    <content><![CDATA[<hr>
+<hr>
+<p>以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。</p>
+<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器集中进行身份验证。</p>
+<p>域可以分为单域，父域和子域，域树，域林等多种。</p>
+<h4 id="活动目录"><a href="#活动目录" class="headerlink" title="活动目录"></a>活动目录</h4><p>活动目录（ Active Directory , AD ）是指安装在域控制器上，为整个域环境提供集中式目录管理服务的组件。活动目录存储了有关域环境中各种对象的信息，如域、用户、用户组、计算机、组织单位、共享资源、安全策略等，目录数据存储在域控制器的 Ntds.dit 文件中，活动目录主要提供了以下功能：</p>
+<ul>
+<li>计算机集中管理：集中管理所有加入域的服务器及客户端计算机，统一下发组策略。</li>
+<li>用户集中管理：集中管理城用户、组织通讯录、用户组，对用户进行统一的身份认证、资源授权等。</li>
+<li>资源集中管理：集中管理域中的打印机、文件共享服务等网络资源。</li>
+<li>环境集中配置：集中的配置城中计算机的工作环境，如统一计算机桌面、统一网络连接配置，统一计算机安全配置等。</li>
+<li>应用集中管理：对城中的计算机统一推送软件、安全补丁、防病毒系统等。</li>
+</ul>
+<h4 id="Ntds-dit"><a href="#Ntds-dit" class="headerlink" title="Ntds.dit"></a>Ntds.dit</h4><p>该文件是一个二进制文件，保存在域环境的域控制系统上，是主要的活动目录数据库，该文件包含有关域用户的，用户密码的哈希散列值，用户组，组成员身份和组策略信息，是使用SYSTEM文件中的密钥对这些hash值进行加密。存储位置为域控的(一般情况或绝大情况下) <code>%SystemRoot%\ntds.dit</code></p>
+<p>在通常情况下，即使拥有管理员权限，也无法读取域控中的 ntds.dit 文件（因为活动目录始终访问这个文件，所以文件被禁止读取），它和 SAM 文件一样，是被 Windows 操作系统锁定的。而在<strong>非域环境下，用户的登录凭据等信息储存在本地的SAM文件下</strong>。</p>
+<p>​																																							有关域的内容等学会更多再更新。</p>
+<h3 id="用户组策略"><a href="#用户组策略" class="headerlink" title="用户组策略"></a>用户组策略</h3><hr>
+<p>前置：对于文章开篇问题，简单解决方案：启动administer用户并设置密码，禁用或删除其他管理员账户以解决权限问题（当然对于部分系统内置文件其最高权限也是无法需改，可以进PE启动盘删改（大概</p>
+<p><img src="/2023/12/21/windows-yu-yu-yong-hu-zu-ce-lue/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png" alt="原环境为PVE,现环境为VM"></p>
+<hr>
+<h4 id="访问令牌"><a href="#访问令牌" class="headerlink" title="访问令牌"></a>访问令牌</h4><p>访问令牌(Access Tokens)是Windows操作系统安全性的一个概念。当用户登陆时，系统创建一个访问令牌，里面包含登录进程返回的SID和由本地安全策略分配给用户和用户的安全组的特权列表。此后代表该用户执行的每个进程都有此访问令牌的副本，每当线程或进程与安全对象交互或尝试执行需要特权的系统任务时，windows都会使用此令牌标识并确定关联账户。SID用来标识用户账户和该用户所属的组。（关联知识：DACL和SACL）</p>
+<h4 id="组策略"><a href="#组策略" class="headerlink" title="组策略"></a>组策略</h4><blockquote>
+<p>组策略（英语：Group Policy）是微软Windows NT家族操作系统的一个特性，它可以控制用户帐户和计算机帐户的工作环境。组策略提供了操作系统、应用程序和活动目录中用户设置的集中化管理和配置。组策略的其中一个版本名为本地组策略（缩写“LGPO”或“LocalGPO”），这可以在独立且非域的计算机上管理组策略对象。</p>
+<p>​                                                                                                                 														   –百度百科</p>
+</blockquote>
+<h3 id="影子账户设立"><a href="#影子账户设立" class="headerlink" title="影子账户设立"></a>影子账户设立</h3><p>之前想单独了解用户组和sam文件，但后来和组策略搞混了，只能以后学习了。。。</p>
+]]></content>
+      <categories>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
@@ -705,43 +742,6 @@
       </categories>
       <tags>
         <tag>渗透测试，免杀</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>windows域与用户组策略笔记(废弃)</title>
-    <url>/2023/12/21/windows-yu-yu-yong-hu-zu-ce-lue/</url>
-    <content><![CDATA[<hr>
-<hr>
-<p>以前学习时，遇到过在windows7旗舰版非administer和administer账户下的执行或搭建一些web服务会遇到可执行函数无法执行（反馈回来的是得不到回显）。</p>
-<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>当一个工作组中的计算机变多时，域（Domain）便成了一个更好的计算机资源管理模式，在于环境中所有的用户，用户组，计算机，打印机等设备都在一个或多个域控制器的中央数据库中注册，当域用户需要访问域中的资源时，必须通过域控制器集中进行身份验证。</p>
-<p>域可以分为单域，父域和子域，域树，域林等多种。</p>
-<h4 id="活动目录"><a href="#活动目录" class="headerlink" title="活动目录"></a>活动目录</h4><p>活动目录（ Active Directory , AD ）是指安装在域控制器上，为整个域环境提供集中式目录管理服务的组件。活动目录存储了有关域环境中各种对象的信息，如域、用户、用户组、计算机、组织单位、共享资源、安全策略等，目录数据存储在域控制器的 Ntds.dit 文件中，活动目录主要提供了以下功能：</p>
-<ul>
-<li>计算机集中管理：集中管理所有加入域的服务器及客户端计算机，统一下发组策略。</li>
-<li>用户集中管理：集中管理城用户、组织通讯录、用户组，对用户进行统一的身份认证、资源授权等。</li>
-<li>资源集中管理：集中管理域中的打印机、文件共享服务等网络资源。</li>
-<li>环境集中配置：集中的配置城中计算机的工作环境，如统一计算机桌面、统一网络连接配置，统一计算机安全配置等。</li>
-<li>应用集中管理：对城中的计算机统一推送软件、安全补丁、防病毒系统等。</li>
-</ul>
-<h4 id="Ntds-dit"><a href="#Ntds-dit" class="headerlink" title="Ntds.dit"></a>Ntds.dit</h4><p>该文件是一个二进制文件，保存在域环境的域控制系统上，是主要的活动目录数据库，该文件包含有关域用户的，用户密码的哈希散列值，用户组，组成员身份和组策略信息，是使用SYSTEM文件中的密钥对这些hash值进行加密。存储位置为域控的(一般情况或绝大情况下) <code>%SystemRoot%\ntds.dit</code></p>
-<p>在通常情况下，即使拥有管理员权限，也无法读取域控中的 ntds.dit 文件（因为活动目录始终访问这个文件，所以文件被禁止读取），它和 SAM 文件一样，是被 Windows 操作系统锁定的。而在<strong>非域环境下，用户的登录凭据等信息储存在本地的SAM文件下</strong>。</p>
-<p>​																																							有关域的内容等学会更多再更新。</p>
-<h3 id="用户组策略"><a href="#用户组策略" class="headerlink" title="用户组策略"></a>用户组策略</h3><hr>
-<p>前置：对于文章开篇问题，简单解决方案：启动administer用户并设置密码，禁用或删除其他管理员账户以解决权限问题（当然对于部分系统内置文件其最高权限也是无法需改，可以进PE启动盘删改（大概</p>
-<p><img src="/2023/12/21/windows-yu-yu-yong-hu-zu-ce-lue/%7B90E274FD-8600-4a95-B846-86E1992A6849%7D.png" alt="原环境为PVE,现环境为VM"></p>
-<hr>
-<h4 id="访问令牌"><a href="#访问令牌" class="headerlink" title="访问令牌"></a>访问令牌</h4><p>访问令牌(Access Tokens)是Windows操作系统安全性的一个概念。当用户登陆时，系统创建一个访问令牌，里面包含登录进程返回的SID和由本地安全策略分配给用户和用户的安全组的特权列表。此后代表该用户执行的每个进程都有此访问令牌的副本，每当线程或进程与安全对象交互或尝试执行需要特权的系统任务时，windows都会使用此令牌标识并确定关联账户。SID用来标识用户账户和该用户所属的组。（关联知识：DACL和SACL）</p>
-<h4 id="组策略"><a href="#组策略" class="headerlink" title="组策略"></a>组策略</h4><blockquote>
-<p>组策略（英语：Group Policy）是微软Windows NT家族操作系统的一个特性，它可以控制用户帐户和计算机帐户的工作环境。组策略提供了操作系统、应用程序和活动目录中用户设置的集中化管理和配置。组策略的其中一个版本名为本地组策略（缩写“LGPO”或“LocalGPO”），这可以在独立且非域的计算机上管理组策略对象。</p>
-<p>​                                                                                                                 														   –百度百科</p>
-</blockquote>
-<h3 id="影子账户设立"><a href="#影子账户设立" class="headerlink" title="影子账户设立"></a>影子账户设立</h3><p>之前想单独了解用户组和sam文件，但后来和组策略搞混了，只能以后学习了。。。</p>
-]]></content>
-      <categories>
-        <category>windows</category>
-      </categories>
-      <tags>
-        <tag>网络安全</tag>
       </tags>
   </entry>
   <entry>
@@ -975,82 +975,6 @@
       </tags>
   </entry>
   <entry>
-    <title>线性结构总结</title>
-    <url>/2023/11/01/xian-xing-jie-gou-zong-jie/</url>
-    <content><![CDATA[<h1 id="线性结构总结"><a href="#线性结构总结" class="headerlink" title="线性结构总结"></a>线性结构总结</h1><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是由n&gt;&#x3D;0个性质相同的数据元素组成的有限序列，n为线性长度。</p>
-<p>线性表的主要操作包括创建空线性表，判断线性表是否为空，以及插入，删除和查找等操作。</p>
-<h3 id="顺序表"><a href="#顺序表" class="headerlink" title="顺序表"></a>顺序表</h3><p>顺序表是用一组地址连续的储存单元依次储线性表中的各个元素，通过位置来表示数据元素之间的线性逻辑关系。</p>
-<p>顺序表的相邻元素在物理位置上也是相邻的。</p>
-<blockquote>
-<p>优点：</p>
-<ul>
-<li>可以快速获取下标的数据元素，时间复杂度为O(1)</li>
-<li>逻辑关系是一对一的关系，连续存储单元足以储存，不需要增加额外的存储空间</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>插入和删除操作需要移动大量的元素，时间复杂度为O(n)</li>
-<li>线性表的存储空间大小难以确定，并且不好扩展</li>
-<li>造成存储空间碎片化</li>
-</ul>
-</blockquote>
-<p>  以下为顺序表的基本功能</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    SeqList slist = (SeqList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> List)); <span class="comment">/*申请结构体List空间*/</span></span><br><span class="line">    <span class="keyword">if</span> (slist != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        slist-&gt;elem = (DataType*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(DataType) * m);</span><br><span class="line">        <span class="comment">/*申请顺序表空间，大小为m个DataType空间*/</span></span><br><span class="line">        <span class="keyword">if</span> (slist-&gt;elem) &#123;</span><br><span class="line">            slist-&gt;Max = m;<span class="comment">/*顺序表的最大值*/</span></span><br><span class="line">            slist-&gt;n = <span class="number">0</span>; <span class="comment">/*顺序表长度赋值为0*/</span></span><br><span class="line">            <span class="keyword">return</span>(slist);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">free</span>(slist);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;out of space!!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">IsNullList_seq</span><span class="params">(SeqList slist)</span><span class="comment">/*判断顺序表是否为空*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>(slist-&gt;n == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p, DataType x)</span></span><br><span class="line"><span class="comment">/*在线性表slist的p位置之前插入x*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (slist-&gt;n &gt;= slist-&gt;Max) &#123; <span class="comment">/*顺序表满溢出*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;overflow&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p&lt;<span class="number">0</span> || p&gt;slist-&gt;n) &#123;  <span class="comment">/*不存在下标为p的元素*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;not exist!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = slist-&gt;n - <span class="number">1</span>; q &gt;= p; q--)<span class="comment">/*插入位置以及之后的元素后移*/</span></span><br><span class="line">        slist-&gt;elem[q + <span class="number">1</span>] = slist-&gt;elem[q];</span><br><span class="line">    slist-&gt;elem[p] = x;  <span class="comment">/*插入元素x*/</span></span><br><span class="line">    slist-&gt;n = slist-&gt;n + <span class="number">1</span>;  <span class="comment">/*顺序表长度加1*/</span></span><br><span class="line">    <span class="keyword">return</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(SeqList slist)</span><span class="comment">//打印顺序表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; slist-&gt;n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, slist-&gt;elem[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">DelIndex_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p)</span> <span class="comment">//删除下标为p的元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (p &lt; <span class="number">0</span> || p &gt;= slist-&gt;n) &#123;<span class="comment">//不存在下标为p的元素</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not exist\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = p; q &lt; slist-&gt;n - <span class="number">1</span>; q++) &#123; <span class="comment">//p位置之后的元素向前移动</span></span><br><span class="line">        slist-&gt;elem[q] = slist-&gt;elem[q + <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    slist-&gt;n = slist-&gt;n - <span class="number">1</span>; <span class="comment">//顺序表长度减1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
-
-<h3 id="链式线性表-单链表"><a href="#链式线性表-单链表" class="headerlink" title="链式线性表-单链表"></a>链式线性表-单链表</h3><p>其中的元素的储存位置是任意的，具体位置在程序运行时动态分布。其在物理位置上相邻元素并不相邻。</p>
-<blockquote>
-<p>存储分配：</p>
-<ul>
-<li>顺序 -&gt; 一段地址连续的存储空间</li>
-<li>链式 -&gt; 任意地址存储空间</li>
-</ul>
-<p>时间：</p>
-<ul>
-<li>查找 顺序 -&gt; O(1) 链式 -&gt; O(n)</li>
-<li>插入和删除 顺序 -&gt; O(n) 链式 -&gt; 寻找相应的节点，时间复杂度为O(n)，然后，插入和&gt; &gt;删除为O(1)</li>
-</ul>
-<p>空间：</p>
-<ul>
-<li><p>顺序 -&gt; 需要提前分配存储空间，分配大了，浪费空间，分配小了，容易发生上溢</p>
-</li>
-<li><p>链式 -&gt; 不需要提前分配空间，只要有存储空间分配就行，数据元素个数只受可分配存储空间&gt; 大小的限制</p>
-</li>
-</ul>
-</blockquote>
-<p>以下是其基本功能</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断head指针是否为空</span></span><br><span class="line">LinkList <span class="title function_">SetNullList_Link</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    LinkList head = (LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">    <span class="keyword">if</span> (head != <span class="literal">NULL</span>) head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;alloc failure&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> head; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//创建单链表--&gt;尾插法</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateList_Tail</span><span class="params">(<span class="keyword">struct</span> Node* head)</span></span><br><span class="line">&#123;</span><br><span class="line">    PNode p = <span class="literal">NULL</span>;</span><br><span class="line">    PNode q = head;</span><br><span class="line">    DataType data;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    <span class="keyword">while</span> (data != <span class="number">-1</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        p = (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        p-&gt;data = data;</span><br><span class="line">        p-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        q-&gt;next = p;</span><br><span class="line">        q = p;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_link</span><span class="params">(LinkList llist,LinkList p, DataType x)</span>&#123;</span><br><span class="line">    LinkList pre=llist,q=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(pre-&gt;next!= p)&#123;</span><br><span class="line">        pre=pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    q=(LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LinkList));</span><br><span class="line">    q-&gt;data=x;</span><br><span class="line">    q-&gt;next=p;</span><br><span class="line">    pre-&gt;next=q;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">InsertPost_link_value</span><span class="params">(LinkList head,<span class="type">int</span> finddata,<span class="type">int</span> insertdata)</span>&#123;</span><br><span class="line">    LinkList p=head;</span><br><span class="line">    <span class="keyword">while</span>(p-&gt;data!=finddata)&#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    InsertPre_link(head,p,insertdata);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印单链表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(LinkList head)</span>   </span><br><span class="line">&#123;</span><br><span class="line">    PNode  p = head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, p-&gt;data);</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//删除单链表并释放空间</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">DestoryList_Link</span><span class="params">(LinkList head)</span>  </span><br><span class="line">&#123;</span><br><span class="line">    PNode  pre = head; </span><br><span class="line">    PNode p = pre-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">free</span>(pre);</span><br><span class="line">        pre = p;</span><br><span class="line">        p = pre-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(pre);</span><br><span class="line">&#125;```</span><br></pre></td></tr></table></figure>
-
-<h3 id="单循环链表"><a href="#单循环链表" class="headerlink" title="单循环链表"></a>单循环链表</h3><p>在单链表的基础上将最后一个节点的指针指向链表的第一个节点，形成一个环，称之为单循环链表。</p>
-<p><img src="/2023/11/01/xian-xing-jie-gou-zong-jie/OIP-16982375857111.jpg" alt="OIP"></p>
-<h3 id="双链表和双循环链表"><a href="#双链表和双循环链表" class="headerlink" title="双链表和双循环链表"></a>双链表和双循环链表</h3><h4 id="双链表"><a href="#双链表" class="headerlink" title="双链表"></a>双链表</h4><p>存在钱去和后继</p>
-<blockquote>
-<p>优点</p>
-<ul>
-<li>可以实现双向查找<br>缺点</li>
-<li>需要额外的储存空间存放前驱节点</li>
-</ul>
-</blockquote>
-<h4 id="双循环链表"><a href="#双循环链表" class="headerlink" title="双循环链表"></a>双循环链表</h4><p>把双链表的最后的一个节点的后继指针指向第一个节点，把第一个节点的前驱指针指向最后一个节点，就组成了双循环链表。</p>
-<p><img src="/2023/11/01/xian-xing-jie-gou-zong-jie/225854.jpg" alt="双链表"></p>
-<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><strong>栈</strong>（英语：stack）又称为<strong>堆栈</strong>或<strong>堆叠，</strong>栈作为一种数据结构，是一种只能在一端进行插入和删除操作的特殊线性表。它按照先进后出的原则存储数据，先进入的数据被压入栈底，最后的数据在栈顶，需要读数据的时候从栈顶开始弹出数据（最后一个数据被第一个读出来）。栈具有记忆作用，对栈的插入与删除操作中，不需要改变栈底指针。</p>
-<ul>
-<li><strong>定义</strong>：只允许在一端进行插入或删除的线性表</li>
-<li><strong>栈顶（top）</strong> ：允许进行插入或删除的一端</li>
-<li><strong>栈底（bottom）:</strong> 与栈顶相对应的一端</li>
-<li><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b1128b4101604e1890d3f7dd2d655039~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="img"></li>
-<li><strong>特点：</strong> 先进后出</li>
-</ul>
-<p>包含顺序栈，双栈等</p>
-<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列是一种特殊的<code>线性表</code>，特殊之处在于它只允许在表的<code>前端（front）</code>进行删除操作，而在表的<code>后端（rear）</code>进行插入操作，和栈一样，队列是一种<code>操作受限制</code>的线性表。进行插入操作的端称为<code>队尾</code>，进行删除操作的端称为<code>队头</code>。</p>
-]]></content>
-      <categories>
-        <category>C语言</category>
-      </categories>
-      <tags>
-        <tag>C语言,数据结构,线性表</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>红蓝对抗-信息搜集(1)</title>
     <url>/2023/11/01/hong-lan-dui-kang-xin-xi-sou-ji-1/</url>
     <content><![CDATA[<h3 id="资产架构"><a href="#资产架构" class="headerlink" title="资产架构"></a>资产架构</h3><p>一个网站-&gt;存在多个程序&#x2F;端口应用，任何一个程序和应用出现漏洞，都可以进行安全测试</p>
@@ -1153,6 +1077,82 @@ DNS历史查询：（https://securitytrails.com/）
       </categories>
       <tags>
         <tag>信息搜集，渗透测试，网络安全，红蓝对抗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>线性结构总结</title>
+    <url>/2023/11/01/xian-xing-jie-gou-zong-jie/</url>
+    <content><![CDATA[<h1 id="线性结构总结"><a href="#线性结构总结" class="headerlink" title="线性结构总结"></a>线性结构总结</h1><h2 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h2><p>线性表是由n&gt;&#x3D;0个性质相同的数据元素组成的有限序列，n为线性长度。</p>
+<p>线性表的主要操作包括创建空线性表，判断线性表是否为空，以及插入，删除和查找等操作。</p>
+<h3 id="顺序表"><a href="#顺序表" class="headerlink" title="顺序表"></a>顺序表</h3><p>顺序表是用一组地址连续的储存单元依次储线性表中的各个元素，通过位置来表示数据元素之间的线性逻辑关系。</p>
+<p>顺序表的相邻元素在物理位置上也是相邻的。</p>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>可以快速获取下标的数据元素，时间复杂度为O(1)</li>
+<li>逻辑关系是一对一的关系，连续存储单元足以储存，不需要增加额外的存储空间</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>插入和删除操作需要移动大量的元素，时间复杂度为O(n)</li>
+<li>线性表的存储空间大小难以确定，并且不好扩展</li>
+<li>造成存储空间碎片化</li>
+</ul>
+</blockquote>
+<p>  以下为顺序表的基本功能</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    SeqList slist = (SeqList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> List)); <span class="comment">/*申请结构体List空间*/</span></span><br><span class="line">    <span class="keyword">if</span> (slist != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        slist-&gt;elem = (DataType*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(DataType) * m);</span><br><span class="line">        <span class="comment">/*申请顺序表空间，大小为m个DataType空间*/</span></span><br><span class="line">        <span class="keyword">if</span> (slist-&gt;elem) &#123;</span><br><span class="line">            slist-&gt;Max = m;<span class="comment">/*顺序表的最大值*/</span></span><br><span class="line">            slist-&gt;n = <span class="number">0</span>; <span class="comment">/*顺序表长度赋值为0*/</span></span><br><span class="line">            <span class="keyword">return</span>(slist);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">free</span>(slist);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;out of space!!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">IsNullList_seq</span><span class="params">(SeqList slist)</span><span class="comment">/*判断顺序表是否为空*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>(slist-&gt;n == <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p, DataType x)</span></span><br><span class="line"><span class="comment">/*在线性表slist的p位置之前插入x*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (slist-&gt;n &gt;= slist-&gt;Max) &#123; <span class="comment">/*顺序表满溢出*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;overflow&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (p&lt;<span class="number">0</span> || p&gt;slist-&gt;n) &#123;  <span class="comment">/*不存在下标为p的元素*/</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;not exist!\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = slist-&gt;n - <span class="number">1</span>; q &gt;= p; q--)<span class="comment">/*插入位置以及之后的元素后移*/</span></span><br><span class="line">        slist-&gt;elem[q + <span class="number">1</span>] = slist-&gt;elem[q];</span><br><span class="line">    slist-&gt;elem[p] = x;  <span class="comment">/*插入元素x*/</span></span><br><span class="line">    slist-&gt;n = slist-&gt;n + <span class="number">1</span>;  <span class="comment">/*顺序表长度加1*/</span></span><br><span class="line">    <span class="keyword">return</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(SeqList slist)</span><span class="comment">//打印顺序表</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; slist-&gt;n; i++)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, slist-&gt;elem[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">DelIndex_seq</span><span class="params">(SeqList slist, <span class="type">int</span> p)</span> <span class="comment">//删除下标为p的元素</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> q;</span><br><span class="line">    <span class="keyword">if</span> (p &lt; <span class="number">0</span> || p &gt;= slist-&gt;n) &#123;<span class="comment">//不存在下标为p的元素</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Not exist\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (q = p; q &lt; slist-&gt;n - <span class="number">1</span>; q++) &#123; <span class="comment">//p位置之后的元素向前移动</span></span><br><span class="line">        slist-&gt;elem[q] = slist-&gt;elem[q + <span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    slist-&gt;n = slist-&gt;n - <span class="number">1</span>; <span class="comment">//顺序表长度减1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+
+<h3 id="链式线性表-单链表"><a href="#链式线性表-单链表" class="headerlink" title="链式线性表-单链表"></a>链式线性表-单链表</h3><p>其中的元素的储存位置是任意的，具体位置在程序运行时动态分布。其在物理位置上相邻元素并不相邻。</p>
+<blockquote>
+<p>存储分配：</p>
+<ul>
+<li>顺序 -&gt; 一段地址连续的存储空间</li>
+<li>链式 -&gt; 任意地址存储空间</li>
+</ul>
+<p>时间：</p>
+<ul>
+<li>查找 顺序 -&gt; O(1) 链式 -&gt; O(n)</li>
+<li>插入和删除 顺序 -&gt; O(n) 链式 -&gt; 寻找相应的节点，时间复杂度为O(n)，然后，插入和&gt; &gt;删除为O(1)</li>
+</ul>
+<p>空间：</p>
+<ul>
+<li><p>顺序 -&gt; 需要提前分配存储空间，分配大了，浪费空间，分配小了，容易发生上溢</p>
+</li>
+<li><p>链式 -&gt; 不需要提前分配空间，只要有存储空间分配就行，数据元素个数只受可分配存储空间&gt; 大小的限制</p>
+</li>
+</ul>
+</blockquote>
+<p>以下是其基本功能</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//判断head指针是否为空</span></span><br><span class="line">LinkList <span class="title function_">SetNullList_Link</span><span class="params">()</span> </span><br><span class="line">&#123;</span><br><span class="line">    LinkList head = (LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">    <span class="keyword">if</span> (head != <span class="literal">NULL</span>) head-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">&quot;alloc failure&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> head; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//创建单链表--&gt;尾插法</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">CreateList_Tail</span><span class="params">(<span class="keyword">struct</span> Node* head)</span></span><br><span class="line">&#123;</span><br><span class="line">    PNode p = <span class="literal">NULL</span>;</span><br><span class="line">    PNode q = head;</span><br><span class="line">    DataType data;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    <span class="keyword">while</span> (data != <span class="number">-1</span>)</span><br><span class="line">    &#123;   </span><br><span class="line">        p = (<span class="keyword">struct</span> Node*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> Node));</span><br><span class="line">        p-&gt;data = data;</span><br><span class="line">        p-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        q-&gt;next = p;</span><br><span class="line">        q = p;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">InsertPre_link</span><span class="params">(LinkList llist,LinkList p, DataType x)</span>&#123;</span><br><span class="line">    LinkList pre=llist,q=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span>(pre-&gt;next!= p)&#123;</span><br><span class="line">        pre=pre-&gt;next;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    q=(LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LinkList));</span><br><span class="line">    q-&gt;data=x;</span><br><span class="line">    q-&gt;next=p;</span><br><span class="line">    pre-&gt;next=q;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">InsertPost_link_value</span><span class="params">(LinkList head,<span class="type">int</span> finddata,<span class="type">int</span> insertdata)</span>&#123;</span><br><span class="line">    LinkList p=head;</span><br><span class="line">    <span class="keyword">while</span>(p-&gt;data!=finddata)&#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    InsertPre_link(head,p,insertdata);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印单链表</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">print</span><span class="params">(LinkList head)</span>   </span><br><span class="line">&#123;</span><br><span class="line">    PNode  p = head-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, p-&gt;data);</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//删除单链表并释放空间</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">DestoryList_Link</span><span class="params">(LinkList head)</span>  </span><br><span class="line">&#123;</span><br><span class="line">    PNode  pre = head; </span><br><span class="line">    PNode p = pre-&gt;next;</span><br><span class="line">    <span class="keyword">while</span> (p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">free</span>(pre);</span><br><span class="line">        pre = p;</span><br><span class="line">        p = pre-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(pre);</span><br><span class="line">&#125;```</span><br></pre></td></tr></table></figure>
+
+<h3 id="单循环链表"><a href="#单循环链表" class="headerlink" title="单循环链表"></a>单循环链表</h3><p>在单链表的基础上将最后一个节点的指针指向链表的第一个节点，形成一个环，称之为单循环链表。</p>
+<p><img src="/2023/11/01/xian-xing-jie-gou-zong-jie/OIP-16982375857111.jpg" alt="OIP"></p>
+<h3 id="双链表和双循环链表"><a href="#双链表和双循环链表" class="headerlink" title="双链表和双循环链表"></a>双链表和双循环链表</h3><h4 id="双链表"><a href="#双链表" class="headerlink" title="双链表"></a>双链表</h4><p>存在钱去和后继</p>
+<blockquote>
+<p>优点</p>
+<ul>
+<li>可以实现双向查找<br>缺点</li>
+<li>需要额外的储存空间存放前驱节点</li>
+</ul>
+</blockquote>
+<h4 id="双循环链表"><a href="#双循环链表" class="headerlink" title="双循环链表"></a>双循环链表</h4><p>把双链表的最后的一个节点的后继指针指向第一个节点，把第一个节点的前驱指针指向最后一个节点，就组成了双循环链表。</p>
+<p><img src="/2023/11/01/xian-xing-jie-gou-zong-jie/225854.jpg" alt="双链表"></p>
+<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p><strong>栈</strong>（英语：stack）又称为<strong>堆栈</strong>或<strong>堆叠，</strong>栈作为一种数据结构，是一种只能在一端进行插入和删除操作的特殊线性表。它按照先进后出的原则存储数据，先进入的数据被压入栈底，最后的数据在栈顶，需要读数据的时候从栈顶开始弹出数据（最后一个数据被第一个读出来）。栈具有记忆作用，对栈的插入与删除操作中，不需要改变栈底指针。</p>
+<ul>
+<li><strong>定义</strong>：只允许在一端进行插入或删除的线性表</li>
+<li><strong>栈顶（top）</strong> ：允许进行插入或删除的一端</li>
+<li><strong>栈底（bottom）:</strong> 与栈顶相对应的一端</li>
+<li><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b1128b4101604e1890d3f7dd2d655039~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp" alt="img"></li>
+<li><strong>特点：</strong> 先进后出</li>
+</ul>
+<p>包含顺序栈，双栈等</p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列是一种特殊的<code>线性表</code>，特殊之处在于它只允许在表的<code>前端（front）</code>进行删除操作，而在表的<code>后端（rear）</code>进行插入操作，和栈一样，队列是一种<code>操作受限制</code>的线性表。进行插入操作的端称为<code>队尾</code>，进行删除操作的端称为<code>队头</code>。</p>
+]]></content>
+      <categories>
+        <category>C语言</category>
+      </categories>
+      <tags>
+        <tag>C语言,数据结构,线性表</tag>
       </tags>
   </entry>
   <entry>
@@ -1310,93 +1310,6 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </tags>
   </entry>
   <entry>
-    <title>网络安全测试课程-作业-4</title>
-    <url>/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/</url>
-    <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
-<li><p>arp（Address Resolution Protocol），即地址解析协议，属于<strong>数据链路层</strong>，是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。</p>
-</li>
-<li><p>cmd查看arp -a</p>
-<blockquote>
-<p>在以太网中，同一局域网中的一台主机想要和另一台主机进行直接通信，必须要知道目标主机的MAC地址。而在TCP&#x2F;IP协议中，网络层和传输层只关心目标主机的IP地址。这就导致在以太网中使用IP协议时，数据链路层的以太网协议含有的上层IP协议提供的数据中，只包含目的主机的IP地址。所以需要一种方法，根据目的主机的IP地址，获得其MAC地址。这就是ARP协议要做的事情。所谓地址解析（address resolution）就是主机在发送帧前将目标IP地址转换成目标MAC地址的过程。</p>
-</blockquote>
-</li>
-</ul>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127102741981.png" alt="1"></p>
-<ul>
-<li><p>每一个主机都有一个ARP高速缓存，此缓存中记录了最近一段时间内其它IP地址与其MAC地址的对应关系。ARP高速缓存是实时更新的，每次开机后会清空缓存并重新获取。</p>
-</li>
-<li><p>如果本机想与某台主机通信，则首先在ARP高速缓存(动态更新)中查找此台主机的IP和MAC信息，如果存在，则直接利用此MAC地址构造以太帧；如果不存在，主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间。</p>
-</li>
-<li><p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/%7B89D8FD6A-F64C-40cb-900F-6AC24E460C6B%7D.png" alt="2"></p>
-<p>​      																	ARP请求广播到局域网络上的所有主机</p>
-<h4 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h4></li>
-</ul>
-<p>网络设备一般都有一个ARP缓存（ARP Cache），ARP缓存用来存放IP地址和MAC地址的关联信息。在数据传送前，设备会先查找ARP缓存表。如果缓存表中存在对方设备的MAC地址，则直接采用该MAC地址来封装帧，然后将帧发送出去。如果缓存表中不存在相应的信息，则通过发送ARP 报文来获取。获取到的IP地址和MAC地址的映射关系会被放入ARP缓存表中存放一段时间。在有效期（一般为关机前）内，设备可以直接从这个表中查找目的MAC地址来进行数据封装，而无需进行ARP查询。过了这段有效期，ARP表现会被自动删除。如果目标设备位于其他网络则源设备会在ARP缓存表中查找网关的MAC地址，然后将数据发送给网关，网关再把数据转发给目的设备。</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/%7BADEF15EC-3ABE-49ea-9D9B-24F7D6E58772%7D.png" alt="3"></p>
-<h4 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h4><p>当有2台或者多台计算机进行交互时，例如主机A与主机B进行交互，A在已知B的IP，但不知到B的MAC地址时，是无法通信的。</p>
-<p>当A主机上在查询Arp缓存时未能找到B的MAC地址时，会进行广播到本地网络上的所有主机（发送的数据包含A的Ip与MAC地址），主机B的IP与广播中所请求的IP地址相同时，主机B将A的IP地址和MAC地址映射添加到本地ARP缓存中。同时主机B将包含其MAC地址的ARP回复消息直接发送回主机A。当主机A收到从主机B发来的ARP回复消息时，会用主机B的IP和MAC地址映射更新ARP缓存。</p>
-<p>此时，由于主机A并不会验证B发送的回复包是否具有真实性，因此我们可以伪造成B发送回复包。例如:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">graph LR;</span><br><span class="line">  A[主机A]--ip,mac,B的ip,询问B的MAC--&gt;B[主机B]</span><br><span class="line">  C[攻击机]--疯狂回复A,B的ip,MAC--&gt;A1[主机A]</span><br></pre></td></tr></table></figure>
-
-<p>断网攻击类型：</p>
-<ul>
-<li>1.主机欺骗：欺骗对象为主机。</li>
-<li>2.网关欺骗：欺骗对象为网关，可以获得其他主机的进流量。</li>
-</ul>
-<p>利用工具：</p>
-<p>​		kali ：arpspoof</p>
-<p>用法：arpspoof [-i interface] [-c own|host|both] [-t target] [-r] host。</p>
-<p>参数：</p>
-<blockquote>
-<p>-i interface 指定要使用的接口（即指定一块网卡）</p>
-<p>-t target   指定一个将被ARP毒化的主机（如果没有指定，则认为是局域网中所有主机）可以重复指定多个主机</p>
-<p>host  host是你想要截获数据包的主机(通常是网关)</p>
-<p> -c own|host|both         指定在恢复ARP配置时使用的硬件地址；当在清理（cleaning up）时，数据包的源地址可以用自己的也可以用主机（host）的硬件地址。</p>
-<p> -r     毒化两个主机（目标和主机（host））以捕获两个方向的网络流量。（仅仅在和-t参数一起使用时有效）</p>
-</blockquote>
-<p>注意：<strong>在使用arp欺骗前先开启Kali的IP转发，使用命令：</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
-
-<p>参数举例：arpspoof -i eth0 -t 192.168.0.103 192.168.0.107。</p>
-<p>即： arpspoof   -i   网卡   -t    目标IP    网关。</p>
-<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><h4 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h4><p>DHCP（Dynamic Host Configuration Protocol，动态主机配置协议），前身是BOOTP协议，是一个局域网的网络协议，使用UDP协议工作，统一使用两个IANA分配的端口：67（服务器端），68（客户端）。在TCP&#x2F;IP网络中对客户机动态分配和管理IP地址等配置信息，以简化网络配置，方便用户使用及管理员的管理。</p>
-<blockquote>
-<p>•一台DHCP服务器可以是一台运行Windows Server、UNIX或Linux的计算机，也可以是一台路由器或交换机。</p>
-</blockquote>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127112833046.png" alt="4"></p>
-<h4 id="DHCP-的安全问题"><a href="#DHCP-的安全问题" class="headerlink" title="DHCP 的安全问题"></a>DHCP 的安全问题</h4><p>非法DHCP服务器接入到了网络中；“冒充”为这个网段中的合法DHCP服务器。</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127112955183.png" alt="5"></p>
-<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>DNS作用-主机IP地址与主机名之间的对应关系。</p>
-<p>起初是随着接入网络主机的增多，这种数字标识的地址非常不便于记忆，unix便建立一个叫做hosts的文件 ， 这个文件中记录这主机域名和IP地址的对应表。这样只要输入主机名称，系统就会去加载hosts文件并查找对应关系，找到对应的IP，就可以访问这个IP的主机了。之后再Linux和windows也继承了这个文件。</p>
-<p>而DNS服务器用于集中报存hosts文件，用于用户方便查询和实时更新hosts数据。DNS协议运行在UDP协议之上，使用端口号53。</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127113431328.png" alt="6"></p>
-<p>​																				域名查询图</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127113508694.png" alt="7"></p>
-<p>客户端先从本地计算机上查询域名对应的ip，如果未查询到，便访问DNS服务器（8.8.8.8 ，114.114.114.114）ip去查询域名对应的ip,若还未查询到便访问上一级DNS服务器直到根服务器位置，并返回数据。</p>
-<h2 id="NAT服务"><a href="#NAT服务" class="headerlink" title="NAT服务"></a>NAT服务</h2><p>NAT（Network Address Translator，网络地址转换）是用于在本地网络中使用私有地址，在连接互联网时转而使用全局 IP 地址的技术。NAT实际上是为解决<a href="https://link.zhihu.com/?target=https://bk.tw.lvfukeji.com/baike-IPv4%E4%BD%8D%E5%9D%80%E6%9E%AF%E7%AB%AD">IPv4地址短缺</a>而开发的技术。</p>
-<h4 id="NAT工作原理"><a href="#NAT工作原理" class="headerlink" title="NAT工作原理"></a>NAT工作原理</h4><p>内容参考[《什么是NAT》](<a href="https://zhuanlan.zhihu.com/p/340698491">什么是NAT？ - 知乎 (zhihu.com)</a>)</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/1.jpg" alt="8"></p>
-<p>​						</p>
-<ul>
-<li>网络被分为私网和公网两个部分，NAT网关设置在私网到公网的路由出口位置，双向流量必须都要经过NAT网关；</li>
-<li>网络访问只能先由私网侧发起，公网无法主动访问私网主机；</li>
-<li>NAT 路由器在两个访问方向上完成两次地址的转换或翻译，出方向做源信息替换，入方向做目的信息替换；</li>
-<li>NAT 路由器的存在对通信双方是保持透明的；</li>
-<li>NAT 路由器为了实现双向翻译的功能，需要维护一张<strong>关联表</strong>，把会话的信息保存下来。</li>
-</ul>
-<p>NAT可以划分为以下两种类型：源网络地址转换-Source NAT-SNAT;目的网络地址转换-Destination NAT-DNAT。</p>
-<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/3.jpg" alt="9"></p>
-<p>主机 163.221.120.9 的端口号是 80，私网中有 2 个客户端 10.0.0.10 和 10.0.0.11 同时进行通信，并且这 2 个客户端的本地端口都是 1025。此时，仅仅转换 IP 地址为全局地址 202.244.174.37 ，会令转换后的数字完全一致。因此，为了区分这 2 个会话，只要将 10.0.0.11 的端口号转换为 1026 就可以解决问题。NAPT 路由器通过生成转换表，就可以正确地转换地址跟端口的组合，使客户端A、B能同时与服务器之间进行通信。</p>
-<p><strong>关键点</strong>：利用端口号的唯一性实现了公网 IP 到私网 IP 的转换，理论上最多可以让 65535 台主机共用一个公网 IP 地址</p>
-]]></content>
-      <categories>
-        <category>网络渗透测试基础知识</category>
-      </categories>
-      <tags>
-        <tag>网络渗透测试基础知识,DNS,ARP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网络安全测试课程-作业-3</title>
     <url>/2023/11/20/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-3/</url>
     <content><![CDATA[<h3 id="TCP-IP协议"><a href="#TCP-IP协议" class="headerlink" title="TCP&#x2F;IP协议"></a>TCP&#x2F;IP协议</h3><p>TCP 提供面向有连接的通信传输，面向有连接是指在传送数据之前必须先建立连接，数据传送完成后要释放连接。</p>
@@ -1491,6 +1404,93 @@ icp="京ICP证030173号"：查找备案号为“京ICP证030173号的网站<p></
       </categories>
       <tags>
         <tag>网络渗透测试基础知识,wireshark</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络安全测试课程-作业-4</title>
+    <url>/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/</url>
+    <content><![CDATA[<h2 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h2><h4 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h4><ul>
+<li><p>arp（Address Resolution Protocol），即地址解析协议，属于<strong>数据链路层</strong>，是根据IP地址获取物理地址的一个TCP&#x2F;IP协议。</p>
+</li>
+<li><p>cmd查看arp -a</p>
+<blockquote>
+<p>在以太网中，同一局域网中的一台主机想要和另一台主机进行直接通信，必须要知道目标主机的MAC地址。而在TCP&#x2F;IP协议中，网络层和传输层只关心目标主机的IP地址。这就导致在以太网中使用IP协议时，数据链路层的以太网协议含有的上层IP协议提供的数据中，只包含目的主机的IP地址。所以需要一种方法，根据目的主机的IP地址，获得其MAC地址。这就是ARP协议要做的事情。所谓地址解析（address resolution）就是主机在发送帧前将目标IP地址转换成目标MAC地址的过程。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127102741981.png" alt="1"></p>
+<ul>
+<li><p>每一个主机都有一个ARP高速缓存，此缓存中记录了最近一段时间内其它IP地址与其MAC地址的对应关系。ARP高速缓存是实时更新的，每次开机后会清空缓存并重新获取。</p>
+</li>
+<li><p>如果本机想与某台主机通信，则首先在ARP高速缓存(动态更新)中查找此台主机的IP和MAC信息，如果存在，则直接利用此MAC地址构造以太帧；如果不存在，主机发送信息时将包含目标IP地址的ARP请求广播到局域网络上的所有主机，并接收返回消息，以此确定目标的物理地址；收到返回消息后将该IP地址和物理地址存入本机ARP缓存中并保留一定时间。</p>
+</li>
+<li><p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/%7B89D8FD6A-F64C-40cb-900F-6AC24E460C6B%7D.png" alt="2"></p>
+<p>​      																	ARP请求广播到局域网络上的所有主机</p>
+<h4 id="ARP表"><a href="#ARP表" class="headerlink" title="ARP表"></a>ARP表</h4></li>
+</ul>
+<p>网络设备一般都有一个ARP缓存（ARP Cache），ARP缓存用来存放IP地址和MAC地址的关联信息。在数据传送前，设备会先查找ARP缓存表。如果缓存表中存在对方设备的MAC地址，则直接采用该MAC地址来封装帧，然后将帧发送出去。如果缓存表中不存在相应的信息，则通过发送ARP 报文来获取。获取到的IP地址和MAC地址的映射关系会被放入ARP缓存表中存放一段时间。在有效期（一般为关机前）内，设备可以直接从这个表中查找目的MAC地址来进行数据封装，而无需进行ARP查询。过了这段有效期，ARP表现会被自动删除。如果目标设备位于其他网络则源设备会在ARP缓存表中查找网关的MAC地址，然后将数据发送给网关，网关再把数据转发给目的设备。</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/%7BADEF15EC-3ABE-49ea-9D9B-24F7D6E58772%7D.png" alt="3"></p>
+<h4 id="ARP欺骗"><a href="#ARP欺骗" class="headerlink" title="ARP欺骗"></a>ARP欺骗</h4><p>当有2台或者多台计算机进行交互时，例如主机A与主机B进行交互，A在已知B的IP，但不知到B的MAC地址时，是无法通信的。</p>
+<p>当A主机上在查询Arp缓存时未能找到B的MAC地址时，会进行广播到本地网络上的所有主机（发送的数据包含A的Ip与MAC地址），主机B的IP与广播中所请求的IP地址相同时，主机B将A的IP地址和MAC地址映射添加到本地ARP缓存中。同时主机B将包含其MAC地址的ARP回复消息直接发送回主机A。当主机A收到从主机B发来的ARP回复消息时，会用主机B的IP和MAC地址映射更新ARP缓存。</p>
+<p>此时，由于主机A并不会验证B发送的回复包是否具有真实性，因此我们可以伪造成B发送回复包。例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">graph LR;</span><br><span class="line">  A[主机A]--ip,mac,B的ip,询问B的MAC--&gt;B[主机B]</span><br><span class="line">  C[攻击机]--疯狂回复A,B的ip,MAC--&gt;A1[主机A]</span><br></pre></td></tr></table></figure>
+
+<p>断网攻击类型：</p>
+<ul>
+<li>1.主机欺骗：欺骗对象为主机。</li>
+<li>2.网关欺骗：欺骗对象为网关，可以获得其他主机的进流量。</li>
+</ul>
+<p>利用工具：</p>
+<p>​		kali ：arpspoof</p>
+<p>用法：arpspoof [-i interface] [-c own|host|both] [-t target] [-r] host。</p>
+<p>参数：</p>
+<blockquote>
+<p>-i interface 指定要使用的接口（即指定一块网卡）</p>
+<p>-t target   指定一个将被ARP毒化的主机（如果没有指定，则认为是局域网中所有主机）可以重复指定多个主机</p>
+<p>host  host是你想要截获数据包的主机(通常是网关)</p>
+<p> -c own|host|both         指定在恢复ARP配置时使用的硬件地址；当在清理（cleaning up）时，数据包的源地址可以用自己的也可以用主机（host）的硬件地址。</p>
+<p> -r     毒化两个主机（目标和主机（host））以捕获两个方向的网络流量。（仅仅在和-t参数一起使用时有效）</p>
+</blockquote>
+<p>注意：<strong>在使用arp欺骗前先开启Kali的IP转发，使用命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 &gt; /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
+
+<p>参数举例：arpspoof -i eth0 -t 192.168.0.103 192.168.0.107。</p>
+<p>即： arpspoof   -i   网卡   -t    目标IP    网关。</p>
+<h2 id="DHCP"><a href="#DHCP" class="headerlink" title="DHCP"></a>DHCP</h2><h4 id="DHCP协议"><a href="#DHCP协议" class="headerlink" title="DHCP协议"></a>DHCP协议</h4><p>DHCP（Dynamic Host Configuration Protocol，动态主机配置协议），前身是BOOTP协议，是一个局域网的网络协议，使用UDP协议工作，统一使用两个IANA分配的端口：67（服务器端），68（客户端）。在TCP&#x2F;IP网络中对客户机动态分配和管理IP地址等配置信息，以简化网络配置，方便用户使用及管理员的管理。</p>
+<blockquote>
+<p>•一台DHCP服务器可以是一台运行Windows Server、UNIX或Linux的计算机，也可以是一台路由器或交换机。</p>
+</blockquote>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127112833046.png" alt="4"></p>
+<h4 id="DHCP-的安全问题"><a href="#DHCP-的安全问题" class="headerlink" title="DHCP 的安全问题"></a>DHCP 的安全问题</h4><p>非法DHCP服务器接入到了网络中；“冒充”为这个网段中的合法DHCP服务器。</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127112955183.png" alt="5"></p>
+<h2 id="DNS服务"><a href="#DNS服务" class="headerlink" title="DNS服务"></a>DNS服务</h2><p>DNS作用-主机IP地址与主机名之间的对应关系。</p>
+<p>起初是随着接入网络主机的增多，这种数字标识的地址非常不便于记忆，unix便建立一个叫做hosts的文件 ， 这个文件中记录这主机域名和IP地址的对应表。这样只要输入主机名称，系统就会去加载hosts文件并查找对应关系，找到对应的IP，就可以访问这个IP的主机了。之后再Linux和windows也继承了这个文件。</p>
+<p>而DNS服务器用于集中报存hosts文件，用于用户方便查询和实时更新hosts数据。DNS协议运行在UDP协议之上，使用端口号53。</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127113431328.png" alt="6"></p>
+<p>​																				域名查询图</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/image-20231127113508694.png" alt="7"></p>
+<p>客户端先从本地计算机上查询域名对应的ip，如果未查询到，便访问DNS服务器（8.8.8.8 ，114.114.114.114）ip去查询域名对应的ip,若还未查询到便访问上一级DNS服务器直到根服务器位置，并返回数据。</p>
+<h2 id="NAT服务"><a href="#NAT服务" class="headerlink" title="NAT服务"></a>NAT服务</h2><p>NAT（Network Address Translator，网络地址转换）是用于在本地网络中使用私有地址，在连接互联网时转而使用全局 IP 地址的技术。NAT实际上是为解决<a href="https://link.zhihu.com/?target=https://bk.tw.lvfukeji.com/baike-IPv4%E4%BD%8D%E5%9D%80%E6%9E%AF%E7%AB%AD">IPv4地址短缺</a>而开发的技术。</p>
+<h4 id="NAT工作原理"><a href="#NAT工作原理" class="headerlink" title="NAT工作原理"></a>NAT工作原理</h4><p>内容参考[《什么是NAT》](<a href="https://zhuanlan.zhihu.com/p/340698491">什么是NAT？ - 知乎 (zhihu.com)</a>)</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/1.jpg" alt="8"></p>
+<p>​						</p>
+<ul>
+<li>网络被分为私网和公网两个部分，NAT网关设置在私网到公网的路由出口位置，双向流量必须都要经过NAT网关；</li>
+<li>网络访问只能先由私网侧发起，公网无法主动访问私网主机；</li>
+<li>NAT 路由器在两个访问方向上完成两次地址的转换或翻译，出方向做源信息替换，入方向做目的信息替换；</li>
+<li>NAT 路由器的存在对通信双方是保持透明的；</li>
+<li>NAT 路由器为了实现双向翻译的功能，需要维护一张<strong>关联表</strong>，把会话的信息保存下来。</li>
+</ul>
+<p>NAT可以划分为以下两种类型：源网络地址转换-Source NAT-SNAT;目的网络地址转换-Destination NAT-DNAT。</p>
+<p><img src="/2023/11/27/wang-luo-an-quan-ce-shi-ke-cheng-zuo-ye-4/3.jpg" alt="9"></p>
+<p>主机 163.221.120.9 的端口号是 80，私网中有 2 个客户端 10.0.0.10 和 10.0.0.11 同时进行通信，并且这 2 个客户端的本地端口都是 1025。此时，仅仅转换 IP 地址为全局地址 202.244.174.37 ，会令转换后的数字完全一致。因此，为了区分这 2 个会话，只要将 10.0.0.11 的端口号转换为 1026 就可以解决问题。NAPT 路由器通过生成转换表，就可以正确地转换地址跟端口的组合，使客户端A、B能同时与服务器之间进行通信。</p>
+<p><strong>关键点</strong>：利用端口号的唯一性实现了公网 IP 到私网 IP 的转换，理论上最多可以让 65535 台主机共用一个公网 IP 地址</p>
+]]></content>
+      <categories>
+        <category>网络渗透测试基础知识</category>
+      </categories>
+      <tags>
+        <tag>网络渗透测试基础知识,DNS,ARP</tag>
       </tags>
   </entry>
   <entry>
