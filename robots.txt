@@ -1,0 +1,18 @@
+# hexo robots.txt
+User-agent: *
+Allow: /
+Allow: /about/
+Allow: /archives/
+Allow: /Categories/
+Allow: /tags/
+Allow: /friends/
+Allow: /comment/
+
+Disallow: /assets/
+Disallow: /img/
+Disallow: /js/
+Disallow: /css/
+Disallow: /links/
+
+Sitemap: https://recyvan.github.io/sitemap.xml
+Sitemap: https://recyvan.github.io/BingSiteAuth.xml
