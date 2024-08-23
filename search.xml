@@ -792,9 +792,7 @@
     <title>内网穿透-tcp端对端流量转发项目开发</title>
     <url>/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/</url>
     <content><![CDATA[<h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="设想"><a href="#设想" class="headerlink" title="设想"></a>设想</h3><p> 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。</p>
-<h3 id="原理-tcp流量代理转发"><a href="#原理-tcp流量代理转发" class="headerlink" title="原理-tcp流量代理转发"></a>原理-tcp流量代理转发</h3><p>这里是通过python的socket和thread库进行实现。<br>原理图示如下：</p>
-<img src="/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/image-20240814222639218.png" class>
-<p><del>### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive</del></p>
+<h3 id="原理-tcp流量代理转发"><a href="#原理-tcp流量代理转发" class="headerlink" title="原理-tcp流量代理转发"></a>原理-tcp流量代理转发</h3><p>这里是通过python的socket和thread库进行实现。<br>原理图示如下：<br><img src="/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/image-20240814222639218.png"><br><del>### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive</del></p>
 <hr>
 <p>暂时无法处理heartbeat包对数据的污染问题，尤其是在ssh的流量代理中，高概率无法其ssh连接时的格式规范。</p>
 <h3 id="原理-sockets5协议代理"><a href="#原理-sockets5协议代理" class="headerlink" title="原理 sockets5协议代理"></a>原理 sockets5协议代理</h3><p>socks5协议是一种网络代理协议,主要用于在客户端和目标主机之间建立安全连接,实现网络访问控制。增强匿名性。SOCKS5提供了更多的安全性和功能。它允许用户在访问网络时隐藏自己的真实IP地址，从而实现匿名性和隐私保护。在网络安全中主要有以下用途</p>
@@ -805,35 +803,24 @@
 <li>内网渗透：部署在跳板机上，以跳板机的身份访问内网的主机。</li>
 </ol>
 <h4 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h4><p>待更。。。</p>
-<h4 id="sockets5认证过程及头部信息"><a href="#sockets5认证过程及头部信息" class="headerlink" title="sockets5认证过程及头部信息"></a>sockets5认证过程及头部信息</h4><h5 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h5><table>
+<h4 id="sockets5认证过程及头部信息"><a href="#sockets5认证过程及头部信息" class="headerlink" title="sockets5认证过程及头部信息"></a>sockets5认证过程及头部信息</h4><blockquote>
+<p>[!NOTE] 表格<br>表格中的数字单位均为字符，例如VER&#x3D;1字符</p>
+</blockquote>
+<h5 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h5><table>
 <thead>
 <tr>
-<th align="left">ver</th>
-<th align="right">nmethods</th>
-<th align="center">methods</th>
+<th align="center">VER</th>
+<th align="center">NMETHODS</th>
+<th align="center">METHODS</th>
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">1</td>
-<td align="right">1</td>
-<td align="center">1~255</td>
-</tr>
-<tr>
-<td align="left">客服端向服务端发送自己的版本号(ver: 0x05),自己支持的认证方式(methods: 方法数量，methods: 方法列表)</td>
-<td align="right"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">同时服务端返回所选择的方法和版本号。</td>
-<td align="right"></td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="left">常见methods方法：</td>
-<td align="right"></td>
-<td align="center"></td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1!255</td>
 </tr>
 </tbody></table>
+<p>客服端向服务端发送自己的版本号(ver: 0x05),自己支持的认证方式(methods: 方法数量，methods: 方法列表)<br>同时服务端返回所选择的方法和版本号。<br>常见methods方法：</p>
 <ul>
 <li>0x00：无认证要求</li>
 <li>0x02:  使用账户密码登录</li>
@@ -880,7 +867,7 @@
 <li>PLEN : 表示PASSWD字段的长度</li>
 <li>PASSWD: 密码</li>
 </ul>
-<h5 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h5><p>客服端：</p>
+<h5 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h5><p>客服端：<br>认证完成客户端发起请求</p>
 <table>
 <thead>
 <tr>
@@ -906,7 +893,7 @@
 <li>RSV：保留字段，无含义</li>
 <li>ATYP：IPV4：0x01；IPV6：0x03；域名：0x03</li>
 <li>DSTADDR：目的端地址</li>
-<li>DSTPROT：目的端口<br>服务端：</li>
+<li>DSTPROT：目的端口<br>服务端：<br>服务端接收后发送如下请求</li>
 </ul>
 <table>
 <thead>
