@@ -791,18 +791,160 @@
   <entry>
     <title>内网穿透-tcp端对端流量转发项目开发</title>
     <url>/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/</url>
-    <content><![CDATA[<h2 id="对内网机器的访问"><a href="#对内网机器的访问" class="headerlink" title="对内网机器的访问"></a>对内网机器的访问</h2><ul>
-<li>当我们进行内网渗透测试是，经常会苦恼于目标主机仅能与我们攻陷的机器进行通讯，这时可以在跳板机上代理某一端口流量转发到攻击机可以访问的端口上进行访问。</li>
-<li>当我们在局域网部署了某一个程序,(如网站)，我们可以在公网上部署内网穿透脚本，进行流量转发。</li>
-</ul>
-<h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="设想"><a href="#设想" class="headerlink" title="设想"></a>设想</h3><p> 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。</p>
+    <content><![CDATA[<h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="设想"><a href="#设想" class="headerlink" title="设想"></a>设想</h3><p> 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。</p>
 <h3 id="原理-tcp流量代理转发"><a href="#原理-tcp流量代理转发" class="headerlink" title="原理-tcp流量代理转发"></a>原理-tcp流量代理转发</h3><p>这里是通过python的socket和thread库进行实现。<br>原理图示如下：</p>
 <img src="/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/image-20240814222639218.png" class>
-<p>[~~](&lt;### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive，&gt;)  &#96;&#96;&#96;<br>~~</p>
+<p><del>### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive</del></p>
+<hr>
+<p>暂时无法处理heartbeat包对数据的污染问题，尤其是在ssh的流量代理中，高概率无法其ssh连接时的格式规范。</p>
+<h3 id="原理-sockets5协议代理"><a href="#原理-sockets5协议代理" class="headerlink" title="原理 sockets5协议代理"></a>原理 sockets5协议代理</h3><p>socks5协议是一种网络代理协议,主要用于在客户端和目标主机之间建立安全连接,实现网络访问控制。增强匿名性。SOCKS5提供了更多的安全性和功能。它允许用户在访问网络时隐藏自己的真实IP地址，从而实现匿名性和隐私保护。在网络安全中主要有以下用途</p>
+<ol>
+<li>网络爬虫：使用SOCKS5代理IP可以隐藏爬虫的真实身份，避免被目标网站封禁。</li>
+<li>网络安全测试：SOCKS5代理IP可用于模拟不同地区和设备的访问，测试网站的安全性和稳定性。</li>
+<li>匿名上网：通过SOCKS5代理IP，用户可以匿名访问网站，保护个人隐私和信息安全。</li>
+<li>内网渗透：部署在跳板机上，以跳板机的身份访问内网的主机。</li>
+</ol>
+<h4 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h4><p>待更。。。</p>
+<h4 id="sockets5认证过程及头部信息"><a href="#sockets5认证过程及头部信息" class="headerlink" title="sockets5认证过程及头部信息"></a>sockets5认证过程及头部信息</h4><h5 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h5><table>
+<thead>
+<tr>
+<th align="left">ver</th>
+<th align="right">nmethods</th>
+<th align="center">methods</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="center">1~255</td>
+</tr>
+<tr>
+<td align="left">客服端向服务端发送自己的版本号(ver: 0x05),自己支持的认证方式(methods: 方法数量，methods: 方法列表)</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left">同时服务端返回所选择的方法和版本号。</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left">常见methods方法：</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>0x00：无认证要求</li>
+<li>0x02:  使用账户密码登录</li>
+<li>0xFF: 方法未被选中</li>
+</ul>
+<h5 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h5><p>客户端和服务端根据选定的认证方式进行验证，之后客户端就可以发送请求信息。<br>服务端：</p>
+<table>
+<thead>
+<tr>
+<th>VER</th>
+<th>STATUS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<ul>
+<li>STATUS: X00表示认证成功，其他为失败</li>
+</ul>
+<p>客服端：</p>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">ULEN</th>
+<th align="center">UNAME</th>
+<th align="center">PLEN</th>
+<th align="center">PASSWD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1~255</td>
+<td align="center">1</td>
+<td align="center">1~255</td>
+</tr>
+</tbody></table>
+<ul>
+<li>ULEN：表示UNAME字段的长度</li>
+<li>UNAME：用户名</li>
+<li>PLEN : 表示PASSWD字段的长度</li>
+<li>PASSWD: 密码</li>
+</ul>
+<h5 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h5><p>客服端：</p>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">CMD</th>
+<th align="center">RSV</th>
+<th align="center">ATYP</th>
+<th align="center">DSTADDR</th>
+<th align="center">DSTPORT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0x00</td>
+<td align="center">1</td>
+<td align="center">variable</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+<ul>
+<li>CMD :  CONNECT：0x01；BIND：0x02</li>
+<li>RSV：保留字段，无含义</li>
+<li>ATYP：IPV4：0x01；IPV6：0x03；域名：0x03</li>
+<li>DSTADDR：目的端地址</li>
+<li>DSTPROT：目的端口<br>服务端：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">REP</th>
+<th align="center">RSV</th>
+<th align="center">ATYP</th>
+<th align="center">DSTADDR</th>
+<th align="center">DSTPROT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0x00</td>
+<td align="center">1</td>
+<td align="center">varlable</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+<ul>
+<li>REP ：状态码：其中0x00表示连接成功</li>
+</ul>
+<h5 id="数据转发"><a href="#数据转发" class="headerlink" title="数据转发"></a>数据转发</h5><p>对于tcp进行代码层面直接转发即可。使用select库进行数据接收和转发。</p>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h3 id="v0-4-1版本参数说明"><a href="#v0-4-1版本参数说明" class="headerlink" title="v0.4.1版本参数说明"></a>v0.4.1版本参数说明</h3><blockquote>
+<p>服务端:<br>     -p 端口号: 指定服务端监听的端口号，默认为8080。<br>     -v 版本信息<br>      -h 帮助信息 </p>
+</blockquote>
+<blockquote>
+<p>客户端<br>      -sh –server-host 服务器地址: 指定服务端的地址，默认为localhost。  （必选）<br>      -sp –server-port 服务器端口: 指定服务端的端口号，默认为8080。  (必选)<br>      -ah –app_host 应用地址: 指定应用的地址，默认为localhost。<br>      -ap –app_port 应用端口: 指定应用的端口号，默认为80。  (必选)<br>      -t –type 转发类型:tcp,socks5,指定转发类型，默认为tcp。<br>      -socks-host –sockrts-host socks5服务器地址: 指定socks5服务器地址，默认为localhost。<br>      -socks-port –sockets-port socks5服务器端口: 指定socks5服务器端口号，默认为1080。<br>      -username –socket-username socks5用户名: 指定socks5用户名，默认为””。<br>      -password –socket-password socks5密码: 指定socks5密码，默认为””<br>      -v 版本信息<br>      -h 帮助信息 </p>
+</blockquote>
 <h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><blockquote>
-<p>**github: <a href="https://github.com/recyvan/port-forward">内网端到端流量转发</a></p>
+<p>**github: <a href="https://github.com/recyvan/proxy-forward">recyvan&#x2F;proxy-forward: 内网流量代理的转发工具 (github.com)</a></p>
 </blockquote>
 <h2 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h2><blockquote>
+<p>** 2024-8-21: 发布v0.4.1版本<br>优化代码结构，增加功能：增加了对socks5协议的支持。支持代理socks5下tcp&#x2F;udp的数据转发，初步适配proxychains工具<br> 修复了tcp端对端数据转发中http的中断造成的服务端无法再次接收数据的bug。<br>更新了参数使用说明。**</p>
+</blockquote>
+<blockquote>
 <p>** 2024-8-15：发布v0.2版本<br>优化代码结构，增加功能：增加了多个客户端连接服务端的功能。<br>优化代码结构，增加功能：增加了日志功能，可记录转发过程中的日志。<br>改为命令行模式，增加了命令行参数功能。**</p>
 </blockquote>
 <blockquote>

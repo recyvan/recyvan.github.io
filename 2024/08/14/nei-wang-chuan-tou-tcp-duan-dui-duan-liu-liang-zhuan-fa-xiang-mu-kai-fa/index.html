@@ -20,16 +20,16 @@
   <title>内网穿透-tcp端对端流量转发项目开发 - Recyvan</title>
 
   
-    <meta name="description" content="对内网机器的访问 当我们进行内网渗透测试是，经常会苦恼于目标主机仅能与我们攻陷的机器进行通讯，这时可以在跳板机上代理某一端口流量转发到攻击机可以访问的端口上进行访问。 当我们在局域网部署了某一个程序,(如网站)，我们可以在公网上部署内网穿透脚本，进行流量转发。  项目设计设想 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，U">
+    <meta name="description" content="项目设计设想 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。 原理-tcp流量代理转发这里是通过python的socket和thread库进行实现。原理图示如下：  ### 维持socket代理HTTP流量长连接的方法HTT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内网穿透-tcp端对端流量转发项目开发">
 <meta property="og:url" content="http://recyvan.github.io/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/index.html">
 <meta property="og:site_name" content="Recyvan">
-<meta property="og:description" content="对内网机器的访问 当我们进行内网渗透测试是，经常会苦恼于目标主机仅能与我们攻陷的机器进行通讯，这时可以在跳板机上代理某一端口流量转发到攻击机可以访问的端口上进行访问。 当我们在局域网部署了某一个程序,(如网站)，我们可以在公网上部署内网穿透脚本，进行流量转发。  项目设计设想 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，U">
+<meta property="og:description" content="项目设计设想 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。 原理-tcp流量代理转发这里是通过python的socket和thread库进行实现。原理图示如下：  ### 维持socket代理HTTP流量长连接的方法HTT">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://recyvan.github.io/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/image-20240814222639218.png">
 <meta property="article:published_time" content="2024-08-14T12:34:42.000Z">
-<meta property="article:modified_time" content="2024-08-15T11:05:10.732Z">
+<meta property="article:modified_time" content="2024-08-23T11:34:37.839Z">
 <meta property="article:author" content="Recyvan">
 <meta property="article:tag" content="端口映射">
 <meta name="twitter:card" content="summary">
@@ -79,7 +79,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="../../../../index.html">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="../../../../">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="../../../../categories/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">内网穿透</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-08-14T12:34:42.000Z">2024-08-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-08-15T11:05:10.732Z">2024-08-15</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-08-14T12:34:42.000Z">2024-08-14</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-08-23T11:34:37.839Z">2024-08-23</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -90,18 +90,160 @@
     </div>
     
   </div>
-  </div><article class="md-text content"><h2 id="对内网机器的访问"><a href="#对内网机器的访问" class="headerlink" title="对内网机器的访问"></a>对内网机器的访问</h2><ul>
-<li>当我们进行内网渗透测试是，经常会苦恼于目标主机仅能与我们攻陷的机器进行通讯，这时可以在跳板机上代理某一端口流量转发到攻击机可以访问的端口上进行访问。</li>
-<li>当我们在局域网部署了某一个程序,(如网站)，我们可以在公网上部署内网穿透脚本，进行流量转发。</li>
-</ul>
-<h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="设想"><a href="#设想" class="headerlink" title="设想"></a>设想</h3><p> 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。</p>
+  </div><article class="md-text content"><h2 id="项目设计"><a href="#项目设计" class="headerlink" title="项目设计"></a>项目设计</h2><h3 id="设想"><a href="#设想" class="headerlink" title="设想"></a>设想</h3><p> 初步想法时先做出核心功能，即tcp流量代理转发，在进行log日志编写，性能优化(初步设想为IO多路复用),代码结构简化，UDP流量代理转发，函数解耦，单对多服务，多对多服务(实际情况可能用不到)等等，其中夹杂着bug修复。</p>
 <h3 id="原理-tcp流量代理转发"><a href="#原理-tcp流量代理转发" class="headerlink" title="原理-tcp流量代理转发"></a>原理-tcp流量代理转发</h3><p>这里是通过python的socket和thread库进行实现。<br>原理图示如下：</p>
 <img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="/2024/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/08/14/nei-wang-chuan-tou-tcp-duan-dui-duan-liu-liang-zhuan-fa-xiang-mu-kai-fa/image-20240814222639218.png" class>
-<p>[~~](&lt;### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive，&gt;)  &#96;&#96;&#96;<br>~~</p>
+<p><del>### 维持socket代理HTTP流量长连接的方法<br><strong>HTTP 连接是基于 Request-Response 的非持久(短)连接</strong>，其连接的生命周期通过 Request 界定，一个 Request 一个 Response，此次 HTTP 连接的生命周期结束。对于这点在 HTTP 1.1 中进行了改进，支持 Keep-alive，允许在一个 HTTP 连接的生命周期中，可以发送多个 Request，接收多个 Response，但由 Request 来界定生命周期的本质没有改变。但是当我们访问HTTP1.0服务(临时搭建搭建的web服务时)使用socket代理又无法使用keep-alive</del></p>
+<hr>
+<p>暂时无法处理heartbeat包对数据的污染问题，尤其是在ssh的流量代理中，高概率无法其ssh连接时的格式规范。</p>
+<h3 id="原理-sockets5协议代理"><a href="#原理-sockets5协议代理" class="headerlink" title="原理 sockets5协议代理"></a>原理 sockets5协议代理</h3><p>socks5协议是一种网络代理协议,主要用于在客户端和目标主机之间建立安全连接,实现网络访问控制。增强匿名性。SOCKS5提供了更多的安全性和功能。它允许用户在访问网络时隐藏自己的真实IP地址，从而实现匿名性和隐私保护。在网络安全中主要有以下用途</p>
+<ol>
+<li>网络爬虫：使用SOCKS5代理IP可以隐藏爬虫的真实身份，避免被目标网站封禁。</li>
+<li>网络安全测试：SOCKS5代理IP可用于模拟不同地区和设备的访问，测试网站的安全性和稳定性。</li>
+<li>匿名上网：通过SOCKS5代理IP，用户可以匿名访问网站，保护个人隐私和信息安全。</li>
+<li>内网渗透：部署在跳板机上，以跳板机的身份访问内网的主机。</li>
+</ol>
+<h4 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h4><p>待更。。。</p>
+<h4 id="sockets5认证过程及头部信息"><a href="#sockets5认证过程及头部信息" class="headerlink" title="sockets5认证过程及头部信息"></a>sockets5认证过程及头部信息</h4><h5 id="协商"><a href="#协商" class="headerlink" title="协商"></a>协商</h5><table>
+<thead>
+<tr>
+<th align="left">ver</th>
+<th align="right">nmethods</th>
+<th align="center">methods</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="right">1</td>
+<td align="center">1~255</td>
+</tr>
+<tr>
+<td align="left">客服端向服务端发送自己的版本号(ver: 0x05),自己支持的认证方式(methods: 方法数量，methods: 方法列表)</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left">同时服务端返回所选择的方法和版本号。</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="left">常见methods方法：</td>
+<td align="right"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>0x00：无认证要求</li>
+<li>0x02:  使用账户密码登录</li>
+<li>0xFF: 方法未被选中</li>
+</ul>
+<h5 id="认证"><a href="#认证" class="headerlink" title="认证"></a>认证</h5><p>客户端和服务端根据选定的认证方式进行验证，之后客户端就可以发送请求信息。<br>服务端：</p>
+<table>
+<thead>
+<tr>
+<th>VER</th>
+<th>STATUS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<ul>
+<li>STATUS: X00表示认证成功，其他为失败</li>
+</ul>
+<p>客服端：</p>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">ULEN</th>
+<th align="center">UNAME</th>
+<th align="center">PLEN</th>
+<th align="center">PASSWD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1~255</td>
+<td align="center">1</td>
+<td align="center">1~255</td>
+</tr>
+</tbody></table>
+<ul>
+<li>ULEN：表示UNAME字段的长度</li>
+<li>UNAME：用户名</li>
+<li>PLEN : 表示PASSWD字段的长度</li>
+<li>PASSWD: 密码</li>
+</ul>
+<h5 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h5><p>客服端：</p>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">CMD</th>
+<th align="center">RSV</th>
+<th align="center">ATYP</th>
+<th align="center">DSTADDR</th>
+<th align="center">DSTPORT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0x00</td>
+<td align="center">1</td>
+<td align="center">variable</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+<ul>
+<li>CMD :  CONNECT：0x01；BIND：0x02</li>
+<li>RSV：保留字段，无含义</li>
+<li>ATYP：IPV4：0x01；IPV6：0x03；域名：0x03</li>
+<li>DSTADDR：目的端地址</li>
+<li>DSTPROT：目的端口<br>服务端：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">VER</th>
+<th align="center">REP</th>
+<th align="center">RSV</th>
+<th align="center">ATYP</th>
+<th align="center">DSTADDR</th>
+<th align="center">DSTPROT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0x00</td>
+<td align="center">1</td>
+<td align="center">varlable</td>
+<td align="center">2</td>
+</tr>
+</tbody></table>
+<ul>
+<li>REP ：状态码：其中0x00表示连接成功</li>
+</ul>
+<h5 id="数据转发"><a href="#数据转发" class="headerlink" title="数据转发"></a>数据转发</h5><p>对于tcp进行代码层面直接转发即可。使用select库进行数据接收和转发。</p>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h3 id="v0-4-1版本参数说明"><a href="#v0-4-1版本参数说明" class="headerlink" title="v0.4.1版本参数说明"></a>v0.4.1版本参数说明</h3><blockquote>
+<p>服务端:<br>     -p 端口号: 指定服务端监听的端口号，默认为8080。<br>     -v 版本信息<br>      -h 帮助信息 </p>
+</blockquote>
+<blockquote>
+<p>客户端<br>      -sh –server-host 服务器地址: 指定服务端的地址，默认为localhost。  （必选）<br>      -sp –server-port 服务器端口: 指定服务端的端口号，默认为8080。  (必选)<br>      -ah –app_host 应用地址: 指定应用的地址，默认为localhost。<br>      -ap –app_port 应用端口: 指定应用的端口号，默认为80。  (必选)<br>      -t –type 转发类型:tcp,socks5,指定转发类型，默认为tcp。<br>      -socks-host –sockrts-host socks5服务器地址: 指定socks5服务器地址，默认为localhost。<br>      -socks-port –sockets-port socks5服务器端口: 指定socks5服务器端口号，默认为1080。<br>      -username –socket-username socks5用户名: 指定socks5用户名，默认为””。<br>      -password –socket-password socks5密码: 指定socks5密码，默认为””<br>      -v 版本信息<br>      -h 帮助信息 </p>
+</blockquote>
 <h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><blockquote>
-<p>**github: <a target="_blank" rel="noopener" href="https://github.com/recyvan/port-forward">内网端到端流量转发</a></p>
+<p>**github: <a target="_blank" rel="noopener" href="https://github.com/recyvan/proxy-forward">recyvan&#x2F;proxy-forward: 内网流量代理的转发工具 (github.com)</a></p>
 </blockquote>
 <h2 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h2><blockquote>
+<p>** 2024-8-21: 发布v0.4.1版本<br>优化代码结构，增加功能：增加了对socks5协议的支持。支持代理socks5下tcp&#x2F;udp的数据转发，初步适配proxychains工具<br> 修复了tcp端对端数据转发中http的中断造成的服务端无法再次接收数据的bug。<br>更新了参数使用说明。**</p>
+</blockquote>
+<blockquote>
 <p>** 2024-8-15：发布v0.2版本<br>优化代码结构，增加功能：增加了多个客户端连接服务端的功能。<br>优化代码结构，增加功能：增加了日志功能，可记录转发过程中的日志。<br>改为命令行模式，增加了命令行参数功能。**</p>
 </blockquote>
 <blockquote>
@@ -150,7 +292,7 @@
 
 
 
-<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%86%85%E7%BD%91%E6%9C%BA%E5%99%A8%E7%9A%84%E8%AE%BF%E9%97%AE"><span class="toc-text">对内网机器的访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1"><span class="toc-text">项目设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E6%83%B3"><span class="toc-text">设想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-tcp%E6%B5%81%E9%87%8F%E4%BB%A3%E7%90%86%E8%BD%AC%E5%8F%91"><span class="toc-text">原理-tcp流量代理转发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80"><span class="toc-text">项目地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="toc-text">更新日志</span></a></li></ol></div><div class="widget-footer">
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E8%AE%BE%E8%AE%A1"><span class="toc-text">项目设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E6%83%B3"><span class="toc-text">设想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-tcp%E6%B5%81%E9%87%8F%E4%BB%A3%E7%90%86%E8%BD%AC%E5%8F%91"><span class="toc-text">原理-tcp流量代理转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E7%90%86-sockets5%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%90%86"><span class="toc-text">原理 sockets5协议代理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E5%9B%BE"><span class="toc-text">原理图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sockets5%E8%AE%A4%E8%AF%81%E8%BF%87%E7%A8%8B%E5%8F%8A%E5%A4%B4%E9%83%A8%E4%BF%A1%E6%81%AF"><span class="toc-text">sockets5认证过程及头部信息</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8D%8F%E5%95%86"><span class="toc-text">协商</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AE%A4%E8%AF%81"><span class="toc-text">认证</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82"><span class="toc-text">请求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BD%AC%E5%8F%91"><span class="toc-text">数据转发</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v0-4-1%E7%89%88%E6%9C%AC%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-text">v0.4.1版本参数说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80"><span class="toc-text">项目地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97"><span class="toc-text">更新日志</span></a></li></ol></div><div class="widget-footer">
 
 <a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
 </div></aside><div class='float-panel blur'>
